@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:title="Todo"
+        android:icon="@drawable/ic_assignment" />
+    <item android:title="Doing"
+        android:icon="@drawable/ic_dvr" />
+    <item android:title="Done"
+        android:icon="@drawable/ic_beenhere" />
+</menu>

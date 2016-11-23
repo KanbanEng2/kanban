@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_height="wrap_content"
+    android:layout_width="match_parent"
+    android:layout_marginBottom="@dimen/activity_vertical_margin"
+    android:layout_marginStart="@dimen/activity_horizontal_margin"
+    android:layout_marginEnd="@dimen/activity_horizontal_margin">
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/card_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        android:focusable="true"
+        android:foreground="?android:attr/selectableItemBackground"
+        android:longClickable="true"
+        >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <View
+                android:id="@+id/card_tag_color"
+                android:layout_width="10dp"
+                android:layout_height="match_parent"
+                android:background="#7E57C2"
+                android:visibility="visible" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/card_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="6dp"
+                    android:maxLines="3"
+                    android:paddingEnd="12dp"
+                    android:paddingStart="12dp"
+                    android:paddingTop="12dp"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                    tools:text="Fazer protótipo do aplicativo de Kanban" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/card_title"
+                    android:layout_margin="12dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/card_tags"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="start|bottom"
+                        android:layout_weight="1"
+                        android:padding="6dp"
+                        tools:text="#Design" />
+
+                    <!-- TODO: Lista horizontal de usuários -->
+                    <!-- TODO: Usar máscara redonda para fotos -->
+                    <ImageView
+                        android:id="@+id/user"
+                        android:layout_width="26dp"
+                        android:layout_height="26dp"
+                        android:layout_gravity="end|bottom"
+                        android:layout_margin="6dp"
+                        android:background="@drawable/circle"
+                        android:backgroundTint="#1E88E5"
+                        android:padding="2dp"
+                        android:src="@drawable/ic_person"
+                        android:tint="#FFFFFF" />
+                </LinearLayout>
+            </RelativeLayout>
+        </LinearLayout>
+
+    </android.support.v7.widget.CardView>
+
+</LinearLayout>

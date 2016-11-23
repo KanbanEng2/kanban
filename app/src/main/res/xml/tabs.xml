@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<tabs>
+    <tab
+        icon="@drawable/ic_assignment"
+        title="Todo"
+        barColorWhenSelected="#FFB300"/>
+    <tab
+        icon="@drawable/ic_dvr"
+        title="Doing"
+        barColorWhenSelected="#1E88E5"/>
+    <tab
+        icon="@drawable/ic_beenhere"
+        title="Done"
+        barColorWhenSelected="#43A047"/>
+</tabs>
