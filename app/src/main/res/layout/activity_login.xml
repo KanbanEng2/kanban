@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_login"
+    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:paddingBottom="@dimen/activity_vertical_margin"
@@ -10,4 +12,67 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="br.ufrr.eng2.kanban.LoginActivity">
 
-</RelativeLayout>
+    <TextView
+        android:layout_width="match_parent"
+        android:text="@string/app_name"
+        android:textSize="32sp"
+        android:layout_weight="1"
+        android:textAlignment="center"
+        android:gravity="center"
+        android:layout_height="0dp" />
+
+
+    <RelativeLayout
+
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent">
+        <Button
+
+            android:layout_marginTop="12dp"
+            android:id="@+id/login_A"
+            android:onClick="gotoMain"
+            android:hint="Login com Facebook"
+            android:backgroundTint="#3b5998"
+            android:textColorHint="#ffff"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+        <Button
+            android:id="@+id/login_B"
+            android:hint="Login com Twitter"
+            android:onClick="gotoMain"
+            android:backgroundTint="#55acee"
+            android:textColorHint="#ffff"
+            android:layout_below="@id/login_A"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+        <Button
+            android:id="@+id/login_C"
+            android:hint="Login com Google"
+            android:backgroundTint="#dd4b39"
+            android:onClick="gotoMain"
+            android:textColorHint="#ffff"
+            android:layout_below="@id/login_B"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <Button
+            android:id="@+id/login_D"
+            android:hint="Login com GitHub"
+            android:backgroundTint="#000000"
+            android:textColorHint="#ffff"
+            android:onClick="gotoMain"
+            android:layout_below="@id/login_C"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+
+
+    </RelativeLayout>
+
+
+
+
+</LinearLayout>
+
+
+
