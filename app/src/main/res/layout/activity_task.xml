@@ -5,12 +5,41 @@
     android:id="@+id/activity_task"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:fitsSystemWindows="false"
     tools:context="br.ufrr.eng2.kanban.TaskActivity">
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/cardview_light_background"
+        android:paddingBottom="@dimen/activity_vertical_margin"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingTop="@dimen/activity_vertical_margin"
+        android:transitionName="task_background">
+
+    </RelativeLayout>
+
+    <View
+        android:id="@+id/toolbar_background"
+        android:layout_width="12dp"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/appBarLayout"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="-12dp"
+        android:background="#ab47bc"
+        android:transitionName="task_color" />
+
     <android.support.design.widget.AppBarLayout
+        android:id="@+id/appBarLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:theme="@style/AppTheme.Toolbar">
+        android:layout_marginEnd="-8dp"
+        android:layout_marginStart="-8dp"
+        android:layout_marginTop="24dp"
+        android:background="@android:color/transparent"
+        android:theme="@style/AppTheme.AppBarOverlay.Dark">
 
         <android.support.v7.widget.Toolbar
             android:id="@+id/task_toolbar"
@@ -21,15 +50,5 @@
             app:title="Título da tarefa" />
 
     </android.support.design.widget.AppBarLayout>
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:paddingBottom="@dimen/activity_vertical_margin"
-        android:paddingLeft="@dimen/activity_horizontal_margin"
-        android:paddingRight="@dimen/activity_horizontal_margin"
-        android:paddingTop="@dimen/activity_vertical_margin">
-
-    </RelativeLayout>
 
 </RelativeLayout>

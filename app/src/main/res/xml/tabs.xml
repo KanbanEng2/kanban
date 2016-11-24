@@ -2,7 +2,7 @@
 <tabs>
     <tab
         icon="@drawable/ic_assignment"
-        title="Todo"
+        title="To do"
         barColorWhenSelected="#FFB300"/>
     <tab
         icon="@drawable/ic_dvr"
