@@ -6,4 +6,8 @@
 
     <string name="action_settings">Settings</string>
     <string name="search">Search</string>
+
+    <!--ALERT DIALOG ADD CARD-->
+    <string name="alert_dialog_add_card_titulo">Título</string>
+    <string name="alert_dialog_add_card_descricao">Descrição</string>
 </resources>
