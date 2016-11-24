@@ -1,6 +1,7 @@
 package br.ufrr.eng2.kanban;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Matrix;
 import android.graphics.RectF;
@@ -10,10 +11,13 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.SharedElementCallback;
+import android.support.v4.content.res.ResourcesCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.transition.Transition;
 import android.util.Pair;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -23,6 +27,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import java.util.List;
@@ -37,6 +42,11 @@ public class MainActivity extends AppCompatActivity
     private CardsAdapter mAdapter;
     private LinearLayoutManager mLayoutManager;
 
+    private FloatingActionButton mFab;
+    private AlertDialog mAlertAddCard;
+    private EditText mAlertTitleCard;
+    private EditText mAlertDescCard;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,14 +54,7 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+        mFab = (FloatingActionButton) findViewById(R.id.fab);
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -83,6 +86,74 @@ public class MainActivity extends AppCompatActivity
                 startActivity(new Intent(MainActivity.this, TaskActivity.class), options.toBundle());
             }
         });
+
+        CreateDialogAddCard();
+    }
+
+    private void CreateDialogAddCard() {
+        LayoutInflater li = getLayoutInflater();
+        View view = li.inflate(R.layout.alert_dialog_add_card, null);
+        AlertDialog.Builder alert_builder = new AlertDialog.Builder(this);
+        alert_builder.setView(view);
+
+        alert_builder.setTitle(getString(R.string.alert_dialog_add_card_top_title));
+        alert_builder.setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+            }
+        });
+        alert_builder.setPositiveButton(getString(R.string.add), null);
+
+        mAlertAddCard = alert_builder.create();
+        mAlertTitleCard = (EditText) view.findViewById(R.id.alert_add_card_titulo);
+        mAlertDescCard = (EditText) view.findViewById(R.id.alert_add_card_descricao);
+
+        mAlertAddCard.setOnShowListener(new DialogInterface.OnShowListener() {
+            @Override
+            public void onShow(final DialogInterface dialog) {
+
+                int color = ResourcesCompat.getColor(getResources(), R.color.secondary_text, null);
+                mAlertAddCard.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(color);
+
+                mAlertAddCard.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        boolean title_ok = true;
+                        boolean desc_ok = true;
+
+                        String title = mAlertTitleCard.getText().toString();
+                        String desc = mAlertDescCard.getText().toString();
+
+                        if (title.isEmpty()) {
+                            mAlertTitleCard.setError(getString(R.string.alert_dialog_string_empty_error));
+                            title_ok = false;
+                        }
+
+                        if (desc.isEmpty()) {
+                            mAlertDescCard.setError(getString(R.string.alert_dialog_string_empty_error));
+                            desc_ok = false;
+                        }
+
+                        if (title_ok && desc_ok) {
+//                          TODO: Add to adapter
+                            mAlertTitleCard.setText("");
+                            mAlertDescCard.setText("");
+
+                            dialog.dismiss();
+                        }
+                    }
+                });
+
+            }
+        });
+
+        mFab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mAlertAddCard.show();
+            }
+        });
+
     }
 
     @Override
