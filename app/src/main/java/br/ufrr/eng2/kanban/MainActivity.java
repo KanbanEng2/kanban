@@ -108,6 +108,15 @@ public class MainActivity extends AppCompatActivity
         mAlertTitleCard = (EditText) view.findViewById(R.id.alert_add_card_titulo);
         mAlertDescCard = (EditText) view.findViewById(R.id.alert_add_card_descricao);
 
+        mAlertAddCard.setOnDismissListener(new DialogInterface.OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialogInterface) {
+                mAlertTitleCard.setText("");
+                mAlertDescCard.setText("");
+
+            }
+        });
+
         mAlertAddCard.setOnShowListener(new DialogInterface.OnShowListener() {
             @Override
             public void onShow(final DialogInterface dialog) {
@@ -136,9 +145,6 @@ public class MainActivity extends AppCompatActivity
 
                         if (title_ok && desc_ok) {
 //                          TODO: Add to adapter
-                            mAlertTitleCard.setText("");
-                            mAlertDescCard.setText("");
-
                             dialog.dismiss();
                         }
                     }
