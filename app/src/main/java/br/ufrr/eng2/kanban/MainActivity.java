@@ -13,9 +13,12 @@ import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.SharedElementCallback;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.transition.Transition;
+import android.util.Log;
 import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -30,16 +33,19 @@ import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 import br.ufrr.eng2.kanban.adapter.CardsAdapter;
+import br.ufrr.eng2.kanban.model.Tarefa;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     private RecyclerView mRecyclerView;
     private CardsAdapter mAdapter;
+    private List<Tarefa> mTarefas = new ArrayList<>();
     private LinearLayoutManager mLayoutManager;
 
     private FloatingActionButton mFab;
@@ -68,27 +74,59 @@ public class MainActivity extends AppCompatActivity
         mRecyclerView = (RecyclerView) findViewById(R.id.recycler_view);
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
-        mAdapter = new CardsAdapter();
+        mRecyclerView.setItemAnimator(new DefaultItemAnimator());
+
+
+        ItemTouchHelper mIth = new ItemTouchHelper(
+                new ItemTouchHelper.SimpleCallback(ItemTouchHelper.UP | ItemTouchHelper.DOWN,
+                        ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
+                    @Override
+                    public boolean onMove(RecyclerView recyclerView,
+                                          RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
+                        final int fromPos = viewHolder.getAdapterPosition();
+                        final int toPos = target.getAdapterPosition();
+                        // move item in `fromPos` to `toPos` in adapter.
+                        Log.d("DEBUG RECYCLER", "Moved from " + String.valueOf(fromPos) + " to " + String.valueOf(toPos) );
+                        Tarefa fromTarefa = mTarefas.get(fromPos);
+                        Tarefa toTarefa = mTarefas.get(toPos);
+
+                        mTarefas.set(fromPos, toTarefa);
+                        mTarefas.set(toPos, fromTarefa);
+
+                        recyclerView.getAdapter().notifyItemMoved(fromPos, toPos);
+
+                        return true;// true if moved, false otherwise
+                    }
+                    public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
+                        // remove from adapter
+                    }
+                });
+
+        mIth.attachToRecyclerView(mRecyclerView);
+        mTarefas.add(new Tarefa(123, "Programar insanamente", "Programar at� os dedos ca�rem", Tarefa.ESTADO_DOING, Tarefa.CATEGORIA_ANALISE));
+        mTarefas.add(new Tarefa(123, "COISAR", "COISARCOISANDO", Tarefa.ESTADO_DOING, Tarefa.CATEGORIA_CORRECAO));
+
+        mAdapter = new CardsAdapter(mTarefas, new CardsAdapter.ClickCallback() {
+            @Override
+            public void onClick(View v, Tarefa t) {
+
+            }
+
+            @Override
+            public boolean onLongClick(View v) {
+                return true;
+            }
+        });
         mRecyclerView.setAdapter(mAdapter);
 
         getWindow().getSharedElementExitTransition().excludeTarget(R.id.appBarLayout, true);
         getWindow().getSharedElementExitTransition().excludeChildren(R.id.appBarLayout, true);
 
-        mAdapter.setOnItemClickListener(new CardsAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(View view, long position) {
-                ActivityOptionsCompat options = ActivityOptionsCompat.
-                        makeSceneTransitionAnimation(MainActivity.this,
-                                android.support.v4.util.Pair.create(view.findViewById(R.id.card_view), "task_background"),
-                                android.support.v4.util.Pair.create(view.findViewById(R.id.card_tag_color), "task_color")
-                        );
-
-                startActivity(new Intent(MainActivity.this, TaskActivity.class), options.toBundle());
-            }
-        });
 
         CreateDialogAddCard();
     }
+
+
 
     private void CreateDialogAddCard() {
         LayoutInflater li = getLayoutInflater();
@@ -144,7 +182,9 @@ public class MainActivity extends AppCompatActivity
                         }
 
                         if (title_ok && desc_ok) {
-//                          TODO: Add to adapter
+                            mTarefas.add(new Tarefa(1234, title, desc, Tarefa.ESTADO_DOING, Tarefa.CATEGORIA_CORRECAO));
+
+                            mRecyclerView.getAdapter().notifyItemInserted(mTarefas.size() - 1);
                             dialog.dismiss();
                         }
                     }
