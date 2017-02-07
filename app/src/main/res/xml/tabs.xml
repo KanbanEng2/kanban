@@ -1,15 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <tabs>
     <tab
+        id="@+id/bottombar_todo"
         icon="@drawable/ic_assignment"
         title="To do"
         barColorWhenSelected="#FFB300"/>
     <tab
         icon="@drawable/ic_dvr"
+        id="@+id/bottombar_doing"
         title="Doing"
         barColorWhenSelected="#1E88E5"/>
     <tab
         icon="@drawable/ic_beenhere"
+        id="@+id/bottombar_done"
         title="Done"
         barColorWhenSelected="#43A047"/>
 </tabs>

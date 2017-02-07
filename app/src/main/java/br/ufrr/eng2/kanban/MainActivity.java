@@ -7,6 +7,8 @@ import android.graphics.Matrix;
 import android.graphics.RectF;
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.support.annotation.IdRes;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityOptionsCompat;
@@ -39,19 +41,28 @@ import java.util.Map;
 
 import br.ufrr.eng2.kanban.adapter.CardsAdapter;
 import br.ufrr.eng2.kanban.model.Tarefa;
+import com.roughike.bottombar.BottomBar;
+import com.roughike.bottombar.OnTabSelectListener;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     private RecyclerView mRecyclerView;
-    private CardsAdapter mAdapter;
-    private List<Tarefa> mTarefas = new ArrayList<>();
+    private CardsAdapter mAdapterTODO;
+    private List<Tarefa> mTarefasTODO = new ArrayList<>();
+    private CardsAdapter mAdapterDOING;
+    private List<Tarefa> mTarefasDOING = new ArrayList<>();
+    private CardsAdapter mAdapterDONE;
+    private List<Tarefa> mTarefasDONE = new ArrayList<>();
     private LinearLayoutManager mLayoutManager;
 
     private FloatingActionButton mFab;
     private AlertDialog mAlertAddCard;
     private EditText mAlertTitleCard;
     private EditText mAlertDescCard;
+    private BottomBar mBottomBar;
+
+    private CoordinatorLayout mCoordinatorLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,10 +82,16 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
+//        mBottomBar = BottomBar.attach(this, savedInstanceState);
+//        mBottomBar.setItems(R.menu.bottombar_menu);
+
+
         mRecyclerView = (RecyclerView) findViewById(R.id.recycler_view);
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
+
+        mCoordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordinatorLayout);
 
 
         ItemTouchHelper mIth = new ItemTouchHelper(
@@ -86,12 +103,27 @@ public class MainActivity extends AppCompatActivity
                         final int fromPos = viewHolder.getAdapterPosition();
                         final int toPos = target.getAdapterPosition();
                         // move item in `fromPos` to `toPos` in adapter.
-                        Log.d("DEBUG RECYCLER", "Moved from " + String.valueOf(fromPos) + " to " + String.valueOf(toPos) );
-                        Tarefa fromTarefa = mTarefas.get(fromPos);
-                        Tarefa toTarefa = mTarefas.get(toPos);
 
-                        mTarefas.set(fromPos, toTarefa);
-                        mTarefas.set(toPos, fromTarefa);
+
+                        switch(mBottomBar.getCurrentTabId()) {
+                            case R.id.bottombar_todo:
+                                Tarefa fromTarefa = mTarefasTODO.get(fromPos);
+                                mTarefasTODO.remove(fromPos);
+                                mTarefasTODO.add(toPos, fromTarefa);
+
+                                break;
+                            case R.id.bottombar_doing:
+                                Tarefa doingTarefa = mTarefasDOING.get(fromPos);
+                                mTarefasDOING.remove(fromPos);
+                                mTarefasDOING.add(toPos, doingTarefa);
+                                break;
+                            case R.id.bottombar_done:
+                                Tarefa doneTarefa = mTarefasDONE.get(fromPos);
+                                mTarefasDONE.remove(fromPos);
+                                mTarefasDONE.add(toPos, doneTarefa);
+                                break;
+                        }
+
 
                         recyclerView.getAdapter().notifyItemMoved(fromPos, toPos);
 
@@ -99,14 +131,113 @@ public class MainActivity extends AppCompatActivity
                     }
                     public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
                         // remove from adapter
+                        final int fromPos = viewHolder.getAdapterPosition();
+
+                        switch(mBottomBar.getCurrentTabId()) {
+                            case R.id.bottombar_todo:
+                                Tarefa fromTarefa = mTarefasTODO.get(fromPos);
+                                mTarefasTODO.remove(fromPos);
+                                if(direction == ItemTouchHelper.LEFT) {
+                                  Snackbar snackbar = Snackbar
+                                    .make(mCoordinatorLayout, "Task moved to DONE", Snackbar.LENGTH_LONG);
+                                    // TODO: UNDO ACTION
+                                    snackbar.setAction("Undo", new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                        }
+                                    });
+                                    snackbar.show();
+                                    mTarefasDONE.add(fromTarefa);
+                                    mAdapterDONE.notifyDataSetChanged();
+                                }
+                                else if (direction == ItemTouchHelper.RIGHT) {
+                                    Snackbar snackbar = Snackbar
+                                            .make(mCoordinatorLayout, "Task moved to DOING", Snackbar.LENGTH_LONG);
+                                    // TODO: UNDO ACTION
+                                    snackbar.setAction("Undo", new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                        }
+                                    });
+                                    snackbar.show();
+                                    mTarefasDOING.add(fromTarefa);
+                                    mAdapterDOING.notifyDataSetChanged();
+
+                                }
+                                break;
+                            case R.id.bottombar_doing:
+                                Tarefa doingTarefa = mTarefasDOING.get(fromPos);
+                                mTarefasDOING.remove(fromPos);
+                                if(direction == ItemTouchHelper.LEFT) {
+                                    Snackbar snackbar = Snackbar
+                                            .make(mCoordinatorLayout, "Task moved to TODO", Snackbar.LENGTH_LONG);
+                                    // TODO: UNDO ACTION
+                                    snackbar.setAction("Undo", new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                        }
+                                    });
+                                    snackbar.show();
+                                    mTarefasTODO.add(doingTarefa);
+                                    mAdapterTODO.notifyDataSetChanged();
+                                }
+                                else if (direction == ItemTouchHelper.RIGHT) {
+                                    Snackbar snackbar = Snackbar
+                                            .make(mCoordinatorLayout, "Task moved to DONE", Snackbar.LENGTH_LONG);
+                                    // TODO: UNDO ACTION
+                                    snackbar.setAction("Undo", new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                        }
+                                    });
+                                    snackbar.show();
+                                    mTarefasDONE.add(doingTarefa);
+                                    mAdapterDONE.notifyDataSetChanged();
+
+                                }
+                                break;
+                            case R.id.bottombar_done:
+                                Tarefa doneTarefa = mTarefasDONE.get(fromPos);
+                                mTarefasDONE.remove(fromPos);
+                                if(direction == ItemTouchHelper.LEFT) {
+                                    Snackbar snackbar = Snackbar
+                                            .make(mCoordinatorLayout, "Task moved to DOING", Snackbar.LENGTH_LONG);
+                                    // TODO: UNDO ACTION
+                                    snackbar.setAction("Undo", new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                        }
+                                    });
+                                    snackbar.show();
+                                    mTarefasDOING.add(doneTarefa);
+                                    mAdapterDOING.notifyDataSetChanged();
+                                }
+                                else if (direction == ItemTouchHelper.RIGHT) {
+                                    Snackbar snackbar = Snackbar
+                                            .make(mCoordinatorLayout, "Task moved to TODO", Snackbar.LENGTH_LONG);
+
+                                    // TODO: UNDO ACTION
+                                    snackbar.setAction("Undo", new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                        }
+                                    });
+                                    snackbar.show();
+                                    mTarefasTODO.add(doneTarefa);
+                                    mAdapterTODO.notifyDataSetChanged();
+
+                                }
+                                break;
+                        }
+
+                        mRecyclerView.getAdapter().notifyItemRemoved(fromPos);
+
                     }
                 });
 
         mIth.attachToRecyclerView(mRecyclerView);
-        mTarefas.add(new Tarefa(123, "Programar insanamente", "Programar at� os dedos ca�rem", Tarefa.ESTADO_DOING, Tarefa.CATEGORIA_ANALISE));
-        mTarefas.add(new Tarefa(123, "COISAR", "COISARCOISANDO", Tarefa.ESTADO_DOING, Tarefa.CATEGORIA_CORRECAO));
 
-        mAdapter = new CardsAdapter(mTarefas, new CardsAdapter.ClickCallback() {
+        mAdapterTODO = new CardsAdapter(mTarefasTODO, new CardsAdapter.ClickCallback() {
             @Override
             public void onClick(View v, Tarefa t) {
 
@@ -117,7 +248,62 @@ public class MainActivity extends AppCompatActivity
                 return true;
             }
         });
-        mRecyclerView.setAdapter(mAdapter);
+
+        mAdapterDOING = new CardsAdapter(mTarefasDOING, new CardsAdapter.ClickCallback() {
+            @Override
+            public void onClick(View v, Tarefa t) {
+
+            }
+
+            @Override
+            public boolean onLongClick(View v) {
+                return true;
+            }
+        });
+
+        mAdapterDONE = new CardsAdapter(mTarefasDONE, new CardsAdapter.ClickCallback() {
+            @Override
+            public void onClick(View v, Tarefa t) {
+
+            }
+
+            @Override
+            public boolean onLongClick(View v) {
+                return true;
+            }
+        });
+        mRecyclerView.setAdapter(mAdapterTODO);
+
+        mBottomBar = (BottomBar) findViewById(R.id.bottom_bar);
+        mBottomBar.setOnTabSelectListener(new OnTabSelectListener() {
+
+            @Override
+            public void onTabSelected(@IdRes int tabId) {
+
+                Log.d("BAR CURRENT TAB: ", String.valueOf(mBottomBar.getCurrentTabPosition()));
+
+                mRecyclerView.getAdapter().notifyItemRangeRemoved(0, mRecyclerView.getAdapter().getItemCount());
+                switch(tabId) {
+                    case R.id.bottombar_todo:
+                        Log.d("BOTTOMBAR", "TODO");
+                        mRecyclerView.swapAdapter(mAdapterTODO,false);
+                        mAdapterTODO.notifyItemRangeInserted(0, mAdapterTODO.getItemCount());
+
+                        break;
+                    case R.id.bottombar_doing:
+                        Log.d("BOTTOMBAR", "DOING");
+                        mRecyclerView.swapAdapter(mAdapterDOING, false);
+
+                        break;
+                    case R.id.bottombar_done:
+                        Log.d("BOTTOMBAR", "DONE");
+                        mRecyclerView.swapAdapter(mAdapterDONE, false);
+
+                        break;
+                }
+//                mRecyclerView.getAdapter().notifyItemRangeInserted(0, );
+            }
+        });
 
         getWindow().getSharedElementExitTransition().excludeTarget(R.id.appBarLayout, true);
         getWindow().getSharedElementExitTransition().excludeChildren(R.id.appBarLayout, true);
@@ -182,9 +368,14 @@ public class MainActivity extends AppCompatActivity
                         }
 
                         if (title_ok && desc_ok) {
-                            mTarefas.add(new Tarefa(1234, title, desc, Tarefa.ESTADO_DOING, Tarefa.CATEGORIA_CORRECAO));
+                            mTarefasTODO.add(new Tarefa(1234, title, desc, Tarefa.ESTADO_TODO, Tarefa.CATEGORIA_CORRECAO));
+                            mAdapterTODO.notifyItemInserted(mTarefasTODO.size() - 1);
 
-                            mRecyclerView.getAdapter().notifyItemInserted(mTarefas.size() - 1);
+                            Snackbar snackbar = Snackbar
+                                    .make(mCoordinatorLayout, "Task added to TODO", Snackbar.LENGTH_SHORT);
+
+                            snackbar.show();
+
                             dialog.dismiss();
                         }
                     }

@@ -1,55 +1,63 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#efefef"
-    android:fitsSystemWindows="true"
-    tools:context="br.ufrr.eng2.kanban.MainActivity">
+    android:orientation="vertical">
 
-    <android.support.design.widget.AppBarLayout
+    <android.support.design.widget.CoordinatorLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@android:color/transparent"
-        android:theme="@style/AppTheme.AppBarTransparent">
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="#efefef"
+        android:id="@+id/coordinatorLayout"
+        android:fitsSystemWindows="true"
+        tools:context="br.ufrr.eng2.kanban.MainActivity">
 
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar"
+        <android.support.design.widget.AppBarLayout
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            app:popupTheme="@style/AppTheme.PopupOverlay"
-            app:title=" "
-            app:layout_scrollFlags="scroll|enterAlways"/>
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            android:theme="@style/AppTheme.AppBarTransparent">
 
-    </android.support.design.widget.AppBarLayout>
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                app:popupTheme="@style/AppTheme.PopupOverlay"
+                app:title=" "
+                app:layout_scrollFlags="scroll|enterAlways"/>
 
-    <include
-        android:id="@+id/central_layout"
-        layout="@layout/content_main"
-        android:layout_height="wrap_content"
-        android:layout_width="wrap_content"
-        android:layout_marginBottom="@dimen/bb_height"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+        </android.support.design.widget.AppBarLayout>
 
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:layout_marginBottom="68dp"
-        android:layout_marginEnd="@dimen/fab_margin"
-        android:src="@drawable/ic_action_add" />
+        <include
+            android:id="@+id/central_layout"
+            layout="@layout/content_main"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/fab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:layout_marginBottom="@dimen/fab_margin"
+            android:layout_marginEnd="@dimen/fab_margin"
+            android:src="@drawable/ic_action_add" />
+
+    </android.support.design.widget.CoordinatorLayout>
 
     <com.roughike.bottombar.BottomBar
         android:id="@+id/bottom_bar"
         android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:layout_gravity="bottom"
+        android:layout_height="@dimen/bb_height"
         app:bb_activeTabColor="#FFFFFF"
         app:bb_inActiveTabAlpha="0.6"
         app:bb_inActiveTabColor="#FFFFFF"
         app:bb_tabXmlResource="@xml/tabs" />
 
-
-</android.support.design.widget.CoordinatorLayout>
+</LinearLayout>
