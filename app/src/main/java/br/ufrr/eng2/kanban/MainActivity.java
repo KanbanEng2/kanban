@@ -1,48 +1,39 @@
 package br.ufrr.eng2.kanban;
 
-import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
-import android.graphics.Matrix;
-import android.graphics.RectF;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.support.annotation.IdRes;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.v4.app.ActivityOptionsCompat;
-import android.support.v4.app.SharedElementCallback;
-import android.support.v4.content.res.ResourcesCompat;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.helper.ItemTouchHelper;
-import android.transition.Transition;
-import android.util.Log;
-import android.util.Pair;
-import android.view.LayoutInflater;
-import android.view.View;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.Snackbar;
+import android.support.v4.content.res.ResourcesCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.support.v7.widget.helper.ItemTouchHelper;
+import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.WindowManager;
 import android.widget.EditText;
-import android.widget.Toast;
+
+import com.roughike.bottombar.BottomBar;
+import com.roughike.bottombar.OnTabSelectListener;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import br.ufrr.eng2.kanban.adapter.CardsAdapter;
 import br.ufrr.eng2.kanban.model.Tarefa;
-import com.roughike.bottombar.BottomBar;
-import com.roughike.bottombar.OnTabSelectListener;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -105,7 +96,7 @@ public class MainActivity extends AppCompatActivity
                         // move item in `fromPos` to `toPos` in adapter.
 
 
-                        switch(mBottomBar.getCurrentTabId()) {
+                        switch (mBottomBar.getCurrentTabId()) {
                             case R.id.bottombar_todo:
                                 Tarefa fromTarefa = mTarefasTODO.get(fromPos);
                                 mTarefasTODO.remove(fromPos);
@@ -129,17 +120,18 @@ public class MainActivity extends AppCompatActivity
 
                         return true;// true if moved, false otherwise
                     }
+
                     public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
                         // remove from adapter
                         final int fromPos = viewHolder.getAdapterPosition();
 
-                        switch(mBottomBar.getCurrentTabId()) {
+                        switch (mBottomBar.getCurrentTabId()) {
                             case R.id.bottombar_todo:
                                 Tarefa fromTarefa = mTarefasTODO.get(fromPos);
                                 mTarefasTODO.remove(fromPos);
-                                if(direction == ItemTouchHelper.LEFT) {
-                                  Snackbar snackbar = Snackbar
-                                    .make(mCoordinatorLayout, "Task moved to DONE", Snackbar.LENGTH_LONG);
+                                if (direction == ItemTouchHelper.LEFT) {
+                                    Snackbar snackbar = Snackbar
+                                            .make(mCoordinatorLayout, "Task moved to DONE", Snackbar.LENGTH_LONG);
                                     // TODO: UNDO ACTION
                                     snackbar.setAction("Undo", new View.OnClickListener() {
                                         @Override
@@ -149,8 +141,7 @@ public class MainActivity extends AppCompatActivity
                                     snackbar.show();
                                     mTarefasDONE.add(fromTarefa);
                                     mAdapterDONE.notifyDataSetChanged();
-                                }
-                                else if (direction == ItemTouchHelper.RIGHT) {
+                                } else if (direction == ItemTouchHelper.RIGHT) {
                                     Snackbar snackbar = Snackbar
                                             .make(mCoordinatorLayout, "Task moved to DOING", Snackbar.LENGTH_LONG);
                                     // TODO: UNDO ACTION
@@ -168,7 +159,7 @@ public class MainActivity extends AppCompatActivity
                             case R.id.bottombar_doing:
                                 Tarefa doingTarefa = mTarefasDOING.get(fromPos);
                                 mTarefasDOING.remove(fromPos);
-                                if(direction == ItemTouchHelper.LEFT) {
+                                if (direction == ItemTouchHelper.LEFT) {
                                     Snackbar snackbar = Snackbar
                                             .make(mCoordinatorLayout, "Task moved to TODO", Snackbar.LENGTH_LONG);
                                     // TODO: UNDO ACTION
@@ -180,8 +171,7 @@ public class MainActivity extends AppCompatActivity
                                     snackbar.show();
                                     mTarefasTODO.add(doingTarefa);
                                     mAdapterTODO.notifyDataSetChanged();
-                                }
-                                else if (direction == ItemTouchHelper.RIGHT) {
+                                } else if (direction == ItemTouchHelper.RIGHT) {
                                     Snackbar snackbar = Snackbar
                                             .make(mCoordinatorLayout, "Task moved to DONE", Snackbar.LENGTH_LONG);
                                     // TODO: UNDO ACTION
@@ -199,7 +189,7 @@ public class MainActivity extends AppCompatActivity
                             case R.id.bottombar_done:
                                 Tarefa doneTarefa = mTarefasDONE.get(fromPos);
                                 mTarefasDONE.remove(fromPos);
-                                if(direction == ItemTouchHelper.LEFT) {
+                                if (direction == ItemTouchHelper.LEFT) {
                                     Snackbar snackbar = Snackbar
                                             .make(mCoordinatorLayout, "Task moved to DOING", Snackbar.LENGTH_LONG);
                                     // TODO: UNDO ACTION
@@ -211,8 +201,7 @@ public class MainActivity extends AppCompatActivity
                                     snackbar.show();
                                     mTarefasDOING.add(doneTarefa);
                                     mAdapterDOING.notifyDataSetChanged();
-                                }
-                                else if (direction == ItemTouchHelper.RIGHT) {
+                                } else if (direction == ItemTouchHelper.RIGHT) {
                                     Snackbar snackbar = Snackbar
                                             .make(mCoordinatorLayout, "Task moved to TODO", Snackbar.LENGTH_LONG);
 
@@ -283,10 +272,10 @@ public class MainActivity extends AppCompatActivity
                 Log.d("BAR CURRENT TAB: ", String.valueOf(mBottomBar.getCurrentTabPosition()));
 
                 mRecyclerView.getAdapter().notifyItemRangeRemoved(0, mRecyclerView.getAdapter().getItemCount());
-                switch(tabId) {
+                switch (tabId) {
                     case R.id.bottombar_todo:
                         Log.d("BOTTOMBAR", "TODO");
-                        mRecyclerView.swapAdapter(mAdapterTODO,false);
+                        mRecyclerView.swapAdapter(mAdapterTODO, false);
                         mAdapterTODO.notifyItemRangeInserted(0, mAdapterTODO.getItemCount());
 
                         break;
@@ -313,7 +302,6 @@ public class MainActivity extends AppCompatActivity
     }
 
 
-
     private void CreateDialogAddCard() {
         LayoutInflater li = getLayoutInflater();
         View view = li.inflate(R.layout.alert_dialog_add_card, null);
@@ -337,9 +325,11 @@ public class MainActivity extends AppCompatActivity
             public void onDismiss(DialogInterface dialogInterface) {
                 mAlertTitleCard.setText("");
                 mAlertDescCard.setText("");
-
             }
         });
+
+        if (mAlertAddCard.getWindow() != null)
+            mAlertAddCard.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
 
         mAlertAddCard.setOnShowListener(new DialogInterface.OnShowListener() {
             @Override
@@ -362,12 +352,12 @@ public class MainActivity extends AppCompatActivity
                             title_ok = false;
                         }
 
-                        if (desc.isEmpty()) {
-                            mAlertDescCard.setError(getString(R.string.alert_dialog_string_empty_error));
-                            desc_ok = false;
-                        }
+//                        if (desc.isEmpty()) {
+//                            mAlertDescCard.setError(getString(R.string.alert_dialog_string_empty_error));
+//                            desc_ok = false;
+//                        }
 
-                        if (title_ok && desc_ok) {
+                        if (title_ok /*&& desc_ok*/) {
                             mTarefasTODO.add(new Tarefa(1234, title, desc, Tarefa.ESTADO_TODO, Tarefa.CATEGORIA_CORRECAO));
                             mAdapterTODO.notifyItemInserted(mTarefasTODO.size() - 1);
 
@@ -387,6 +377,7 @@ public class MainActivity extends AppCompatActivity
         mFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                mAlertTitleCard.requestFocus();
                 mAlertAddCard.show();
             }
         });
