@@ -60,15 +60,14 @@
             android:layout_height="wrap_content"/>
 
         <Button
-            android:id="@+id/login_D"
+            android:id="@+id/github_sign"
+            android:onClick="onClickGithubSign"
             android:hint="Login com GitHub"
             android:backgroundTint="#000000"
             android:textColorHint="#ffff"
-            android:onClick="gotoMain"
             android:layout_below="@id/google_sign"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:enabled="false"/>
+            android:layout_height="wrap_content"/>
 
     </RelativeLayout>
 

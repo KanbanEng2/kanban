@@ -16,4 +16,12 @@
     <string name="alert_dialog_add_card_titulo">Título</string>
     <string name="alert_dialog_add_card_descricao">Descrição</string>
     <string name="alert_dialog_string_empty_error">Campo Obrigatório</string>
+
+    <!-- Credenciais OAth Github -->
+    <string name="github_oauth_url">https://github.com/login/oauth/authorize</string>
+    <string name="github_redirect_url">http://localhost</string>
+    <string name="github_token_url">https://github.com/login/oauth/access_token</string>
+    <string name="github_client_id">7314ffb17a43cadec69d</string>
+    <string name="github_client_secret">7f7fea342246051edfa2b7bf56d580bd70732e90</string>
+
 </resources>

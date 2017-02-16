@@ -11,6 +11,7 @@ import android.widget.ProgressBar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import br.ufrr.eng2.kanban.service.login.GithubLogin;
 import br.ufrr.eng2.kanban.service.login.GoogleLogin;
 import br.ufrr.eng2.kanban.service.login.LoginInterface;
 import br.ufrr.eng2.kanban.service.login.LoginCallback;
@@ -28,6 +29,7 @@ public class LoginActivity extends AppCompatActivity implements LoginCallback {
     protected FirebaseAuth.AuthStateListener authListener;
 
     protected GoogleLogin googleLogin;
+    protected GithubLogin githubLogin;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +47,7 @@ public class LoginActivity extends AppCompatActivity implements LoginCallback {
         };
 
         this.googleLogin = new GoogleLogin(this, this.auth);
+        this.githubLogin = new GithubLogin(this, this.auth);
     }
 
     @Override
@@ -65,9 +68,14 @@ public class LoginActivity extends AppCompatActivity implements LoginCallback {
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+
         switch (requestCode){
             case GoogleLogin.GOOGLE_SIGN_INTENT:
                 this.googleLogin.fbRegistry(data);
+            break;
+
+            case GithubLogin.GITHUB_SIGN_INTENT:
+                this.githubLogin.onActivityResult(requestCode, resultCode, data);
             break;
         }
     }
@@ -80,6 +88,10 @@ public class LoginActivity extends AppCompatActivity implements LoginCallback {
         this.googleLogin.singIn();
     }
 
+    public void onClickGithubSign(View v) {
+        this.githubLogin.singIn();
+    }
+
     /**
      * TODO: Handling de erros
      */
@@ -89,6 +101,10 @@ public class LoginActivity extends AppCompatActivity implements LoginCallback {
             case GoogleLogin.GOOGLE_SIGN_INTENT:
                 Log.d("Sign", "google fail; code: " + String.valueOf(errorCode));
             break;
+
+            case GithubLogin.GITHUB_SIGN_INTENT:
+                Log.d("Sign", "github fail; code: " + String.valueOf(errorCode));
+            break;
         }
     }
 
@@ -97,7 +113,11 @@ public class LoginActivity extends AppCompatActivity implements LoginCallback {
         switch (loginInterface.getProviderId()){
             case GoogleLogin.GOOGLE_SIGN_INTENT:
                 Log.d("Sign", "google success");
-                break;
+            break;
+
+            case GithubLogin.GITHUB_SIGN_INTENT:
+                Log.d("Sign", "github success");
+            break;
         }
     }
 
