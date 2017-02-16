@@ -26,8 +26,8 @@
 
         android:layout_height="wrap_content"
         android:layout_width="match_parent">
-        <Button
 
+        <Button
             android:layout_marginTop="12dp"
             android:id="@+id/login_A"
             android:onClick="gotoMain"
@@ -35,7 +35,9 @@
             android:backgroundTint="#3b5998"
             android:textColorHint="#ffff"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:enabled="false"/>
+
         <Button
             android:id="@+id/login_B"
             android:hint="Login com Twitter"
@@ -44,7 +46,9 @@
             android:textColorHint="#ffff"
             android:layout_below="@id/login_A"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:enabled="false"/>
+
         <Button
             android:id="@+id/login_C"
             android:hint="Login com Google"
@@ -53,7 +57,8 @@
             android:textColorHint="#ffff"
             android:layout_below="@id/login_B"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:enabled="false"/>
 
         <Button
             android:id="@+id/login_D"
@@ -63,9 +68,8 @@
             android:onClick="gotoMain"
             android:layout_below="@id/login_C"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
-
-
+            android:layout_height="wrap_content"
+            android:enabled="false"/>
 
     </RelativeLayout>
 
