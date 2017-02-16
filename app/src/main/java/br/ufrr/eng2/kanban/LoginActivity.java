@@ -27,6 +27,8 @@ public class LoginActivity extends AppCompatActivity implements LoginCallback {
     protected FirebaseAuth auth;
     protected FirebaseAuth.AuthStateListener authListener;
 
+    protected GoogleLogin googleLogin;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,6 +43,8 @@ public class LoginActivity extends AppCompatActivity implements LoginCallback {
                 else  onSignedOut();
             }
         };
+
+        this.googleLogin = new GoogleLogin(this, this.auth);
     }
 
     @Override
@@ -62,7 +66,9 @@ public class LoginActivity extends AppCompatActivity implements LoginCallback {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         switch (requestCode){
-            // Tratar para cada serviço de login, se necessário
+            case GoogleLogin.GOOGLE_SIGN_INTENT:
+                this.googleLogin.fbRegistry(data);
+            break;
         }
     }
 
@@ -70,6 +76,9 @@ public class LoginActivity extends AppCompatActivity implements LoginCallback {
         startActivity(new Intent(this, MainActivity.class));
     }
 
+    public void onClickGoogleSign(View v) {
+        this.googleLogin.singIn();
+    }
 
     /**
      * TODO: Handling de erros
@@ -77,17 +86,24 @@ public class LoginActivity extends AppCompatActivity implements LoginCallback {
     @Override
     public void onLoginError(Object info, int errorCode, LoginInterface loginInterface) {
         switch (loginInterface.getProviderId()){
+            case GoogleLogin.GOOGLE_SIGN_INTENT:
+                Log.d("Sign", "google fail; code: " + String.valueOf(errorCode));
+            break;
         }
     }
 
     @Override
     public void onSuccess(Object info, LoginInterface loginInterface) {
         switch (loginInterface.getProviderId()){
+            case GoogleLogin.GOOGLE_SIGN_INTENT:
+                Log.d("Sign", "google success");
+                break;
         }
     }
 
     public void onSignedIn(FirebaseUser user){
         Log.d("Session", "Signed_in with " + user.getProviderData().get(1).getProviderId() + ": " + user.getUid());
+        this.gotoMain(null);
     }
 
     public void onSignedOut(){
