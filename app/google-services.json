@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "239412123597",
+    "firebase_url": "https://kanban-817c6.firebaseio.com",
+    "project_id": "kanban-817c6",
+    "storage_bucket": "kanban-817c6.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:239412123597:android:fca7f89e03525c59",
+        "android_client_info": {
+          "package_name": "com.example.rodrigo.prototipokanban"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "239412123597-beonv85qrufaubgivdbivvs7f2fukjjl.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCKfvmvTGGRUCK3S9ZIY0bZUEJLWgoM2aM"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
