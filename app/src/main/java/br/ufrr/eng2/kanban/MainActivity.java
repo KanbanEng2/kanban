@@ -1,6 +1,7 @@
 package br.ufrr.eng2.kanban;
 
 import android.content.DialogInterface;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.design.widget.CoordinatorLayout;
@@ -25,7 +26,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.EditText;
+import android.widget.TextView;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.roughike.bottombar.BottomBar;
 import com.roughike.bottombar.OnTabSelectListener;
 
@@ -38,6 +42,9 @@ import br.ufrr.eng2.kanban.model.Tarefa;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
+    private FirebaseAuth auth;
+    private FirebaseUser user;
+
     private RecyclerView mRecyclerView;
     private CardsAdapter mAdapterTODO;
     private List<Tarefa> mTarefasTODO = new ArrayList<>();
@@ -46,6 +53,7 @@ public class MainActivity extends AppCompatActivity
     private CardsAdapter mAdapterDONE;
     private List<Tarefa> mTarefasDONE = new ArrayList<>();
     private LinearLayoutManager mLayoutManager;
+    private NavigationView navigationView;
 
     private FloatingActionButton mFab;
     private AlertDialog mAlertAddCard;
@@ -59,6 +67,10 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        this.auth = FirebaseAuth.getInstance();
+        this.user = this.auth.getCurrentUser();
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -70,8 +82,9 @@ public class MainActivity extends AppCompatActivity
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
+        this.navigationView = (NavigationView) findViewById(R.id.nav_view);
+        this.navigationView.setNavigationItemSelectedListener(this);
+        this.onCreateNavigationView();
 
 //        mBottomBar = BottomBar.attach(this, savedInstanceState);
 //        mBottomBar.setItems(R.menu.bottombar_menu);
@@ -302,6 +315,25 @@ public class MainActivity extends AppCompatActivity
     }
 
 
+    private void onCreateNavigationView(){
+
+        String name = this.user.getDisplayName();
+        String email = this.user.getEmail();
+        Uri photoUrl = user.getPhotoUrl();
+
+        View header = this.navigationView.getHeaderView(0);
+
+        TextView userDisplayName = (TextView) header.findViewById(R.id.user_display_name);
+        userDisplayName.setText(name);
+
+        TextView userEmail = (TextView) header.findViewById(R.id.user_email);
+        userEmail.setText(email);
+
+        /**
+         * TODO: Ver como faz com a imagem
+         */
+    }
+
     private void CreateDialogAddCard() {
         LayoutInflater li = getLayoutInflater();
         View view = li.inflate(R.layout.alert_dialog_add_card, null);
@@ -436,8 +468,24 @@ public class MainActivity extends AppCompatActivity
 //
 //        }
 
+        if(id == R.id.sign_out){
+            this.signOut();
+        }
+
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    protected void signOut(){
+
+        if(this.user != null){
+            this.auth.signOut();
+        }
+
+        /**
+         * TODO: chamar a LoginActitivy ao invés de matar a MainActivity
+         */
+        finish();
     }
 }

@@ -40,5 +40,9 @@
             android:title="Settings" />
     </group>
 
-
+    <!-- TODO: Coloar um separador aqui e mudar o icone -->
+    <item
+        android:id="@+id/sign_out"
+        android:icon="@drawable/ic_person"
+        android:title="Sign Out" />
 </menu>
