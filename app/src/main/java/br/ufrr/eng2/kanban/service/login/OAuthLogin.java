@@ -69,11 +69,19 @@ public abstract class OAuthLogin implements LoginInterface {
 
     public void onActivityResult(int requestCode, int resultCode, Intent data){
 
-        if (requestCode == Activity.RESULT_OK){
+        if (resultCode == Activity.RESULT_OK){
+            this.onAfterActivityResult(requestCode, resultCode, data);
+        }
+        else{
             ((LoginCallback) this.context).onLoginError(data, ERROR_RESULT_FAIL, this);
         }
 
-        this.authCode = data.getStringExtra(this.authCodeLabel);
+    }
+
+    protected abstract void onAfterActivityResult(int requestCode, int resultCode, Intent data);
+
+    protected void requestToken(String authCode){
+        this.authCode = authCode;
         RequestQueue queue = Volley.newRequestQueue(this.context);
         StringRequest request = this.buildStringRequest(this.tokenUrl, Request.Method.POST);
         queue.add(request);
@@ -84,14 +92,14 @@ public abstract class OAuthLogin implements LoginInterface {
         final OAuthLogin scope = this;
 
         StringRequest stringRequest = new StringRequest(method, url,
-            new Response.Listener<String>(){
-                @Override
-                public void onResponse(String response) {scope.onReceiveTokenResponse(response);}
-            },
-            new Response.ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError error) { ((LoginCallback) scope.context).onLoginError(error, ERROR_CONNETCTION_FAIL, scope); }
-            }
+                new Response.Listener<String>(){
+                    @Override
+                    public void onResponse(String response) {scope.onReceiveTokenResponse(response);}
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) { ((LoginCallback) scope.context).onLoginError(error, ERROR_CONNETCTION_FAIL, scope); }
+                }
         ){
             @Override
             protected Map<String, String> getParams(){ return scope.onTokenRequestGetParams(new HashMap<String, String>()); }

@@ -2,6 +2,7 @@ package br.ufrr.eng2.kanban.service.login;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 
 
@@ -67,13 +68,19 @@ public class GithubLogin extends OAuthLogin {
         final GithubLogin scope = this;
         AuthCredential credential = GithubAuthProvider.getCredential(token);
         this.auth.signInWithCredential(credential)
-                 .addOnCompleteListener(((Activity) this.context), new OnCompleteListener<AuthResult>() {
+                .addOnCompleteListener(((Activity) this.context), new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if(task.isSuccessful()) ((LoginCallback) context).onSuccess(task, scope);
                         else  ((LoginCallback) context).onLoginError(task, ERROR_FIREBASE_FAIL, scope);
                     }
-                 });
+                });
+    }
+
+    @Override
+    protected void onAfterActivityResult(int requestCode, int resultCode, Intent data){
+        String authCode = data.getStringExtra(this.authCodeLabel);
+        this.requestToken(authCode);
     }
 
     @Override
