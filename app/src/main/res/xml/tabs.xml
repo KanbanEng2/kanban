@@ -3,16 +3,16 @@
     <tab
         id="@+id/bottombar_todo"
         icon="@drawable/ic_assignment"
-        title="To do"
+        title="@string/column_todo"
         barColorWhenSelected="#FFB300"/>
     <tab
         icon="@drawable/ic_dvr"
         id="@+id/bottombar_doing"
-        title="Doing"
+        title="@string/column_doing"
         barColorWhenSelected="#1E88E5"/>
     <tab
         icon="@drawable/ic_beenhere"
         id="@+id/bottombar_done"
-        title="Done"
+        title="@string/column_done"
         barColorWhenSelected="#43A047"/>
 </tabs>

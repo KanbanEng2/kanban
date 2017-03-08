@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="action_settings">Configurações</string>
+    <string name="add">Adicionar</string>
+    <string name="alert_dialog_add_card_description_field">Descrição</string>
+    <string name="alert_dialog_add_card_title_field">Título</string>
+    <string name="alert_dialog_add_card_top_title">Adicionar tarefa</string>
+    <string name="alert_dialog_string_empty_error">Campo obrigatório</string>
+    <string name="cancel">Cancelar</string>
+    <string name="navigation_drawer_close">Fechar painel de navegação</string>
+    <string name="navigation_drawer_open">Abrir painel de navegação</string>
+    <string name="action_search">Pesquisar</string>
+    <string name="snack_action_undo">Desfazer</string>
+    <string name="snack_task_moved">Tarefa movida para %s</string>
+    <string name="snack_task_added">Tarefa adicionada em %s</string>
+    <string name="action_sign_out">Desconectar</string>
+    <string name="action_add_project">Adicionar projeto</string>
+    <string name="action_filter">Filtrar</string>
+    <string name="action_rename">Renomear</string>
+</resources>
