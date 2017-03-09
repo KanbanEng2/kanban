@@ -27,6 +27,16 @@
     <string name="alert_dialog_add_card_description_field">Description</string>
     <string name="alert_dialog_string_empty_error">Mandatory field</string>
 
+    <string name="title_signin_github">Sign in using GitHub</string>
+    <string name="title_signin_facebook">Sign in using Facebook</string>
+    <string name="title_signin_google">Sign in using Google</string>
+    <string name="title_signin_twitter">Sign in using Twitter</string>
+
+    <string name="action_signin_github">Sign in using Github</string>
+    <string name="action_signin_facebook">Sign in using Facebook</string>
+    <string name="action_signin_google">Sign in using Google</string>
+    <string name="action_signin_twitter">Sign in using Twitter</string>
+
     <!-- Credenciais OAth Github -->
     <string name="github_oauth_url" translatable="false">https://github.com/login/oauth/authorize</string>
     <string name="github_redirect_url" translatable="false">http://localhost</string>

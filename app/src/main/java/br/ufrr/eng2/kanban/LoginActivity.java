@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
 
+import com.google.android.gms.common.SignInButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -36,6 +37,11 @@ public class LoginActivity extends AppCompatActivity implements LoginCallback {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_login);
+
+        SignInButton signInButton = (SignInButton) findViewById(R.id.google_sign);
+        //signInButton.setSize(SignInButton.SIZE_STANDARD);
+        signInButton.setColorScheme(SignInButton.COLOR_DARK);
+
         this.auth = FirebaseAuth.getInstance();
         this.authListener = new FirebaseAuth.AuthStateListener() {
             @Override

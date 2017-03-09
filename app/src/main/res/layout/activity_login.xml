@@ -2,6 +2,7 @@
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/activity_login"
     android:orientation="vertical"
     android:layout_width="match_parent"
@@ -31,7 +32,7 @@
             android:layout_marginTop="12dp"
             android:id="@+id/login_A"
             android:onClick="gotoMain"
-            android:hint="Login com Facebook"
+            android:hint="@string/action_signin_facebook"
             android:backgroundTint="#3b5998"
             android:textColorHint="#ffff"
             android:layout_width="match_parent"
@@ -40,7 +41,7 @@
 
         <Button
             android:id="@+id/login_B"
-            android:hint="Login com Twitter"
+            android:hint="@string/action_signin_twitter"
             android:onClick="gotoMain"
             android:backgroundTint="#55acee"
             android:textColorHint="#ffff"
@@ -49,10 +50,10 @@
             android:layout_height="wrap_content"
             android:enabled="false"/>
 
-        <Button
+        <com.google.android.gms.common.SignInButton
             android:id="@+id/google_sign"
             android:onClick="onClickGoogleSign"
-            android:hint="Login com Google"
+            android:hint="@string/action_signin_google"
             android:backgroundTint="#dd4b39"
             android:textColorHint="#ffff"
             android:layout_below="@id/login_B"
@@ -62,7 +63,7 @@
         <Button
             android:id="@+id/github_sign"
             android:onClick="onClickGithubSign"
-            android:hint="Login com GitHub"
+            android:hint="@string/action_signin_github"
             android:backgroundTint="#000000"
             android:textColorHint="#ffff"
             android:layout_below="@id/google_sign"

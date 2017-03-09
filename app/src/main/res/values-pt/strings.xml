@@ -17,4 +17,12 @@
     <string name="action_add_project">Adicionar projeto</string>
     <string name="action_filter">Filtrar</string>
     <string name="action_rename">Renomear</string>
+    <string name="action_signin_facebook">Entrar com o Facebook</string>
+    <string name="action_signin_github">Entrar com o Github</string>
+    <string name="action_signin_google">Entrar com o Google</string>
+    <string name="action_signin_twitter">Entrar com o Twitter</string>
+    <string name="title_signin_facebook">Login com Facebook</string>
+    <string name="title_signin_github">Login com Github</string>
+    <string name="title_signin_google">Login com Google</string>
+    <string name="title_signin_twitter">Login com Twitter</string>
 </resources>

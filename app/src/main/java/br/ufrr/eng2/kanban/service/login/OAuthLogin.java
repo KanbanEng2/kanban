@@ -73,7 +73,7 @@ public abstract class OAuthLogin implements LoginInterface {
             ((LoginCallback) this.context).onLoginError(data, ERROR_RESULT_FAIL, this);
         }
 
-        this.authCode = data.getStringExtra(this.authCodeLabel);
+        this.authCode = (data != null) ? data.getStringExtra(this.authCodeLabel) : null;
         RequestQueue queue = Volley.newRequestQueue(this.context);
         StringRequest request = this.buildStringRequest(this.tokenUrl, Request.Method.POST);
         queue.add(request);

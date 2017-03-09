@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="br.ufrr.eng2.kanban">
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"
@@ -29,9 +30,10 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".OAuthActivity"></activity>
-
-        <uses-permission android:name="android.permission.INTERNET" />
+        <activity
+            android:name=".OAuthActivity"
+            android:theme="@style/Theme.AppCompat.Light.DarkActionBar"
+            android:parentActivityName=".LoginActivity"/>
 
         <!--
         ATTENTION: This was auto-generated to add Google Play services to your project for
