@@ -17,12 +17,10 @@ public class CardsAdapter extends RecyclerView.Adapter<CardsAdapter.ViewHolder> 
     private List<Tarefa> mTarefas;
     private ClickCallback mCallback;
 
-
     public CardsAdapter(List<Tarefa> tarefas, ClickCallback callback) {
         mTarefas = tarefas;
         mCallback = callback;
     }
-
 
     public interface ClickCallback{
         void onClick(View v, Tarefa t);
@@ -36,7 +34,6 @@ public class CardsAdapter extends RecyclerView.Adapter<CardsAdapter.ViewHolder> 
 
         return new ViewHolder(view);
     }
-
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
@@ -60,7 +57,6 @@ public class CardsAdapter extends RecyclerView.Adapter<CardsAdapter.ViewHolder> 
                 break;
         }
     }
-
 
     @Override
     public int getItemCount() {

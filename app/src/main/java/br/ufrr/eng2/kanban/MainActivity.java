@@ -1,6 +1,7 @@
 package br.ufrr.eng2.kanban;
 
 import android.content.DialogInterface;
+import android.graphics.Canvas;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
@@ -10,10 +11,12 @@ import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v4.view.GravityCompat;
+import android.support.v4.view.ViewCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -101,13 +104,27 @@ public class MainActivity extends AppCompatActivity
         ItemTouchHelper mIth = new ItemTouchHelper(
                 new ItemTouchHelper.SimpleCallback(ItemTouchHelper.UP | ItemTouchHelper.DOWN,
                         ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
+                    private float oldElevation = -1;
+
+                    @Override
+                    public void onChildDraw(Canvas c, RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
+                        super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
+                        CardView cardView = (CardView) viewHolder.itemView.findViewById(R.id.card_view);
+
+                        if (isCurrentlyActive && actionState == ItemTouchHelper.ACTION_STATE_DRAG) {
+                            oldElevation = oldElevation == -1 ? cardView.getCardElevation() : oldElevation;
+                            cardView.setCardElevation(8);
+                        } else {
+                            cardView.setCardElevation(oldElevation);
+                        }
+                    }
+
                     @Override
                     public boolean onMove(RecyclerView recyclerView,
                                           RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
                         final int fromPos = viewHolder.getAdapterPosition();
                         final int toPos = target.getAdapterPosition();
                         // move item in `fromPos` to `toPos` in adapter.
-
 
                         switch (mBottomBar.getCurrentTabId()) {
                             case R.id.bottombar_todo:
@@ -309,7 +326,6 @@ public class MainActivity extends AppCompatActivity
 
         getWindow().getSharedElementExitTransition().excludeTarget(R.id.appBarLayout, true);
         getWindow().getSharedElementExitTransition().excludeChildren(R.id.appBarLayout, true);
-
 
         CreateDialogAddCard();
     }
