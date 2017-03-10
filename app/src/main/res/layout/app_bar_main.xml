@@ -58,6 +58,7 @@
         app:bb_activeTabColor="#FFFFFF"
         app:bb_inActiveTabAlpha="0.6"
         app:bb_inActiveTabColor="#FFFFFF"
-        app:bb_tabXmlResource="@xml/tabs" />
+        app:bb_tabXmlResource="@xml/tabs"
+        android:layout_marginTop="-8dp"/>
 
 </LinearLayout>

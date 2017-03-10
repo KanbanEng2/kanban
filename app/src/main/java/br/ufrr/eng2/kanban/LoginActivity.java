@@ -18,7 +18,7 @@ import br.ufrr.eng2.kanban.service.login.LoginInterface;
 import br.ufrr.eng2.kanban.service.login.LoginCallback;
 
 
-public class LoginActivity extends AppCompatActivity implements LoginCallback {
+public class LoginActivity extends AppCompatActivity implements LoginCallback, View.OnClickListener {
 
     /**
      * TODO: Colocar uma barra de progresso durante os logins
@@ -39,8 +39,9 @@ public class LoginActivity extends AppCompatActivity implements LoginCallback {
         setContentView(R.layout.activity_login);
 
         SignInButton signInButton = (SignInButton) findViewById(R.id.google_sign);
-        //signInButton.setSize(SignInButton.SIZE_STANDARD);
-        signInButton.setColorScheme(SignInButton.COLOR_DARK);
+        signInButton.setSize(SignInButton.SIZE_WIDE);
+        signInButton.setOnClickListener(this);
+//        signInButton.setColorScheme(SignInButton.COLOR_DARK);
 
         this.auth = FirebaseAuth.getInstance();
         this.authListener = new FirebaseAuth.AuthStateListener() {
@@ -90,12 +91,21 @@ public class LoginActivity extends AppCompatActivity implements LoginCallback {
         startActivity(new Intent(this, MainActivity.class));
     }
 
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.google_sign:
+                onClickGoogleSign(view);
+        }
+    }
+
     public void onClickGoogleSign(View v) {
-        this.googleLogin.singIn();
+        Log.d("oxh", "onClickGoogleSign: ué");
+        this.googleLogin.signIn();
     }
 
     public void onClickGithubSign(View v) {
-        this.githubLogin.singIn();
+        this.githubLogin.signIn();
     }
 
     /**

@@ -5,7 +5,7 @@ package br.ufrr.eng2.kanban.service.login;
  */
 
 public interface LoginInterface {
-    public void singIn();
+    public void signIn();
     public void fbRegistry(Object info);
     public int getProviderId();
 }

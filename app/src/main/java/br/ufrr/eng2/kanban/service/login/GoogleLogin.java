@@ -56,7 +56,7 @@ public class GoogleLogin implements LoginInterface, GoogleApiClient.OnConnection
     }
 
     @Override
-    public void singIn(){
+    public void signIn(){
         Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(this.client);
         ((Activity) this.context).startActivityForResult(signInIntent, GoogleLogin.GOOGLE_SIGN_INTENT);
     }

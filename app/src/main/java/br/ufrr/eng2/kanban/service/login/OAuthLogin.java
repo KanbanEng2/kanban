@@ -51,7 +51,7 @@ public abstract class OAuthLogin implements LoginInterface {
     }
 
     @Override
-    public void singIn(){
+    public void signIn(){
         Intent signInIntent = new Intent(this.context, OAuthActivity.class);
 
         signInIntent.putExtra("windowTitle", this.title);
