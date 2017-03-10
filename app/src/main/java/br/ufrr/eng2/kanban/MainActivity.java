@@ -1,5 +1,6 @@
 package br.ufrr.eng2.kanban;
 
+import android.animation.ObjectAnimator;
 import android.content.DialogInterface;
 import android.graphics.Canvas;
 import android.net.Uri;
@@ -105,18 +106,32 @@ public class MainActivity extends AppCompatActivity
                 new ItemTouchHelper.SimpleCallback(ItemTouchHelper.UP | ItemTouchHelper.DOWN,
                         ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
                     private float oldElevation = -1;
+                    private boolean isElevated = false;
 
                     @Override
                     public void onChildDraw(Canvas c, RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
                         super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
-                        CardView cardView = (CardView) viewHolder.itemView.findViewById(R.id.card_view);
 
-                        if (isCurrentlyActive && actionState == ItemTouchHelper.ACTION_STATE_DRAG) {
+                        if (!isElevated && isCurrentlyActive && actionState == ItemTouchHelper.ACTION_STATE_DRAG) {
+                            CardView cardView = (CardView) viewHolder.itemView.findViewById(R.id.card_view);
                             oldElevation = oldElevation == -1 ? cardView.getCardElevation() : oldElevation;
-                            cardView.setCardElevation(8);
-                        } else {
-                            cardView.setCardElevation(oldElevation);
+                            ObjectAnimator anim = ObjectAnimator.ofFloat(cardView, "cardElevation", oldElevation, cardView.getMaxCardElevation());
+                            anim.setDuration(200);
+                            anim.start();
+
+                            isElevated = true;
                         }
+                    }
+
+                    @Override
+                    public void clearView(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder) {
+                        super.clearView(recyclerView, viewHolder);
+                        CardView cardView = (CardView) viewHolder.itemView.findViewById(R.id.card_view);
+                        ObjectAnimator anim = ObjectAnimator.ofFloat(cardView, "cardElevation", cardView.getMaxCardElevation(), oldElevation);
+                        anim.setDuration(100);
+                        anim.start();
+                        isElevated = false;
+
                     }
 
                     @Override
@@ -331,7 +346,7 @@ public class MainActivity extends AppCompatActivity
     }
 
 
-    private void onCreateNavigationView(){
+    private void onCreateNavigationView() {
 
         String name = this.user.getDisplayName();
         String email = this.user.getEmail();
@@ -484,7 +499,7 @@ public class MainActivity extends AppCompatActivity
 //
 //        }
 
-        if(id == R.id.sign_out){
+        if (id == R.id.sign_out) {
             this.signOut();
         }
 
@@ -493,9 +508,9 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
-    protected void signOut(){
+    protected void signOut() {
 
-        if(this.user != null){
+        if (this.user != null) {
             this.auth.signOut();
         }
 
