@@ -184,15 +184,19 @@ public class MainActivity extends AppCompatActivity
 
                             switch (mBottomBar.getCurrentTabId()) {
                                 case R.id.bottombar_todo:
-                                    Tarefa fromTarefa = mTarefasTODO.get(fromPos);
+                                    final Tarefa fromTarefa = mTarefasTODO.get(fromPos);
                                     mTarefasTODO.remove(fromPos);
                                     if (direction == ItemTouchHelper.LEFT) {
                                         Snackbar snackbar = Snackbar
                                                 .make(mCoordinatorLayout, String.format(getString(R.string.snack_task_moved), getString(R.string.column_done)), Snackbar.LENGTH_LONG);
-                                        // TODO: UNDO ACTION
-                                        snackbar.setAction(R.string.snack_action_undo, new View.OnClickListener() {
+                                         snackbar.setAction(R.string.snack_action_undo, new View.OnClickListener() {
                                             @Override
                                             public void onClick(View v) {
+                                                mTarefasTODO.add(fromPos, fromTarefa);
+                                                mTarefasDONE.remove(fromTarefa);
+                                                mAdapterTODO.notifyItemInserted(fromPos);
+                                                mAdapterDONE.notifyDataSetChanged();
+
                                             }
                                         });
                                         snackbar.show();
@@ -201,10 +205,14 @@ public class MainActivity extends AppCompatActivity
                                     } else if (direction == ItemTouchHelper.RIGHT) {
                                         Snackbar snackbar = Snackbar
                                                 .make(mCoordinatorLayout, String.format(getString(R.string.snack_task_moved), getString(R.string.column_doing)), Snackbar.LENGTH_LONG);
-                                        // TODO: UNDO ACTION
+
                                         snackbar.setAction(R.string.snack_action_undo, new View.OnClickListener() {
                                             @Override
                                             public void onClick(View v) {
+                                                mTarefasTODO.add(fromPos, fromTarefa);
+                                                mTarefasDOING.remove(fromTarefa);
+                                                mAdapterTODO.notifyItemInserted(fromPos);
+                                                mAdapterDOING.notifyDataSetChanged();
                                             }
                                         });
                                         snackbar.show();
@@ -214,15 +222,19 @@ public class MainActivity extends AppCompatActivity
                                     }
                                     break;
                                 case R.id.bottombar_doing:
-                                    Tarefa doingTarefa = mTarefasDOING.get(fromPos);
+                                    final Tarefa doingTarefa = mTarefasDOING.get(fromPos);
                                     mTarefasDOING.remove(fromPos);
                                     if (direction == ItemTouchHelper.LEFT) {
                                         Snackbar snackbar = Snackbar
                                                 .make(mCoordinatorLayout, String.format(getString(R.string.snack_task_moved), getString(R.string.column_todo)), Snackbar.LENGTH_LONG);
-                                        // TODO: UNDO ACTION
+
                                         snackbar.setAction(R.string.snack_action_undo, new View.OnClickListener() {
                                             @Override
                                             public void onClick(View v) {
+                                                mTarefasDOING.add(fromPos, doingTarefa);
+                                                mTarefasTODO.remove(doingTarefa);
+                                                mAdapterDOING.notifyItemInserted(fromPos);
+                                                mAdapterTODO.notifyDataSetChanged();
                                             }
                                         });
                                         snackbar.show();
@@ -231,10 +243,14 @@ public class MainActivity extends AppCompatActivity
                                     } else if (direction == ItemTouchHelper.RIGHT) {
                                         Snackbar snackbar = Snackbar
                                                 .make(mCoordinatorLayout, String.format(getString(R.string.snack_task_moved), getString(R.string.column_done)), Snackbar.LENGTH_LONG);
-                                        // TODO: UNDO ACTION
+
                                         snackbar.setAction(R.string.snack_action_undo, new View.OnClickListener() {
                                             @Override
                                             public void onClick(View v) {
+                                                mTarefasDOING.add(fromPos, doingTarefa);
+                                                mTarefasDONE.remove(doingTarefa);
+                                                mAdapterDOING.notifyItemInserted(fromPos);
+                                                mAdapterDONE.notifyDataSetChanged();
                                             }
                                         });
                                         snackbar.show();
@@ -244,15 +260,19 @@ public class MainActivity extends AppCompatActivity
                                     }
                                     break;
                                 case R.id.bottombar_done:
-                                    Tarefa doneTarefa = mTarefasDONE.get(fromPos);
+                                    final Tarefa doneTarefa = mTarefasDONE.get(fromPos);
                                     mTarefasDONE.remove(fromPos);
                                     if (direction == ItemTouchHelper.LEFT) {
                                         Snackbar snackbar = Snackbar
                                                 .make(mCoordinatorLayout, String.format(getString(R.string.snack_task_moved), getString(R.string.column_doing)), Snackbar.LENGTH_LONG);
-                                        // TODO: UNDO ACTION
+
                                         snackbar.setAction(R.string.snack_action_undo, new View.OnClickListener() {
                                             @Override
                                             public void onClick(View v) {
+                                                mTarefasDONE.add(fromPos, doneTarefa);
+                                                mTarefasDOING.remove(doneTarefa);
+                                                mAdapterDONE.notifyItemInserted(fromPos);
+                                                mAdapterDOING.notifyDataSetChanged();
                                             }
                                         });
                                         snackbar.show();
@@ -262,10 +282,13 @@ public class MainActivity extends AppCompatActivity
                                         Snackbar snackbar = Snackbar
                                                 .make(mCoordinatorLayout, String.format(getString(R.string.snack_task_moved), getString(R.string.column_todo)), Snackbar.LENGTH_LONG);
 
-                                        // TODO: UNDO ACTION
                                         snackbar.setAction(R.string.snack_action_undo, new View.OnClickListener() {
                                             @Override
                                             public void onClick(View v) {
+                                                mTarefasDONE.add(fromPos, doneTarefa);
+                                                mTarefasTODO.remove(doneTarefa);
+                                                mAdapterDONE.notifyItemInserted(fromPos);
+                                                mAdapterTODO.notifyDataSetChanged();
                                             }
                                         });
                                         snackbar.show();
@@ -539,7 +562,6 @@ public class MainActivity extends AppCompatActivity
 
         gotoLoginActivity();
     }
-
 
     protected void gotoLoginActivity() {
         startActivity(new Intent(this, LoginActivity.class));
