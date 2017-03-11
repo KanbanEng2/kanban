@@ -1,6 +1,7 @@
 package br.ufrr.eng2.kanban.adapter;
 
 import android.graphics.Color;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -37,8 +38,14 @@ public class CardsAdapter extends RecyclerView.Adapter<CardsAdapter.ViewHolder> 
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        Tarefa currentTarefa = mTarefas.get(position);
+        final Tarefa currentTarefa = mTarefas.get(position);
 
+        holder.cardView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mCallback.onClick(v, currentTarefa);
+            }
+        });
         switch (currentTarefa.getCategoriaTarefa()) {
             case Tarefa.CATEGORIA_ANALISE:
                 holder.title.setText(currentTarefa.getNomeTarefa());
@@ -64,15 +71,15 @@ public class CardsAdapter extends RecyclerView.Adapter<CardsAdapter.ViewHolder> 
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {
+        CardView cardView;
         TextView title, tags;
         View color;
         ViewHolder(View itemView) {
             super(itemView);
-
-
             title = (TextView) itemView.findViewById(R.id.card_title);
             tags = (TextView) itemView.findViewById(R.id.card_tags);
             color = itemView.findViewById(R.id.card_tag_color);
+            cardView = (CardView) itemView.findViewById(R.id.card_view);
         }
 
 

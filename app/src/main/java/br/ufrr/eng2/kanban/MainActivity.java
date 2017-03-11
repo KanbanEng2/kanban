@@ -322,7 +322,7 @@ public class MainActivity extends AppCompatActivity
             mAdapterTODO = new CardsAdapter(mTarefasTODO, new CardsAdapter.ClickCallback() {
                 @Override
                 public void onClick(View v, Tarefa t) {
-
+                    gotoTaskAcitivity(t);
                 }
 
                 @Override
@@ -334,6 +334,7 @@ public class MainActivity extends AppCompatActivity
             mAdapterDOING = new CardsAdapter(mTarefasDOING, new CardsAdapter.ClickCallback() {
                 @Override
                 public void onClick(View v, Tarefa t) {
+                    gotoTaskAcitivity(t);
 
                 }
 
@@ -346,7 +347,7 @@ public class MainActivity extends AppCompatActivity
             mAdapterDONE = new CardsAdapter(mTarefasDONE, new CardsAdapter.ClickCallback() {
                 @Override
                 public void onClick(View v, Tarefa t) {
-
+                    gotoTaskAcitivity(t);
                 }
 
                 @Override
@@ -506,6 +507,13 @@ public class MainActivity extends AppCompatActivity
             }
         });
 
+    }
+
+    protected void gotoTaskAcitivity(Tarefa t) {
+        Log.d("ACTIVITY", "going to task activity");
+        Intent i = new Intent(this, TaskActivity.class);
+        i.putExtra("id", t.getUuid());
+        startActivity(i);
     }
 
     @Override

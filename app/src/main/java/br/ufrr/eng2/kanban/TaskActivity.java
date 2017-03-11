@@ -39,6 +39,12 @@ public class TaskActivity extends AppCompatActivity implements Transition.Transi
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         getWindow().getSharedElementEnterTransition().addListener(this);
+
+        Bundle b = getIntent().getExtras();
+        if (b != null){
+//            TODO: Implementar método de obter tarefas
+//            getTarefaFromId(b.getInt("id"));
+        }
     }
 
     @Override
