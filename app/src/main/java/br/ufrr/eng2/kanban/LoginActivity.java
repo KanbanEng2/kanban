@@ -89,6 +89,7 @@ public class LoginActivity extends AppCompatActivity implements LoginCallback, V
 
     public void gotoMain(View v) {
         startActivity(new Intent(this, MainActivity.class));
+        finish();
     }
 
     @Override
