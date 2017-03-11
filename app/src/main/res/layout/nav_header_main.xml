@@ -22,7 +22,7 @@
         app:srcCompat="@drawable/ic_person"
         android:background="@drawable/circle"
         android:backgroundTint="#FFFFFF"
-        android:tint="#424242" />
+        />
 
     <TextView
         android:id="@+id/user_display_name"
