@@ -2,9 +2,11 @@ package br.ufrr.eng2.kanban;
 
 import android.content.Intent;
 import android.support.annotation.NonNull;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ProgressBar;
 
@@ -25,6 +27,7 @@ public class LoginActivity extends AppCompatActivity implements LoginCallback, V
      */
 
     ProgressBar mProgressBar;
+    private AlertDialog mAlertProgressCard;
 
     protected FirebaseAuth auth;
     protected FirebaseAuth.AuthStateListener authListener;
@@ -37,6 +40,9 @@ public class LoginActivity extends AppCompatActivity implements LoginCallback, V
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_login);
+
+
+        CreateDialogProgressCard();
 
         SignInButton signInButton = (SignInButton) findViewById(R.id.google_sign);
         signInButton.setSize(SignInButton.SIZE_WIDE);
@@ -101,12 +107,14 @@ public class LoginActivity extends AppCompatActivity implements LoginCallback, V
     }
 
     public void onClickGoogleSign(View v) {
-        Log.d("oxh", "onClickGoogleSign: ué");
         this.googleLogin.signIn();
+        mAlertProgressCard.show();
     }
 
     public void onClickGithubSign(View v) {
+
         this.githubLogin.signIn();
+        mAlertProgressCard.show();
     }
 
     /**
@@ -114,6 +122,7 @@ public class LoginActivity extends AppCompatActivity implements LoginCallback, V
      */
     @Override
     public void onLoginError(Object info, int errorCode, LoginInterface loginInterface) {
+        mAlertProgressCard.dismiss();
         switch (loginInterface.getProviderId()){
             case GoogleLogin.GOOGLE_SIGN_INTENT:
                 Log.d("Sign", "google fail; code: " + String.valueOf(errorCode));
@@ -127,6 +136,7 @@ public class LoginActivity extends AppCompatActivity implements LoginCallback, V
 
     @Override
     public void onSuccess(Object info, LoginInterface loginInterface) {
+        mAlertProgressCard.dismiss();
         switch (loginInterface.getProviderId()){
             case GoogleLogin.GOOGLE_SIGN_INTENT:
                 Log.d("Sign", "google success");
@@ -145,5 +155,19 @@ public class LoginActivity extends AppCompatActivity implements LoginCallback, V
 
     public void onSignedOut(){
         Log.d("Session", "Signed_out");
+    }
+
+
+    private void CreateDialogProgressCard() {
+        LayoutInflater li = getLayoutInflater();
+        View view = li.inflate(R.layout.alert_dialog_progress_card, null);
+        AlertDialog.Builder alert_builder = new AlertDialog.Builder(this);
+        alert_builder.setView(view);
+
+        alert_builder.setTitle(getString(R.string.alert_dialog_progress_title));
+
+
+        mAlertProgressCard = alert_builder.create();
+
     }
 }

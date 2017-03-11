@@ -32,6 +32,9 @@
     <string name="title_signin_google">Sign in with Google</string>
     <string name="title_signin_twitter">Sign in with Twitter</string>
 
+    <string name="alert_dialog_progress_title">Acessing Data</string>
+    <string name="progress_signin">Signing in...</string>
+
     <string name="action_signin_github">Sign in with Github</string>
     <string name="action_signin_facebook">Sign in with Facebook</string>
     <string name="action_signin_google">Sign in with Google</string>

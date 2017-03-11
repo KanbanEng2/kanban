@@ -424,9 +424,6 @@ public class MainActivity extends AppCompatActivity
             new DownloadImageTask(userPhoto)
                     .execute(photoUrl.toString());
         }
-
-
-
     }
 
     private void CreateDialogAddCard() {
