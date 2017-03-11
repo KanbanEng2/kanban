@@ -103,6 +103,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "405323258819-9sr2e2mog1ff56aku8bikjq0ic171sck.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "br.ufrr.dcc.engenhariadesoftware.comunicacao",
+            "certificate_hash": "1b4067bcc63c10ec11c41dd8bc79bbe245b77aca"
+          }
+        },
+        {
           "client_id": "405323258819-rhml29rskau40kdilcfptet87crmu3sh.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
@@ -147,6 +155,22 @@
       },
       "oauth_client": [
         {
+          "client_id": "405323258819-pef5i158rdk2l7koetkqlb2tgim40kap.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "br.ufrr.eng2.kanban",
+            "certificate_hash": "1b4067bcc63c10ec11c41dd8bc79bbe245b77aca"
+          }
+        },
+        {
+          "client_id": "405323258819-mrhpl6oi7mt1fe5n6q3ik8bqo9h4mom7.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "br.ufrr.eng2.kanban",
+            "certificate_hash": "54baf9b65e787a2059621fd5e67c1ac9421d411b"
+          }
+        },
+        {
           "client_id": "405323258819-kb2eu6ftug03r69n4rids9t6kvkag581.apps.googleusercontent.com",
           "client_type": 3
         }
@@ -161,8 +185,13 @@
           "status": 1
         },
         "appinvite_service": {
-          "status": 1,
-          "other_platform_oauth_client": []
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "405323258819-kb2eu6ftug03r69n4rids9t6kvkag581.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         },
         "ads_service": {
           "status": 2
