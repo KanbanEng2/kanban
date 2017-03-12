@@ -21,14 +21,40 @@ import br.ufrr.eng2.kanban.model.Usuario;
 public class UsuarioController {
     public static void NewUser(String Id, Usuario user) {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference myRef = database.getReference("user/" + Id);
-        myRef.setValue(user);
+        DatabaseReference myRef = database.getReference("user");
+        final Usuario userLocal = user;
+        final String userId = Id;
+        myRef.child(userId).addListenerForSingleValueEvent(
+                new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        // Get user value
+                        Usuario userFire = dataSnapshot.getValue(Usuario.class);
+                        FirebaseDatabase database = FirebaseDatabase.getInstance();
+                        DatabaseReference myRef = database.getReference("user/" + userId);
+                        if(userFire == null) {
+                            myRef.setValue(userLocal);
+                        }
+                        else {
+                            userFire.setNomeUsuario(userLocal.getNomeUsuario());
+                            userFire.setUrlFoto(userLocal.getUrlFoto());
+                            myRef.setValue(userFire);
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                        Log.w("Firebase", "getUser:onCancelled", databaseError.toException());
+                        // ...
+                    }
+                });
+
     }
 
 
     public static void UpdateUserProjects(String Id, String pId) {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference myRef = database.getReference("user");
+        final DatabaseReference myRef = database.getReference("user");
         final String userId = Id;
         final String projectId = pId;
         myRef.child(userId).addListenerForSingleValueEvent(
@@ -41,7 +67,7 @@ public class UsuarioController {
                             user.setProjetos(new ArrayList<String>()) ;
                         }
                         user.getProjetos().add(projectId);
-                        NewUser(userId, user);
+                        myRef.child(userId).setValue(user);
                     }
 
                     @Override

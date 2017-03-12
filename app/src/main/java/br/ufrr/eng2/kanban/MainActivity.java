@@ -1,6 +1,7 @@
 package br.ufrr.eng2.kanban;
 
 import android.animation.ObjectAnimator;
+import android.content.ClipData;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -13,6 +14,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
+import android.support.annotation.IntegerRes;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
@@ -42,13 +44,22 @@ import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.roughike.bottombar.BottomBar;
 import com.roughike.bottombar.OnTabSelectListener;
 
 import java.io.InputStream;
 import java.net.HttpURLConnection;
+import java.security.Principal;
+import java.security.acl.Group;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import br.ufrr.eng2.kanban.adapter.CardsAdapter;
 import br.ufrr.eng2.kanban.controller.ProjetoController;
@@ -62,6 +73,9 @@ public class MainActivity extends AppCompatActivity
 
     private FirebaseAuth auth;
     private FirebaseUser user;
+
+    private int MenuIdStart = 15267;
+    private Map<Integer,String> dictMenuProjects;
 
     private RecyclerView mRecyclerView;
     private CardsAdapter mAdapterTODO;
@@ -90,6 +104,8 @@ public class MainActivity extends AppCompatActivity
 
         this.auth = FirebaseAuth.getInstance();
         this.user = this.auth.getCurrentUser();
+
+        dictMenuProjects= new HashMap<>();
 
         if (this.user == null) {
             if (BuildConfig.FLAVOR.contentEquals("noFireBase")) {
@@ -419,9 +435,6 @@ public class MainActivity extends AppCompatActivity
 
         }
 
-
-
-
         View header = this.navigationView.getHeaderView(0);
 
         TextView userDisplayName = (TextView) header.findViewById(R.id.user_display_name);
@@ -435,7 +448,66 @@ public class MainActivity extends AppCompatActivity
             new DownloadImageTask(userPhoto)
                     .execute(photoUrl.toString());
         }
+
+
+
+
+        ValueEventListener projectsListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Usuario user = dataSnapshot.getValue(Usuario.class);
+
+                for (String pId : user.getProjetos()) {
+                    FirebaseDatabase database = FirebaseDatabase.getInstance();
+                    DatabaseReference myRef = database.getReference("projects/" + pId );
+                    final String projectId = pId;
+                    myRef.addListenerForSingleValueEvent(
+                            new ValueEventListener() {
+                                @Override
+                                public void onDataChange(DataSnapshot dataSnapshot) {
+                                    // Get user value
+                                    Projeto projeto = dataSnapshot.getValue(Projeto.class);
+                                    addProjectMenu(projeto.getNomeProjeto(), projectId);
+
+                                }
+
+                                @Override
+                                public void onCancelled(DatabaseError databaseError) {
+                                    Log.w("Firebase", "getUser:onCancelled", databaseError.toException());
+                                    // ...
+                                }
+                            });
+
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        };
+
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference myRef = database.getReference("user");
+        myRef.child(this.user.getUid()).addValueEventListener(projectsListener);
+
+
     }
+
+
+    private void addProjectMenu(String titleProject, String idProject) {
+
+        if(!dictMenuProjects.containsValue(idProject)) {
+            int id = MenuIdStart + dictMenuProjects.size();
+            Menu menu = navigationView.getMenu();
+            menu.add(R.id.menu_group_projects, id, Menu.FIRST, titleProject);
+            menu.findItem(id).setIcon(R.drawable.ic_assignment);
+            menu.setGroupCheckable(R.id.menu_group_projects, true, true);
+            dictMenuProjects.put(id, idProject);
+        }
+
+    }
+
 
     private void CreateDialogAddCard() {
         LayoutInflater li = getLayoutInflater();
@@ -571,25 +643,14 @@ public class MainActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-//        if (id == R.id.nav_camera) {
-//            // Handle the camera action
-//        } else if (id == R.id.nav_gallery) {
-//
-//        } else if (id == R.id.nav_slideshow) {
-//
-//        } else if (id == R.id.nav_manage) {
-//
-//        } else if (id == R.id.nav_share) {
-//
-//        } else if (id == R.id.nav_send) {
-//
-//        }
-
         if (id == R.id.sign_out) {
             this.signOut();
         } else if (id == R.id.add_project) {
             mAlertTitleProject.requestFocus();
             mAlertAddProject.show();
+        } else if (id >= MenuIdStart) {
+            String projeto = dictMenuProjects.get(id);
+            Log.d("Projeto", projeto);
         }
 
 
@@ -597,10 +658,6 @@ public class MainActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
-    }
-
-    protected void addProject() {
-
     }
 
     private void CreateDialogAddProject() {
