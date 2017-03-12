@@ -67,6 +67,7 @@ import br.ufrr.eng2.kanban.controller.UsuarioController;
 import br.ufrr.eng2.kanban.model.Projeto;
 import br.ufrr.eng2.kanban.model.Tarefa;
 import br.ufrr.eng2.kanban.model.Usuario;
+import br.ufrr.eng2.kanban.widget.RecyclerViewEmpty;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -77,7 +78,7 @@ public class MainActivity extends AppCompatActivity
     private int MenuIdStart = 15267;
     private Map<Integer,String> dictMenuProjects;
 
-    private RecyclerView mRecyclerView;
+    private RecyclerViewEmpty mRecyclerView;
     private CardsAdapter mAdapterTODO;
     private List<Tarefa> mTarefasTODO = new ArrayList<>();
     private CardsAdapter mAdapterDOING;
@@ -133,9 +134,10 @@ public class MainActivity extends AppCompatActivity
             this.navigationView.setNavigationItemSelectedListener(this);
             this.onCreateNavigationView();
 
-            mRecyclerView = (RecyclerView) findViewById(R.id.recycler_view);
+            mRecyclerView = (RecyclerViewEmpty) findViewById(R.id.recycler_view);
             mLayoutManager = new LinearLayoutManager(this);
             mRecyclerView.setLayoutManager(mLayoutManager);
+            mRecyclerView.setEmptyView(findViewById(R.id.empty_recycler_view));
             mRecyclerView.setItemAnimator(new DefaultItemAnimator());
 
             mCoordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordinatorLayout);

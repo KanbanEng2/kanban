@@ -22,7 +22,7 @@
     <string name="action_add_project">Adicionar projeto</string>
     <string name="action_filter">Filtrar</string>
     <string name="action_rename">Renomear</string>
-    <string name="progress_signin">Aguarde...</string>
+    <string name="progress_signin">Fazendo login…</string>
     <string name="action_signin_facebook">Fazer login com o Facebook</string>
     <string name="action_signin_github">Fazer login com o Github</string>
     <string name="action_signin_google">Fazer login com o Google</string>
@@ -31,4 +31,5 @@
     <string name="title_signin_github">Login com Github</string>
     <string name="title_signin_google">Login com Google</string>
     <string name="title_signin_twitter">Login com Twitter</string>
+    <string name="tasks_empty_text">Nenhuma tarefa.</string>
 </resources>

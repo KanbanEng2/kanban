@@ -32,6 +32,7 @@
     <string name="alert_dialog_add_card_title_field">Title</string>
     <string name="alert_dialog_add_card_description_field">Description</string>
     <string name="alert_dialog_string_empty_error">Mandatory field</string>
+    <string name="tasks_empty_text">No tasks here.</string>
 
     <string name="title_signin_github">Sign in with GitHub</string>
     <string name="title_signin_facebook">Sign in with Facebook</string>
@@ -39,7 +40,7 @@
     <string name="title_signin_twitter">Sign in with Twitter</string>
 
     <string name="alert_dialog_progress_title">Acessing Data</string>
-    <string name="progress_signin">Signing in...</string>
+    <string name="progress_signin">Signing in…</string>
 
     <string name="action_signin_github">Sign in with Github</string>
     <string name="action_signin_facebook">Sign in with Facebook</string>
