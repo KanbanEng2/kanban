@@ -36,7 +36,7 @@ public class TaskActivity extends AppCompatActivity implements Transition.Transi
         setContentView(R.layout.activity_task);
 
         View colorView = (View) findViewById(R.id.toolbar_background);
-//        TODO: Colocar no XML as strings
+//        TODO: Colocar as strings no XML
         String[] ITEMS = {"Análise", "Correção", "Desenvolvimento"};
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, ITEMS);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -47,9 +47,7 @@ public class TaskActivity extends AppCompatActivity implements Transition.Transi
 
         Bundle b = getIntent().getExtras();
         if (b != null){
-//
           tarefaTitle = b.getString("title");
-
             int category = b.getInt("category");
             switch (category) {
                 case Tarefa.CATEGORIA_ANALISE:
@@ -82,6 +80,7 @@ public class TaskActivity extends AppCompatActivity implements Transition.Transi
 
         getWindow().getSharedElementEnterTransition().addListener(this);
         getSupportActionBar().setTitle(tarefaTitle);
+        
 
 
     }

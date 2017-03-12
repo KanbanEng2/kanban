@@ -1,5 +1,7 @@
 package br.ufrr.eng2.kanban.model;
 
+import java.util.Date;
+
 /**
  * Modelo para Tarefa
  */
@@ -19,6 +21,16 @@ public class Tarefa {
     private String nomeTarefa;
     private String descricaoTarefa;
     private int estadoTarefa;
+
+    public Date getEncerramentoTarefa() {
+        return encerramentoTarefa;
+    }
+
+    public void setEncerramentoTarefa(Date encerramentoTarefa) {
+        this.encerramentoTarefa = encerramentoTarefa;
+    }
+
+    private Date encerramentoTarefa;
 
     public int getUuid() {
         return uuid;
@@ -67,6 +79,16 @@ public class Tarefa {
         this.descricaoTarefa = descricaoTarefa;
         this.estadoTarefa = estadoTarefa;
         this.categoriaTarefa = categoriaTarefa;
+    }
+
+    public Tarefa(int uuid, String nomeTarefa, String descricaoTarefa, int estadoTarefa, int categoriaTarefa, Date encerramentoTarefa) {
+
+        this.uuid = uuid;
+        this.nomeTarefa = nomeTarefa;
+        this.descricaoTarefa = descricaoTarefa;
+        this.estadoTarefa = estadoTarefa;
+        this.categoriaTarefa = categoriaTarefa;
+        this.encerramentoTarefa = encerramentoTarefa;
     }
 
     private int categoriaTarefa;
