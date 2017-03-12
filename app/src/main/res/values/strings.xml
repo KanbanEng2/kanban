@@ -4,6 +4,10 @@
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
+    <string name="activity_task_description">Description</string>
+    <string name="activity_task_category_hint">Category</string>
+    <string name="activity_task_assign">Self Assign</string>
+
     <string name="action_add_project">Add project</string>
     <string name="action_sign_out">Sign Out</string>
     <string name="action_filter">Filter</string>

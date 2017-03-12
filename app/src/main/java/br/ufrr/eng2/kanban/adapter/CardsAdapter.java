@@ -46,6 +46,7 @@ public class CardsAdapter extends RecyclerView.Adapter<CardsAdapter.ViewHolder> 
                 mCallback.onClick(v, currentTarefa);
             }
         });
+//        TODO: Obter tags
         switch (currentTarefa.getCategoriaTarefa()) {
             case Tarefa.CATEGORIA_ANALISE:
                 holder.title.setText(currentTarefa.getNomeTarefa());

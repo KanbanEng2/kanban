@@ -21,6 +21,7 @@ import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewCompat;
@@ -322,7 +323,7 @@ public class MainActivity extends AppCompatActivity
             mAdapterTODO = new CardsAdapter(mTarefasTODO, new CardsAdapter.ClickCallback() {
                 @Override
                 public void onClick(View v, Tarefa t) {
-                    gotoTaskAcitivity(t);
+                    gotoTaskAcitivity(v,t);
                 }
 
                 @Override
@@ -334,7 +335,7 @@ public class MainActivity extends AppCompatActivity
             mAdapterDOING = new CardsAdapter(mTarefasDOING, new CardsAdapter.ClickCallback() {
                 @Override
                 public void onClick(View v, Tarefa t) {
-                    gotoTaskAcitivity(t);
+                    gotoTaskAcitivity(v,t);
 
                 }
 
@@ -347,7 +348,7 @@ public class MainActivity extends AppCompatActivity
             mAdapterDONE = new CardsAdapter(mTarefasDONE, new CardsAdapter.ClickCallback() {
                 @Override
                 public void onClick(View v, Tarefa t) {
-                    gotoTaskAcitivity(t);
+                    gotoTaskAcitivity(v,t);
                 }
 
                 @Override
@@ -509,11 +510,19 @@ public class MainActivity extends AppCompatActivity
 
     }
 
-    protected void gotoTaskAcitivity(Tarefa t) {
-        Log.d("ACTIVITY", "going to task activity");
+    protected void gotoTaskAcitivity(View view, Tarefa t) {
+        ActivityOptionsCompat options = ActivityOptionsCompat.
+                makeSceneTransitionAnimation(MainActivity.this,
+                        android.support.v4.util.Pair.create(view.findViewById(R.id.card_view), "task_background"),
+                        android.support.v4.util.Pair.create(view.findViewById(R.id.card_tag_color), "task_color")
+                );
+
+
         Intent i = new Intent(this, TaskActivity.class);
+        i.putExtra("title", t.getNomeTarefa());
+        i.putExtra("category", t.getCategoriaTarefa());
         i.putExtra("id", t.getUuid());
-        startActivity(i);
+        startActivity(i, options.toBundle());
     }
 
     @Override

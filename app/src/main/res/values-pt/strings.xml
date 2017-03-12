@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="activity_task_description">Descrição</string>
+    <string name="activity_task_assign">Assumir</string>
+    <string name="activity_task_category_hint">Categoria</string>
     <string name="action_settings">Configurações</string>
     <string name="add">Adicionar</string>
     <string name="alert_dialog_progress_title">Acessando Dados</string>

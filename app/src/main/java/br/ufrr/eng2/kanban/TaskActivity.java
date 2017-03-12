@@ -1,6 +1,7 @@
 package br.ufrr.eng2.kanban;
 
 import android.animation.Animator;
+import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.RectF;
 import android.os.Build;
@@ -16,16 +17,55 @@ import android.view.animation.AnimationSet;
 import android.view.animation.BounceInterpolator;
 import android.view.animation.ScaleAnimation;
 import android.view.animation.TranslateAnimation;
+import android.widget.ArrayAdapter;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import java.util.List;
 
+import br.ufrr.eng2.kanban.model.Tarefa;
+import fr.ganfra.materialspinner.MaterialSpinner;
+
 public class TaskActivity extends AppCompatActivity implements Transition.TransitionListener {
+
+    private MaterialSpinner spinner;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_task);
+
+        View colorView = (View) findViewById(R.id.toolbar_background);
+//        TODO: Colocar no XML as strings
+        String[] ITEMS = {"Análise", "Correção", "Desenvolvimento"};
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, ITEMS);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner = (MaterialSpinner) findViewById(R.id.spinner);
+        spinner.setAdapter(adapter);
+
+        String tarefaTitle = "Título da Tarefa";
+
+        Bundle b = getIntent().getExtras();
+        if (b != null){
+//
+          tarefaTitle = b.getString("title");
+
+            int category = b.getInt("category");
+            switch (category) {
+                case Tarefa.CATEGORIA_ANALISE:
+                    colorView.setBackgroundColor(Color.parseColor("#9C27B0"));
+                    spinner.setSelection(0);
+                    break;
+                case Tarefa.CATEGORIA_CORRECAO:
+                    colorView.setBackgroundColor(Color.parseColor("#FF5722"));
+                    spinner.setSelection(1);
+                    break;
+                case Tarefa.CATEGORIA_DESENVOLVIMENTO:
+                    colorView.setBackgroundColor(Color.parseColor("#9E9E9E"));
+                    spinner.setSelection(2);
+                    break;
+            }
+        }
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             getWindow().getDecorView().setSystemUiVisibility(
@@ -33,18 +73,17 @@ public class TaskActivity extends AppCompatActivity implements Transition.Transi
                             | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
         }
 
-        setContentView(R.layout.activity_task);
         Toolbar toolbar = (Toolbar) findViewById(R.id.task_toolbar);
+
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        getWindow().getSharedElementEnterTransition().addListener(this);
 
-        Bundle b = getIntent().getExtras();
-        if (b != null){
-//            TODO: Implementar método de obter tarefas
-//            getTarefaFromId(b.getInt("id"));
-        }
+
+        getWindow().getSharedElementEnterTransition().addListener(this);
+        getSupportActionBar().setTitle(tarefaTitle);
+
+
     }
 
     @Override
