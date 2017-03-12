@@ -8,10 +8,6 @@ import android.graphics.BitmapFactory;
 import android.graphics.BitmapShader;
 import android.graphics.Canvas;
 import android.graphics.Paint;
-import android.graphics.PorterDuff;
-import android.graphics.PorterDuffXfermode;
-import android.graphics.Rect;
-import android.graphics.RectF;
 import android.graphics.Shader;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -24,7 +20,6 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v4.view.GravityCompat;
-import android.support.v4.view.ViewCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
@@ -56,7 +51,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import br.ufrr.eng2.kanban.adapter.CardsAdapter;
+import br.ufrr.eng2.kanban.controller.ProjetoController;
+import br.ufrr.eng2.kanban.controller.UsuarioController;
+import br.ufrr.eng2.kanban.model.Projeto;
 import br.ufrr.eng2.kanban.model.Tarefa;
+import br.ufrr.eng2.kanban.model.Usuario;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -411,7 +410,13 @@ public class MainActivity extends AppCompatActivity
             name = this.user.getDisplayName();
             email = this.user.getEmail();
             photoUrl = user.getPhotoUrl();
+
+            UsuarioController.NewUser(this.user.getUid(), name, photoUrl.toString());
+
         }
+
+
+
 
         View header = this.navigationView.getHeaderView(0);
 
@@ -484,7 +489,7 @@ public class MainActivity extends AppCompatActivity
 //                        }
 
                         if (title_ok /*&& desc_ok*/) {
-                            mTarefasTODO.add(new Tarefa(1234, title, desc, Tarefa.ESTADO_TODO, Tarefa.CATEGORIA_CORRECAO));
+                            mTarefasTODO.add(new Tarefa(title, desc, Tarefa.ESTADO_TODO, "" , Tarefa.CATEGORIA_CORRECAO));
                             mAdapterTODO.notifyItemInserted(mTarefasTODO.size() - 1);
 
                             Snackbar snackbar = Snackbar
@@ -521,7 +526,6 @@ public class MainActivity extends AppCompatActivity
         Intent i = new Intent(this, TaskActivity.class);
         i.putExtra("title", t.getNomeTarefa());
         i.putExtra("category", t.getCategoriaTarefa());
-        i.putExtra("id", t.getUuid());
         startActivity(i, options.toBundle());
     }
 

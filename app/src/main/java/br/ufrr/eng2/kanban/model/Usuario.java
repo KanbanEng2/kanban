@@ -1,20 +1,20 @@
 package br.ufrr.eng2.kanban.model;
 
+import java.util.List;
+
 /**
  * Modelo para Usuario
  */
 
 public class Usuario {
 
-    private int uuid;
-    private String nomeUsuario;
-
-    public int getUuid() {
-        return uuid;
+    public Usuario(String nomeUsuario, String urlFoto) {
+        this.nomeUsuario = nomeUsuario;
+        this.urlFoto = urlFoto;
     }
 
-    public void setUuid(int uuid) {
-        this.uuid = uuid;
+    public Usuario() {
+
     }
 
     public String getNomeUsuario() {
@@ -25,21 +25,18 @@ public class Usuario {
         this.nomeUsuario = nomeUsuario;
     }
 
-    public int getTokenUuid() {
-        return tokenUuid;
+    public String getUrlFoto() {
+        return urlFoto;
     }
 
-    public void setTokenUuid(int tokenUuid) {
-        this.tokenUuid = tokenUuid;
+    public void setUrlFoto(String urlFoto) {
+        this.urlFoto = urlFoto;
     }
 
-    public Usuario(int uuid, String nomeUsuario, int tokenUuid) {
+    private String nomeUsuario;
+    private String urlFoto;
 
-        this.uuid = uuid;
-        this.nomeUsuario = nomeUsuario;
-        this.tokenUuid = tokenUuid;
-    }
 
-    private int tokenUuid;
+
 
 }

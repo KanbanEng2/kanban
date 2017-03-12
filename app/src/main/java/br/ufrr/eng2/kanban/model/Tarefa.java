@@ -17,27 +17,16 @@ public class Tarefa {
     static public final int CATEGORIA_DESENVOLVIMENTO = 2331;
     static public final int CATEGORIA_CORRECAO = 2332;
 
-    private int uuid;
-    private String nomeTarefa;
-    private String descricaoTarefa;
-    private int estadoTarefa;
-
-    public Date getEncerramentoTarefa() {
-        return encerramentoTarefa;
-    }
-
-    public void setEncerramentoTarefa(Date encerramentoTarefa) {
+    public Tarefa(String nomeTarefa, String descricaoTarefa, int estadoTarefa, String encerramentoTarefa, int categoriaTarefa) {
+        this.nomeTarefa = nomeTarefa;
+        this.descricaoTarefa = descricaoTarefa;
+        this.estadoTarefa = estadoTarefa;
         this.encerramentoTarefa = encerramentoTarefa;
+        this.categoriaTarefa = categoriaTarefa;
     }
 
-    private Date encerramentoTarefa;
+    public Tarefa() {
 
-    public int getUuid() {
-        return uuid;
-    }
-
-    public void setUuid(int uuid) {
-        this.uuid = uuid;
     }
 
     public String getNomeTarefa() {
@@ -64,6 +53,14 @@ public class Tarefa {
         this.estadoTarefa = estadoTarefa;
     }
 
+    public String getEncerramentoTarefa() {
+        return encerramentoTarefa;
+    }
+
+    public void setEncerramentoTarefa(String encerramentoTarefa) {
+        this.encerramentoTarefa = encerramentoTarefa;
+    }
+
     public int getCategoriaTarefa() {
         return categoriaTarefa;
     }
@@ -72,25 +69,10 @@ public class Tarefa {
         this.categoriaTarefa = categoriaTarefa;
     }
 
-    public Tarefa(int uuid, String nomeTarefa, String descricaoTarefa, int estadoTarefa, int categoriaTarefa) {
-
-        this.uuid = uuid;
-        this.nomeTarefa = nomeTarefa;
-        this.descricaoTarefa = descricaoTarefa;
-        this.estadoTarefa = estadoTarefa;
-        this.categoriaTarefa = categoriaTarefa;
-    }
-
-    public Tarefa(int uuid, String nomeTarefa, String descricaoTarefa, int estadoTarefa, int categoriaTarefa, Date encerramentoTarefa) {
-
-        this.uuid = uuid;
-        this.nomeTarefa = nomeTarefa;
-        this.descricaoTarefa = descricaoTarefa;
-        this.estadoTarefa = estadoTarefa;
-        this.categoriaTarefa = categoriaTarefa;
-        this.encerramentoTarefa = encerramentoTarefa;
-    }
-
+    private String nomeTarefa;
+    private String descricaoTarefa;
+    private int estadoTarefa;
+    private String encerramentoTarefa;
     private int categoriaTarefa;
 
 
