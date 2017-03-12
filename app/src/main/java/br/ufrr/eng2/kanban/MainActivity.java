@@ -648,12 +648,10 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.add_project) {
             mAlertTitleProject.requestFocus();
             mAlertAddProject.show();
-        } else if (id >= MenuIdStart) {
+        } else if (id >= MenuIdStart && id <= (MenuIdStart + dictMenuProjects.size())) {
             String projeto = dictMenuProjects.get(id);
             Log.d("Projeto", projeto);
         }
-
-
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
