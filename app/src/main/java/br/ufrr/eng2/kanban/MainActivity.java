@@ -133,10 +133,6 @@ public class MainActivity extends AppCompatActivity
             this.navigationView.setNavigationItemSelectedListener(this);
             this.onCreateNavigationView();
 
-//        mBottomBar = BottomBar.attach(this, savedInstanceState);
-//        mBottomBar.setItems(R.menu.bottombar_menu);
-
-
             mRecyclerView = (RecyclerView) findViewById(R.id.recycler_view);
             mLayoutManager = new LinearLayoutManager(this);
             mRecyclerView.setLayoutManager(mLayoutManager);
@@ -203,7 +199,7 @@ public class MainActivity extends AppCompatActivity
                                     break;
                             }
 
-
+                            updateCurrentProject();
                             recyclerView.getAdapter().notifyItemMoved(fromPos, toPos);
 
                             return true;// true if moved, false otherwise
@@ -223,14 +219,17 @@ public class MainActivity extends AppCompatActivity
                                          snackbar.setAction(R.string.snack_action_undo, new View.OnClickListener() {
                                             @Override
                                             public void onClick(View v) {
+                                                fromTarefa.setEstadoTarefa(Tarefa.ESTADO_TODO);
                                                 mTarefasTODO.add(fromPos, fromTarefa);
                                                 mTarefasDONE.remove(fromTarefa);
                                                 mAdapterTODO.notifyItemInserted(fromPos);
                                                 mAdapterDONE.notifyDataSetChanged();
+                                                updateCurrentProject();
 
                                             }
                                         });
                                         snackbar.show();
+                                        fromTarefa.setEstadoTarefa(Tarefa.ESTADO_DONE);
                                         mTarefasDONE.add(fromTarefa);
                                         mAdapterDONE.notifyDataSetChanged();
                                     } else if (direction == ItemTouchHelper.RIGHT) {
@@ -240,13 +239,16 @@ public class MainActivity extends AppCompatActivity
                                         snackbar.setAction(R.string.snack_action_undo, new View.OnClickListener() {
                                             @Override
                                             public void onClick(View v) {
+                                                fromTarefa.setEstadoTarefa(Tarefa.ESTADO_TODO);
                                                 mTarefasTODO.add(fromPos, fromTarefa);
                                                 mTarefasDOING.remove(fromTarefa);
                                                 mAdapterTODO.notifyItemInserted(fromPos);
                                                 mAdapterDOING.notifyDataSetChanged();
+                                                updateCurrentProject();
                                             }
                                         });
                                         snackbar.show();
+                                        fromTarefa.setEstadoTarefa(Tarefa.ESTADO_DOING);
                                         mTarefasDOING.add(fromTarefa);
                                         mAdapterDOING.notifyDataSetChanged();
 
@@ -262,13 +264,16 @@ public class MainActivity extends AppCompatActivity
                                         snackbar.setAction(R.string.snack_action_undo, new View.OnClickListener() {
                                             @Override
                                             public void onClick(View v) {
+                                                doingTarefa.setEstadoTarefa(Tarefa.ESTADO_DOING);
                                                 mTarefasDOING.add(fromPos, doingTarefa);
                                                 mTarefasTODO.remove(doingTarefa);
                                                 mAdapterDOING.notifyItemInserted(fromPos);
                                                 mAdapterTODO.notifyDataSetChanged();
+                                                updateCurrentProject();
                                             }
                                         });
                                         snackbar.show();
+                                        doingTarefa.setEstadoTarefa(Tarefa.ESTADO_TODO);
                                         mTarefasTODO.add(doingTarefa);
                                         mAdapterTODO.notifyDataSetChanged();
                                     } else if (direction == ItemTouchHelper.RIGHT) {
@@ -278,13 +283,16 @@ public class MainActivity extends AppCompatActivity
                                         snackbar.setAction(R.string.snack_action_undo, new View.OnClickListener() {
                                             @Override
                                             public void onClick(View v) {
+                                                doingTarefa.setEstadoTarefa(Tarefa.ESTADO_DOING);
                                                 mTarefasDOING.add(fromPos, doingTarefa);
                                                 mTarefasDONE.remove(doingTarefa);
                                                 mAdapterDOING.notifyItemInserted(fromPos);
                                                 mAdapterDONE.notifyDataSetChanged();
+                                                updateCurrentProject();
                                             }
                                         });
                                         snackbar.show();
+                                        doingTarefa.setEstadoTarefa(Tarefa.ESTADO_DONE);
                                         mTarefasDONE.add(doingTarefa);
                                         mAdapterDONE.notifyDataSetChanged();
 
@@ -300,13 +308,16 @@ public class MainActivity extends AppCompatActivity
                                         snackbar.setAction(R.string.snack_action_undo, new View.OnClickListener() {
                                             @Override
                                             public void onClick(View v) {
+                                                doneTarefa.setEstadoTarefa(Tarefa.ESTADO_DONE);
                                                 mTarefasDONE.add(fromPos, doneTarefa);
                                                 mTarefasDOING.remove(doneTarefa);
                                                 mAdapterDONE.notifyItemInserted(fromPos);
                                                 mAdapterDOING.notifyDataSetChanged();
+                                                updateCurrentProject();
                                             }
                                         });
                                         snackbar.show();
+                                        doneTarefa.setEstadoTarefa(Tarefa.ESTADO_DOING);
                                         mTarefasDOING.add(doneTarefa);
                                         mAdapterDOING.notifyDataSetChanged();
                                     } else if (direction == ItemTouchHelper.RIGHT) {
@@ -316,20 +327,23 @@ public class MainActivity extends AppCompatActivity
                                         snackbar.setAction(R.string.snack_action_undo, new View.OnClickListener() {
                                             @Override
                                             public void onClick(View v) {
+                                                doneTarefa.setEstadoTarefa(Tarefa.ESTADO_DONE);
                                                 mTarefasDONE.add(fromPos, doneTarefa);
                                                 mTarefasTODO.remove(doneTarefa);
                                                 mAdapterDONE.notifyItemInserted(fromPos);
                                                 mAdapterTODO.notifyDataSetChanged();
+                                                updateCurrentProject();
                                             }
                                         });
                                         snackbar.show();
+                                        doneTarefa.setEstadoTarefa(Tarefa.ESTADO_TODO);
                                         mTarefasTODO.add(doneTarefa);
                                         mAdapterTODO.notifyDataSetChanged();
 
                                     }
                                     break;
                             }
-
+                            updateCurrentProject();
                             mRecyclerView.getAdapter().notifyItemRemoved(fromPos);
 
                         }
@@ -337,78 +351,14 @@ public class MainActivity extends AppCompatActivity
 
             mIth.attachToRecyclerView(mRecyclerView);
 
-            mAdapterTODO = new CardsAdapter(mTarefasTODO, new CardsAdapter.ClickCallback() {
-                @Override
-                public void onClick(View v, Tarefa t) {
-                    gotoTaskAcitivity(v,t);
-                }
-
-                @Override
-                public boolean onLongClick(View v) {
-                    return true;
-                }
-            });
-
-            mAdapterDOING = new CardsAdapter(mTarefasDOING, new CardsAdapter.ClickCallback() {
-                @Override
-                public void onClick(View v, Tarefa t) {
-                    gotoTaskAcitivity(v,t);
-
-                }
-
-                @Override
-                public boolean onLongClick(View v) {
-                    return true;
-                }
-            });
-
-            mAdapterDONE = new CardsAdapter(mTarefasDONE, new CardsAdapter.ClickCallback() {
-                @Override
-                public void onClick(View v, Tarefa t) {
-                    gotoTaskAcitivity(v,t);
-                }
-
-                @Override
-                public boolean onLongClick(View v) {
-                    return true;
-                }
-            });
-            mRecyclerView.setAdapter(mAdapterTODO);
-
-            mBottomBar = (BottomBar) findViewById(R.id.bottom_bar);
-            mBottomBar.setOnTabSelectListener(new OnTabSelectListener() {
-
-                @Override
-                public void onTabSelected(@IdRes int tabId) {
-
-                    Log.d("BAR CURRENT TAB: ", String.valueOf(mBottomBar.getCurrentTabPosition()));
-
-                    mRecyclerView.getAdapter().notifyItemRangeRemoved(0, mRecyclerView.getAdapter().getItemCount());
-                    switch (tabId) {
-                        case R.id.bottombar_todo:
-                            Log.d("BOTTOMBAR", "TODO");
-                            mRecyclerView.swapAdapter(mAdapterTODO, false);
-                            mAdapterTODO.notifyItemRangeInserted(0, mAdapterTODO.getItemCount());
-
-                            break;
-                        case R.id.bottombar_doing:
-                            Log.d("BOTTOMBAR", "DOING");
-                            mRecyclerView.swapAdapter(mAdapterDOING, false);
-
-                            break;
-                        case R.id.bottombar_done:
-                            Log.d("BOTTOMBAR", "DONE");
-                            mRecyclerView.swapAdapter(mAdapterDONE, false);
-
-                            break;
-                    }
-//                mRecyclerView.getAdapter().notifyItemRangeInserted(0, );
-                }
-            });
-
             getWindow().getSharedElementExitTransition().excludeTarget(R.id.appBarLayout, true);
             getWindow().getSharedElementExitTransition().excludeChildren(R.id.appBarLayout, true);
 
+            mBottomBar = (BottomBar) findViewById(R.id.bottom_bar);
+
+
+            mFab.setVisibility(View.GONE);
+            mBottomBar.setVisibility(View.GONE);
             CreateDialogAddCard();
             CreateDialogAddProject();
         }
@@ -448,9 +398,6 @@ public class MainActivity extends AppCompatActivity
             new DownloadImageTask(userPhoto)
                     .execute(photoUrl.toString());
         }
-
-
-
 
         ValueEventListener projectsListener = new ValueEventListener() {
             @Override
@@ -508,6 +455,130 @@ public class MainActivity extends AppCompatActivity
 
     }
 
+    private void setTODO(CardsAdapter adapter, List<Tarefa> list) {
+        this.mAdapterTODO = adapter;
+        this.mTarefasTODO = list;
+    }
+
+    private void setDOING(CardsAdapter adapter, List<Tarefa> list) {
+        this.mAdapterDOING = adapter;
+        this.mTarefasDOING = list;
+    }
+
+    private void setDONE(CardsAdapter adapter, List<Tarefa> list) {
+        this.mAdapterDONE = adapter;
+        this.mTarefasDONE = list;
+    }
+
+    private CardsAdapter.ClickCallback getmCallback(){
+        return mCallback;
+    }
+
+    private CardsAdapter.ClickCallback mCallback;
+
+    private String currentProjectId;
+    private Projeto projeto;
+
+    private void onProjectSelection(String projectId) {
+        currentProjectId = projectId;
+        mFab.setVisibility(View.VISIBLE);
+        mBottomBar.setVisibility(View.VISIBLE);
+
+        mCallback = new CardsAdapter.ClickCallback() {
+            @Override
+            public void onClick(View v, Tarefa t) {
+                gotoTaskAcitivity(v,t);
+            }
+
+            @Override
+            public boolean onLongClick(View v) {
+                return true;
+            }
+        };
+
+        ValueEventListener tasksListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                projeto = dataSnapshot.getValue(Projeto.class);
+                if(projeto.getTarefasProjeto() == null ) {
+                    projeto.setTarefasProjeto(new ArrayList<Tarefa>());
+                }
+
+                List<Tarefa> todo = new ArrayList<>();
+                List<Tarefa> doing = new ArrayList<>();
+                List<Tarefa> done = new ArrayList<>();
+
+                for (Tarefa t : projeto.getTarefasProjeto()) {
+                    switch (t.getEstadoTarefa()) {
+                        case Tarefa.ESTADO_TODO:
+                            todo.add(t);
+                            break;
+                        case Tarefa.ESTADO_DOING:
+                            doing.add(t);
+                            break;
+                        case Tarefa.ESTADO_DONE:
+                            done.add(t);
+                    }
+                }
+
+                setTODO(new CardsAdapter(todo, getmCallback()), todo);
+                setDOING(new CardsAdapter(doing, getmCallback()), doing);
+                setDONE(new CardsAdapter(done, getmCallback()), done);
+
+                mRecyclerView.setAdapter(mAdapterTODO);
+
+                mBottomBar.setOnTabSelectListener(new OnTabSelectListener() {
+
+                    @Override
+                    public void onTabSelected(@IdRes int tabId) {
+                        mRecyclerView.getAdapter().notifyItemRangeRemoved(0, mRecyclerView.getAdapter().getItemCount());
+                        switch (tabId) {
+                            case R.id.bottombar_todo:
+                                mRecyclerView.swapAdapter(mAdapterTODO, false);
+                                mAdapterTODO.notifyItemRangeInserted(0, mAdapterTODO.getItemCount());
+
+                                break;
+                            case R.id.bottombar_doing:
+                                mRecyclerView.swapAdapter(mAdapterDOING, false);
+
+                                break;
+                            case R.id.bottombar_done:
+                                mRecyclerView.swapAdapter(mAdapterDONE, false);
+                                break;
+                        }
+                    }
+                });
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        };
+
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference myRef = database.getReference("projects");
+        myRef.child(projectId).addValueEventListener(tasksListener);
+    }
+
+    private void updateCurrentProject() {
+        List<Tarefa> newTarefas = new ArrayList<>();
+
+        for (Tarefa t : mTarefasTODO) {
+            newTarefas.add(t);
+        }
+
+        for (Tarefa t : mTarefasDOING) {
+            newTarefas.add(t);
+        }
+
+        for (Tarefa t : mTarefasDONE) {
+            newTarefas.add(t);
+        }
+
+        projeto.setTarefasProjeto(newTarefas);
+        ProjetoController.UpdateProject(currentProjectId, projeto);
+    }
 
     private void CreateDialogAddCard() {
         LayoutInflater li = getLayoutInflater();
@@ -572,6 +643,7 @@ public class MainActivity extends AppCompatActivity
                                     .make(mCoordinatorLayout, String.format(getString(R.string.snack_task_added), getString(R.string.column_todo)), Snackbar.LENGTH_SHORT);
 
                             snackbar.show();
+                            updateCurrentProject();
 
                             dialog.dismiss();
                         }
@@ -650,7 +722,7 @@ public class MainActivity extends AppCompatActivity
             mAlertAddProject.show();
         } else if (id >= MenuIdStart && id <= (MenuIdStart + dictMenuProjects.size())) {
             String projeto = dictMenuProjects.get(id);
-            Log.d("Projeto", projeto);
+            onProjectSelection(projeto);
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
