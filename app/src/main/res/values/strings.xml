@@ -26,6 +26,8 @@
     <string name="snack_action_undo">Undo</string>
 
     <!--ALERT DIALOG ADD CARD-->
+    <string name="alert_dialog_add_project_top_title">Add Project</string>
+
     <string name="alert_dialog_add_card_top_title">Add Task</string>
     <string name="alert_dialog_add_card_title_field">Title</string>
     <string name="alert_dialog_add_card_description_field">Description</string>

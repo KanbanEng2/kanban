@@ -8,6 +8,10 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import br.ufrr.eng2.kanban.model.Projeto;
 import br.ufrr.eng2.kanban.model.Usuario;
 
 /**
@@ -15,26 +19,29 @@ import br.ufrr.eng2.kanban.model.Usuario;
  */
 
 public class UsuarioController {
-    public static void NewUser(String Id, String name, String url) {
+    public static void NewUser(String Id, Usuario user) {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference("user/" + Id);
-        Usuario user = new Usuario(name, url);
         myRef.setValue(user);
     }
 
-    public static void GetUser(String Id) {
+
+    public static void UpdateUserProjects(String Id, String pId) {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference myRef = database.getReference("user");
         final String userId = Id;
-        DatabaseReference myRef = database.getReference("user").child(userId);
-        myRef.addListenerForSingleValueEvent(
+        final String projectId = pId;
+        myRef.child(userId).addListenerForSingleValueEvent(
                 new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         // Get user value
                         Usuario user = dataSnapshot.getValue(Usuario.class);
-                        Log.d("Firebase", user.getNomeUsuario());
-
-                        // ...
+                        if(user.getProjetos() == null) {
+                            user.setProjetos(new ArrayList<String>()) ;
+                        }
+                        user.getProjetos().add(projectId);
+                        NewUser(userId, user);
                     }
 
                     @Override

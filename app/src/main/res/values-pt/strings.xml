@@ -5,6 +5,7 @@
     <string name="activity_task_category_hint">Categoria</string>
     <string name="action_settings">Configurações</string>
     <string name="add">Adicionar</string>
+    <string name="alert_dialog_add_project_top_title">Adicionar Projeto</string>
     <string name="alert_dialog_progress_title">Acessando Dados</string>
     <string name="alert_dialog_add_card_description_field">Descrição</string>
     <string name="alert_dialog_add_card_title_field">Título</string>

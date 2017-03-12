@@ -74,6 +74,8 @@ public class MainActivity extends AppCompatActivity
     private NavigationView navigationView;
 
     private FloatingActionButton mFab;
+    private AlertDialog mAlertAddProject;
+    private EditText mAlertTitleProject;
     private AlertDialog mAlertAddCard;
     private EditText mAlertTitleCard;
     private EditText mAlertDescCard;
@@ -392,6 +394,7 @@ public class MainActivity extends AppCompatActivity
             getWindow().getSharedElementExitTransition().excludeChildren(R.id.appBarLayout, true);
 
             CreateDialogAddCard();
+            CreateDialogAddProject();
         }
     }
 
@@ -411,7 +414,8 @@ public class MainActivity extends AppCompatActivity
             email = this.user.getEmail();
             photoUrl = user.getPhotoUrl();
 
-            UsuarioController.NewUser(this.user.getUid(), name, photoUrl.toString());
+            Usuario user = new Usuario(name, photoUrl.toString());
+            UsuarioController.NewUser(this.user.getUid(), user);
 
         }
 
@@ -583,11 +587,80 @@ public class MainActivity extends AppCompatActivity
 
         if (id == R.id.sign_out) {
             this.signOut();
+        } else if (id == R.id.add_project) {
+            mAlertTitleProject.requestFocus();
+            mAlertAddProject.show();
         }
+
+
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    protected void addProject() {
+
+    }
+
+    private void CreateDialogAddProject() {
+        LayoutInflater li = getLayoutInflater();
+        View view = li.inflate(R.layout.alert_dialog_add_project, null);
+        AlertDialog.Builder alert_builder = new AlertDialog.Builder(this);
+        alert_builder.setView(view);
+
+        alert_builder.setTitle(getString(R.string.alert_dialog_add_project_top_title));
+        alert_builder.setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+            }
+        });
+        alert_builder.setPositiveButton(getString(R.string.add), null);
+
+        mAlertAddProject = alert_builder.create();
+        mAlertTitleProject = (EditText) view.findViewById(R.id.alert_add_project_titulo);
+
+        mAlertAddProject.setOnDismissListener(new DialogInterface.OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialogInterface) {
+                mAlertTitleProject.setText("");
+            }
+        });
+
+        if (mAlertAddProject.getWindow() != null)
+            mAlertAddProject.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
+
+        final String uuid = this.user.getUid();
+        mAlertAddProject.setOnShowListener(new DialogInterface.OnShowListener() {
+            @Override
+            public void onShow(final DialogInterface dialog) {
+
+                int color = ResourcesCompat.getColor(getResources(), R.color.secondary_text, null);
+                mAlertAddProject.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(color);
+
+                mAlertAddProject.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        boolean title_ok = true;
+
+                        String title = mAlertTitleProject.getText().toString();
+
+                        if (title.isEmpty()) {
+                            mAlertTitleProject.setError(getString(R.string.alert_dialog_string_empty_error));
+                            title_ok = false;
+                        }
+
+                        if (title_ok /*&& desc_ok*/) {
+                            ProjetoController.NewProject(new Projeto(title, null, null, uuid));
+                            mAlertAddProject.dismiss();
+                        }
+                    }
+                });
+
+            }
+        });
+
+
     }
 
     protected void signOut() {

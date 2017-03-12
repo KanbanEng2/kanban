@@ -16,6 +16,13 @@ public class Usuario {
     public Usuario() {
 
     }
+    public List<String> getProjetos() {
+        return projetos;
+    }
+
+    public void setProjetos(List<String> projetos) {
+        this.projetos = projetos;
+    }
 
     public String getNomeUsuario() {
         return nomeUsuario;
@@ -33,10 +40,7 @@ public class Usuario {
         this.urlFoto = urlFoto;
     }
 
+    private List<String> projetos;
     private String nomeUsuario;
     private String urlFoto;
-
-
-
-
 }
