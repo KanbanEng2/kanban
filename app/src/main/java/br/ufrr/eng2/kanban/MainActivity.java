@@ -404,28 +404,29 @@ public class MainActivity extends AppCompatActivity
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Usuario user = dataSnapshot.getValue(Usuario.class);
 
-                for (String pId : user.getProjetos()) {
-                    FirebaseDatabase database = FirebaseDatabase.getInstance();
-                    DatabaseReference myRef = database.getReference("projects/" + pId );
-                    final String projectId = pId;
-                    myRef.addListenerForSingleValueEvent(
-                            new ValueEventListener() {
-                                @Override
-                                public void onDataChange(DataSnapshot dataSnapshot) {
-                                    // Get user value
-                                    Projeto projeto = dataSnapshot.getValue(Projeto.class);
-                                    addProjectMenu(projeto.getNomeProjeto(), projectId);
+                if (user.getProjetos() != null)
+                    for (String pId : user.getProjetos()) {
+                        FirebaseDatabase database = FirebaseDatabase.getInstance();
+                        DatabaseReference myRef = database.getReference("projects/" + pId );
+                        final String projectId = pId;
+                        myRef.addListenerForSingleValueEvent(
+                                new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(DataSnapshot dataSnapshot) {
+                                        // Get user value
+                                        Projeto projeto = dataSnapshot.getValue(Projeto.class);
+                                        addProjectMenu(projeto.getNomeProjeto(), projectId);
 
-                                }
+                                    }
 
-                                @Override
-                                public void onCancelled(DatabaseError databaseError) {
-                                    Log.w("Firebase", "getUser:onCancelled", databaseError.toException());
-                                    // ...
-                                }
-                            });
+                                    @Override
+                                    public void onCancelled(DatabaseError databaseError) {
+                                        Log.w("Firebase", "getUser:onCancelled", databaseError.toException());
+                                        // ...
+                                    }
+                                });
 
-                }
+                    }
             }
 
             @Override
