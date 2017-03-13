@@ -17,11 +17,11 @@ public class Tarefa {
     static public final int CATEGORIA_DESENVOLVIMENTO = 2331;
     static public final int CATEGORIA_CORRECAO = 2332;
 
-    public Tarefa(String nomeTarefa, String descricaoTarefa, int estadoTarefa, String encerramentoTarefa, int categoriaTarefa) {
+    public Tarefa(String nomeTarefa, String descricaoTarefa, int estadoTarefa, String timestampEstimative, int categoriaTarefa) {
         this.nomeTarefa = nomeTarefa;
         this.descricaoTarefa = descricaoTarefa;
         this.estadoTarefa = estadoTarefa;
-        this.encerramentoTarefa = encerramentoTarefa;
+        this.timestampEstimative = timestampEstimative;
         this.categoriaTarefa = categoriaTarefa;
     }
 
@@ -53,12 +53,12 @@ public class Tarefa {
         this.estadoTarefa = estadoTarefa;
     }
 
-    public String getEncerramentoTarefa() {
-        return encerramentoTarefa;
+    public String gettimestampEstimative() {
+        return timestampEstimative;
     }
 
-    public void setEncerramentoTarefa(String encerramentoTarefa) {
-        this.encerramentoTarefa = encerramentoTarefa;
+    public void settimestampEstimative(String timestampEstimative) {
+        this.timestampEstimative = timestampEstimative;
     }
 
     public int getCategoriaTarefa() {
@@ -72,7 +72,7 @@ public class Tarefa {
     private String nomeTarefa;
     private String descricaoTarefa;
     private int estadoTarefa;
-    private String encerramentoTarefa;
+    private String timestampEstimative;
     private int categoriaTarefa;
 
     public String getTimestampCreation() {
@@ -91,17 +91,8 @@ public class Tarefa {
         this.timestampDone = timestampDone;
     }
 
-    public String getTimestampEstimate() {
-        return timestampEstimate;
-    }
-
-    public void setTimestampEstimate(String timestampEstimate) {
-        this.timestampEstimate = timestampEstimate;
-    }
-
     private String timestampCreation;
     private String timestampDone;
-    private String timestampEstimate;
 
     public String getOwnedId() {
         return ownedId;

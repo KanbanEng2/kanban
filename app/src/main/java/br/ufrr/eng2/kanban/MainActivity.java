@@ -210,6 +210,8 @@ public class MainActivity extends AppCompatActivity
                         public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
                             // remove from adapter
                             final int fromPos = viewHolder.getAdapterPosition();
+                            Long tsLong = System.currentTimeMillis()/1000;
+                            String ts = tsLong.toString();
 
                             switch (mBottomBar.getCurrentTabId()) {
                                 case R.id.bottombar_todo:
@@ -222,6 +224,7 @@ public class MainActivity extends AppCompatActivity
                                             @Override
                                             public void onClick(View v) {
                                                 fromTarefa.setEstadoTarefa(Tarefa.ESTADO_TODO);
+                                                fromTarefa.setTimestampDone(null);
                                                 mTarefasTODO.add(fromPos, fromTarefa);
                                                 mTarefasDONE.remove(fromTarefa);
                                                 mAdapterTODO.notifyItemInserted(fromPos);
@@ -232,6 +235,7 @@ public class MainActivity extends AppCompatActivity
                                         });
                                         snackbar.show();
                                         fromTarefa.setEstadoTarefa(Tarefa.ESTADO_DONE);
+                                        fromTarefa.setTimestampDone(ts);
                                         mTarefasDONE.add(fromTarefa);
                                         mAdapterDONE.notifyDataSetChanged();
                                     } else if (direction == ItemTouchHelper.RIGHT) {
@@ -242,6 +246,7 @@ public class MainActivity extends AppCompatActivity
                                             @Override
                                             public void onClick(View v) {
                                                 fromTarefa.setEstadoTarefa(Tarefa.ESTADO_TODO);
+                                                fromTarefa.setTimestampDone(null);
                                                 mTarefasTODO.add(fromPos, fromTarefa);
                                                 mTarefasDOING.remove(fromTarefa);
                                                 mAdapterTODO.notifyItemInserted(fromPos);
@@ -251,6 +256,7 @@ public class MainActivity extends AppCompatActivity
                                         });
                                         snackbar.show();
                                         fromTarefa.setEstadoTarefa(Tarefa.ESTADO_DOING);
+                                        fromTarefa.setTimestampDone(null);
                                         mTarefasDOING.add(fromTarefa);
                                         mAdapterDOING.notifyDataSetChanged();
 
@@ -267,6 +273,7 @@ public class MainActivity extends AppCompatActivity
                                             @Override
                                             public void onClick(View v) {
                                                 doingTarefa.setEstadoTarefa(Tarefa.ESTADO_DOING);
+                                                doingTarefa.setTimestampDone(null);
                                                 mTarefasDOING.add(fromPos, doingTarefa);
                                                 mTarefasTODO.remove(doingTarefa);
                                                 mAdapterDOING.notifyItemInserted(fromPos);
@@ -276,6 +283,7 @@ public class MainActivity extends AppCompatActivity
                                         });
                                         snackbar.show();
                                         doingTarefa.setEstadoTarefa(Tarefa.ESTADO_TODO);
+                                        doingTarefa.setTimestampDone(null);
                                         mTarefasTODO.add(doingTarefa);
                                         mAdapterTODO.notifyDataSetChanged();
                                     } else if (direction == ItemTouchHelper.RIGHT) {
@@ -286,6 +294,7 @@ public class MainActivity extends AppCompatActivity
                                             @Override
                                             public void onClick(View v) {
                                                 doingTarefa.setEstadoTarefa(Tarefa.ESTADO_DOING);
+                                                doingTarefa.setTimestampDone(null);
                                                 mTarefasDOING.add(fromPos, doingTarefa);
                                                 mTarefasDONE.remove(doingTarefa);
                                                 mAdapterDOING.notifyItemInserted(fromPos);
@@ -295,6 +304,7 @@ public class MainActivity extends AppCompatActivity
                                         });
                                         snackbar.show();
                                         doingTarefa.setEstadoTarefa(Tarefa.ESTADO_DONE);
+                                        doingTarefa.setTimestampDone(ts);
                                         mTarefasDONE.add(doingTarefa);
                                         mAdapterDONE.notifyDataSetChanged();
 
@@ -304,6 +314,7 @@ public class MainActivity extends AppCompatActivity
                                     final Tarefa doneTarefa = mTarefasDONE.get(fromPos);
                                     mTarefasDONE.remove(fromPos);
                                     if (direction == ItemTouchHelper.LEFT) {
+                                        final String oldTime = doneTarefa.getTimestampDone();
                                         Snackbar snackbar = Snackbar
                                                 .make(mCoordinatorLayout, String.format(getString(R.string.snack_task_moved), getString(R.string.column_doing)), Snackbar.LENGTH_LONG);
 
@@ -311,6 +322,7 @@ public class MainActivity extends AppCompatActivity
                                             @Override
                                             public void onClick(View v) {
                                                 doneTarefa.setEstadoTarefa(Tarefa.ESTADO_DONE);
+                                                doneTarefa.setTimestampDone(oldTime);
                                                 mTarefasDONE.add(fromPos, doneTarefa);
                                                 mTarefasDOING.remove(doneTarefa);
                                                 mAdapterDONE.notifyItemInserted(fromPos);
@@ -320,15 +332,18 @@ public class MainActivity extends AppCompatActivity
                                         });
                                         snackbar.show();
                                         doneTarefa.setEstadoTarefa(Tarefa.ESTADO_DOING);
+                                        doneTarefa.setTimestampDone(null);
                                         mTarefasDOING.add(doneTarefa);
                                         mAdapterDOING.notifyDataSetChanged();
                                     } else if (direction == ItemTouchHelper.RIGHT) {
+                                        final String oldTime = doneTarefa.getTimestampDone();
                                         Snackbar snackbar = Snackbar
                                                 .make(mCoordinatorLayout, String.format(getString(R.string.snack_task_moved), getString(R.string.column_todo)), Snackbar.LENGTH_LONG);
 
                                         snackbar.setAction(R.string.snack_action_undo, new View.OnClickListener() {
                                             @Override
                                             public void onClick(View v) {
+                                                doneTarefa.setTimestampDone(oldTime);
                                                 doneTarefa.setEstadoTarefa(Tarefa.ESTADO_DONE);
                                                 mTarefasDONE.add(fromPos, doneTarefa);
                                                 mTarefasTODO.remove(doneTarefa);
@@ -339,6 +354,7 @@ public class MainActivity extends AppCompatActivity
                                         });
                                         snackbar.show();
                                         doneTarefa.setEstadoTarefa(Tarefa.ESTADO_TODO);
+                                        doneTarefa.setTimestampDone(null);
                                         mTarefasTODO.add(doneTarefa);
                                         mAdapterTODO.notifyDataSetChanged();
 
