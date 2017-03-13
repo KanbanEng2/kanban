@@ -1,10 +1,10 @@
 package br.ufrr.eng2.kanban;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,15 +16,11 @@ import com.google.firebase.auth.FirebaseUser;
 
 import br.ufrr.eng2.kanban.service.login.GithubLogin;
 import br.ufrr.eng2.kanban.service.login.GoogleLogin;
-import br.ufrr.eng2.kanban.service.login.LoginInterface;
 import br.ufrr.eng2.kanban.service.login.LoginCallback;
+import br.ufrr.eng2.kanban.service.login.LoginInterface;
 
 
 public class LoginActivity extends AppCompatActivity implements LoginCallback, View.OnClickListener {
-
-    /**
-     * TODO: Colocar uma barra de progresso durante os logins
-     */
 
     ProgressBar mProgressBar;
     private AlertDialog mAlertProgressCard;

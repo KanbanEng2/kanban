@@ -70,8 +70,6 @@
                         android:padding="6dp"
                         tools:text="#Design" />
 
-                    <!-- TODO: Lista horizontal de usuários -->
-                    <!-- TODO: Usar máscara redonda para fotos -->
                     <ImageView
                         android:id="@+id/user"
                         android:layout_width="26dp"
