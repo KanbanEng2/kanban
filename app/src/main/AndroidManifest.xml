@@ -26,7 +26,7 @@
             android:name=".ProjectActivity"
             android:parentActivityName=".MainActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme.AppCompat.Light"/>
+            android:theme="@style/AppTheme.ProjectActivity"/>
         <activity
             android:name=".TaskActivity"
             android:parentActivityName=".MainActivity"

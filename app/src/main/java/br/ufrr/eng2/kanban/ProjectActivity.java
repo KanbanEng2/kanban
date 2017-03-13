@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.Menu;
 import android.view.View;
 
 import com.google.firebase.database.DataSnapshot;
@@ -48,8 +49,9 @@ public class ProjectActivity extends AppCompatActivity {
 
         FirebaseDatabase database = FirebaseDatabase.getInstance();
 
-        if (getSupportActionBar() != null)
+        if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
 
         Bundle b = getIntent().getExtras();
         if (b != null) {
@@ -65,7 +67,7 @@ public class ProjectActivity extends AppCompatActivity {
                     if (child.getKey().equals(projectId)) {
                         mProject = child.getValue(Projeto.class);
                         if (getSupportActionBar() != null)
-                            getSupportActionBar().setTitle(String.format(getString(R.string.project_members_title), mProject.getNomeProjeto()));
+                            getSupportActionBar().setTitle(mProject.getNomeProjeto());
                     }
                 }
             }
@@ -163,10 +165,6 @@ public class ProjectActivity extends AppCompatActivity {
 
     }
 
-    private void showOwner(Usuario user) {
-
-    }
-
     private void onAddMember(String key) {
         Intent i = new Intent();
         i.putExtra("user", key);
@@ -197,5 +195,11 @@ public class ProjectActivity extends AppCompatActivity {
         ProjetoController.UpdateProject(projectId, mProject);
 
         setResult(1011, i);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.project, menu);
+        return true;
     }
 }
