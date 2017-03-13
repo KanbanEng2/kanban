@@ -1,6 +1,7 @@
 package br.ufrr.eng2.kanban;
 
 import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -11,6 +12,7 @@ import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewAnimationUtils;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
@@ -24,18 +26,42 @@ public class TaskActivity extends AppCompatActivity implements Transition.Transi
     private MaterialSpinner spinner;
     private EditText description;
     private Switch assignSwitch;
+    private View mToolbarBackground;
+    private boolean animationFinished = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_task);
 
-        View colorView = (View) findViewById(R.id.toolbar_background);
+
+        mToolbarBackground = (View) findViewById(R.id.toolbar_background);
         String[] ITEMS = {"Análise", "Correção", "Desenvolvimento"};
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, ITEMS);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner = (MaterialSpinner) findViewById(R.id.spinner);
         spinner.setAdapter(adapter);
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                switch (spinner.getSelectedItemPosition()) {
+                    case 0:
+                        changeToolbarColorAnimated(getColorFromCategory(Tarefa.CATEGORIA_ANALISE));
+                        break;
+                    case 1:
+                        changeToolbarColorAnimated(getColorFromCategory(Tarefa.CATEGORIA_CORRECAO));
+                        break;
+                    case 2:
+                        changeToolbarColorAnimated(getColorFromCategory(Tarefa.CATEGORIA_DESENVOLVIMENTO));
+                        break;
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
 
         String tarefaTitle = "Título da Tarefa";
 
@@ -44,20 +70,18 @@ public class TaskActivity extends AppCompatActivity implements Transition.Transi
 
 
         Bundle b = getIntent().getExtras();
-        if (b != null){
+        if (b != null) {
             tarefaTitle = b.getString("title");
             int category = b.getInt("category");
+            mToolbarBackground.setBackgroundColor(getColorFromCategory(category));
             switch (category) {
                 case Tarefa.CATEGORIA_ANALISE:
-                    colorView.setBackgroundColor(getResources().getColor(R.color.category_analysis));
                     spinner.setSelection(0);
                     break;
                 case Tarefa.CATEGORIA_CORRECAO:
-                    colorView.setBackgroundColor(getResources().getColor(R.color.category_fix));
                     spinner.setSelection(1);
                     break;
                 case Tarefa.CATEGORIA_DESENVOLVIMENTO:
-                    colorView.setBackgroundColor(getResources().getColor(R.color.category_development));
                     spinner.setSelection(2);
                     break;
             }
@@ -67,7 +91,6 @@ public class TaskActivity extends AppCompatActivity implements Transition.Transi
             if (assumed != 0) {
                 assignSwitch.setChecked(true);
             }
-
 
         }
 
@@ -86,6 +109,58 @@ public class TaskActivity extends AppCompatActivity implements Transition.Transi
         getSupportActionBar().setTitle(tarefaTitle);
     }
 
+    private void changeToolbarColorAnimated(final int color) {
+        if (!animationFinished)
+            return;
+
+        final View backgroundReveal = findViewById(R.id.toolbar_background_reveal);
+
+        int cx = (backgroundReveal.getLeft() + backgroundReveal.getRight()) / 2;
+        int cy = backgroundReveal.getBottom();
+
+        Animator circularReveal =
+                ViewAnimationUtils.createCircularReveal(backgroundReveal, cx, cy, 0, backgroundReveal.getWidth());
+
+        circularReveal.setDuration(500);
+
+        circularReveal.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationStart(Animator animation) {
+                backgroundReveal.setBackgroundColor(color);
+                backgroundReveal.setVisibility(View.VISIBLE);
+                super.onAnimationStart(animation);
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                mToolbarBackground.setBackgroundColor(color);
+                backgroundReveal.setVisibility(View.GONE);
+                super.onAnimationEnd(animation);
+            }
+        });
+        circularReveal.start();
+    }
+
+    /**
+     * Pega a cor do XML baseando-se na categoria
+     *
+     * @param category um dos seguintes inteiros {@link Tarefa#CATEGORIA_ANALISE} | {@link Tarefa#CATEGORIA_CORRECAO} |
+     *                 {@link Tarefa#CATEGORIA_DESENVOLVIMENTO}
+     * @return Um inteiro 0xAARRGGBB correspondente à cor.
+     */
+    private int getColorFromCategory(int category) {
+        switch (category) {
+            case Tarefa.CATEGORIA_ANALISE:
+                return getResources().getColor(R.color.category_analysis);
+            case Tarefa.CATEGORIA_CORRECAO:
+                return getResources().getColor(R.color.category_fix);
+            case Tarefa.CATEGORIA_DESENVOLVIMENTO:
+                return getResources().getColor(R.color.category_development);
+            default:
+                return -1;
+        }
+    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -101,7 +176,7 @@ public class TaskActivity extends AppCompatActivity implements Transition.Transi
 
     private void setResultActivity() {
         Intent i = new Intent();
-        switch(spinner.getSelectedItemPosition()) {
+        switch (spinner.getSelectedItemPosition()) {
             case 0:
                 i.putExtra("category", Tarefa.CATEGORIA_ANALISE);
                 break;
@@ -121,10 +196,8 @@ public class TaskActivity extends AppCompatActivity implements Transition.Transi
     }
 
     @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event)
-    {
-        if ((keyCode == KeyEvent.KEYCODE_BACK))
-        {
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if ((keyCode == KeyEvent.KEYCODE_BACK)) {
 
             setResultActivity();
         }
@@ -138,11 +211,7 @@ public class TaskActivity extends AppCompatActivity implements Transition.Transi
 
     @Override
     protected void onDestroy() {
-
         super.onDestroy();
-
-
-
     }
 
     @Override
@@ -161,6 +230,15 @@ public class TaskActivity extends AppCompatActivity implements Transition.Transi
 
         Animator circularReveal =
                 ViewAnimationUtils.createCircularReveal(toolbarBg, cx, cy, 0, toolbar.getWidth());
+
+        circularReveal.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                animationFinished = true;
+                super.onAnimationEnd(animation);
+            }
+        });
+        circularReveal.setDuration(500);
 
         circularReveal.start();
 
