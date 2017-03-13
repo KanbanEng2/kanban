@@ -1,6 +1,7 @@
 package br.ufrr.eng2.kanban;
 
 import android.animation.Animator;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.RectF;
@@ -11,6 +12,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.transition.Transition;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewAnimationUtils;
 import android.view.animation.AnimationSet;
@@ -36,7 +38,6 @@ public class TaskActivity extends AppCompatActivity implements Transition.Transi
         setContentView(R.layout.activity_task);
 
         View colorView = (View) findViewById(R.id.toolbar_background);
-//        TODO: Colocar as strings no XML
         String[] ITEMS = {"Análise", "Correção", "Desenvolvimento"};
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, ITEMS);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -52,15 +53,15 @@ public class TaskActivity extends AppCompatActivity implements Transition.Transi
             switch (category) {
                 case Tarefa.CATEGORIA_ANALISE:
                     colorView.setBackgroundColor(Color.parseColor("#9C27B0"));
-                    spinner.setSelection(0);
+                    spinner.setSelection(1);
                     break;
                 case Tarefa.CATEGORIA_CORRECAO:
                     colorView.setBackgroundColor(Color.parseColor("#FF5722"));
-                    spinner.setSelection(1);
+                    spinner.setSelection(2);
                     break;
                 case Tarefa.CATEGORIA_DESENVOLVIMENTO:
                     colorView.setBackgroundColor(Color.parseColor("#9E9E9E"));
-                    spinner.setSelection(2);
+                    spinner.setSelection(3);
                     break;
             }
         }
@@ -76,10 +77,43 @@ public class TaskActivity extends AppCompatActivity implements Transition.Transi
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-
-
         getWindow().getSharedElementEnterTransition().addListener(this);
         getSupportActionBar().setTitle(tarefaTitle);
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event)
+    {
+        if ((keyCode == KeyEvent.KEYCODE_BACK))
+        {
+            Intent i = new Intent();
+            switch(spinner.getSelectedItemPosition()) {
+                case 1:
+                    i.putExtra("category", Tarefa.CATEGORIA_ANALISE);
+                    break;
+                case 2:
+                    i.putExtra("category", Tarefa.CATEGORIA_CORRECAO);
+                    break;
+                case 3:
+                    i.putExtra("category", Tarefa.CATEGORIA_DESENVOLVIMENTO);
+                    break;
+            }
+
+            setResult(1010, i);
+
+        }
+        return super.onKeyDown(keyCode, event);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+    }
+
+    @Override
+    protected void onDestroy() {
+
+        super.onDestroy();
 
 
 

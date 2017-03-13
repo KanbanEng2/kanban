@@ -685,6 +685,8 @@ public class MainActivity extends AppCompatActivity
         Intent i = new Intent(this, TaskActivity.class);
         i.putExtra("title", t.getNomeTarefa());
         i.putExtra("category", t.getCategoriaTarefa());
+        i.putExtra("description", t.getDescricaoTarefa());
+        i.putExtra("assumed", t.getOwnedId() == this.user.getUid() ? 1 : 0);
         currentTarefa = t;
         currentTarefaEstado = t.getEstadoTarefa();
         startActivityForResult(i, TaskActivityResult, options.toBundle());
@@ -712,8 +714,15 @@ public class MainActivity extends AppCompatActivity
                         break;
                 }
                 int category = data.getIntExtra("category", currentTarefa.getCategoriaTarefa());
-                Log.d("TASK", "cheguei aqui");
                 currentTarefa.setCategoriaTarefa(category);
+
+                int assumed = data.getIntExtra("assumed", currentTarefa.getOwnedId() == this.user.getUid() ? 1 : 0);
+                if (assumed == 1) {
+                    currentTarefa.setOwnedId(this.user.getUid());
+                }
+
+                String description = data.getStringExtra("description");
+                currentTarefa.setDescricaoTarefa(description);
 
                 switch(currentTarefaEstado) {
                     case Tarefa.ESTADO_TODO:
