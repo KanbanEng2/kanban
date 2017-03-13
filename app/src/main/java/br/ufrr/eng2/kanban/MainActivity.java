@@ -744,8 +744,20 @@ public class MainActivity extends AppCompatActivity
         } else if (requestCode == 1011) {
             if (data != null) {
                 String user = data.getStringExtra("user");
-                UsuarioController.UpdateUserProjects(user, currentProjectId);
-                projeto.getMembrosProjeto().add(user);
+                if (data.getBooleanExtra("remove", false)) {
+                    UsuarioController.RemoveUserFromProject(user, currentProjectId);
+                    projeto.getMembrosProjeto().remove(user);
+                    for( Tarefa t : projeto.getTarefasProjeto()) {
+                        if (t.getOwnedId() != null  ) {
+                            if (t.getOwnedId().equals(user)) {
+                                t.setOwnedId(null);
+                            }
+                        }
+                    }
+                } else {
+                    UsuarioController.UpdateUserProjects(user, currentProjectId);
+                    projeto.getMembrosProjeto().add(user);
+                }
                 updateCurrentProject();
             }
         }

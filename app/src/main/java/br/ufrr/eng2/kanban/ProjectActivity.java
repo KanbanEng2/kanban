@@ -126,14 +126,20 @@ public class ProjectActivity extends AppCompatActivity {
     private void onAddMember(String key) {
         Intent i = new Intent();
         i.putExtra("user", key);
+        i.putExtra("remove", false);
 
         setResult(1011, i);
         finish();
 
     }
 
-    private void onRemoveMember(String Key) {
+    private void onRemoveMember(String key) {
+        Intent i = new Intent();
+        i.putExtra("user", key);
+        i.putExtra("remove", true);
 
+        setResult(1011, i);
+        finish();
     }
 
 

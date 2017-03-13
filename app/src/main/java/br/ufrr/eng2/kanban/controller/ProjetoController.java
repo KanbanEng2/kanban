@@ -22,9 +22,19 @@ public class ProjetoController {
         String pId = myRef.push().getKey();
         myRef.child(pId).setValue(projeto);
 
-
         UsuarioController.UpdateUserProjects(projeto.getOwnerUuid(), pId);
         return pId;
+    }
+
+    public static void RemoveProjectMember(String pId, Projeto projeto, String userId) {
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference myRef = database.getReference("projects");
+        if (projeto.getMembrosProjeto() != null) {
+            projeto.getMembrosProjeto().remove(userId);
+        }
+
+        myRef.child(pId).setValue(projeto);
+        UsuarioController.RemoveUserFromProject(userId, pId);
     }
 
     public static void UpdateProject(String pId, Projeto projeto) {

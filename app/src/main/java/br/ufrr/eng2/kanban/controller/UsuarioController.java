@@ -76,7 +76,31 @@ public class UsuarioController {
                         // ...
                     }
                 });
-
     }
 
+    public static void RemoveUserFromProject(String Id, String pId) {
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        final DatabaseReference myRef = database.getReference("user");
+        final String userId = Id;
+        final String projectId = pId;
+        myRef.child(userId).addListenerForSingleValueEvent(
+                new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        // Get user value
+                        Usuario user = dataSnapshot.getValue(Usuario.class);
+                        if(user.getProjetos() == null) {
+                            user.setProjetos(new ArrayList<String>()) ;
+                        }
+                        user.getProjetos().remove(projectId);
+                        myRef.child(userId).setValue(user);
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                        Log.w("Firebase", "getUser:onCancelled", databaseError.toException());
+                        // ...
+                    }
+                });
+    }
 }
