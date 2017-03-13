@@ -18,21 +18,35 @@ import java.util.ArrayList;
 import java.util.List;
 
 import br.ufrr.eng2.kanban.adapter.UsuarioAdapter;
+import br.ufrr.eng2.kanban.model.Projeto;
 import br.ufrr.eng2.kanban.model.Usuario;
 import br.ufrr.eng2.kanban.widget.RecyclerViewEmpty;
 
 public class ProjectActivity extends AppCompatActivity {
 
     private RecyclerViewEmpty mRecyclerView;
-    private UsuarioAdapter.ClickCallback mCallback;
+    private UsuarioAdapter.ClickCallback mCallbackUsers;
+    private UsuarioAdapter.ClickCallback mCallbackMembers;
     private UsuarioAdapter mAdapter;
     private List<Usuario> mUsuario;
     private List<String> mKeys;
+    private List<Usuario> members;
+    private List<String> membersKeys;
+    private RecyclerViewEmpty membersRecyclerView;
+
+    String projectId = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_project);
+
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+
+        Bundle b = getIntent().getExtras();
+        if (b != null) {
+            projectId = b.getString("projectId", "");
+            }
 
         mRecyclerView = (RecyclerViewEmpty) findViewById(R.id.add_members_list);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this);
@@ -41,14 +55,13 @@ public class ProjectActivity extends AppCompatActivity {
         mRecyclerView.setEmptyView(findViewById(R.id.empty_add_members_text));
 
         // TODO: Popular com os usuários deste projeto
-        RecyclerViewEmpty membersRecyclerView = (RecyclerViewEmpty) findViewById(R.id.current_members_list);
+        membersRecyclerView = (RecyclerViewEmpty) findViewById(R.id.current_members_list);
         membersRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         membersRecyclerView.setItemAnimator(new DefaultItemAnimator());
         membersRecyclerView.setEmptyView(findViewById(R.id.empty_members_list_text));
-        membersRecyclerView.setAdapter(new UsuarioAdapter(new ArrayList<Usuario>(), null));
 
 
-        mCallback = new UsuarioAdapter.ClickCallback() {
+        mCallbackUsers = new UsuarioAdapter.ClickCallback() {
             @Override
             public void onClick(View v, Usuario user) {
                 int index = mUsuario.indexOf(user);
@@ -56,19 +69,46 @@ public class ProjectActivity extends AppCompatActivity {
             }
         };
 
-        ValueEventListener tasksListener = new ValueEventListener() {
+        mCallbackMembers = new UsuarioAdapter.ClickCallback() {
+            @Override
+            public void onClick(View v, Usuario user) {
+                int index = members.indexOf(user);
+                onRemoveMember(membersKeys.get(index));
+            }
+        };
+
+
+        ValueEventListener usersListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 mUsuario = new ArrayList<>();
                 mKeys = new ArrayList<>();
+
+                members = new ArrayList<>();
+                membersKeys = new ArrayList<>();
                 for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
-                    mKeys.add(postSnapshot.getKey());
                     Usuario user = postSnapshot.getValue(Usuario.class);
-                    mUsuario.add(user);
+
+                    if (user.getProjetos() != null) {
+                        if (user.getProjetos().contains(projectId)){
+                            members.add(user);
+                            membersKeys.add(postSnapshot.getKey());
+
+                        } else {
+                            mKeys.add(postSnapshot.getKey());
+                            mUsuario.add(user);
+                        }
+                    } else {
+                        mKeys.add(postSnapshot.getKey());
+                        mUsuario.add(user);
+                    }
                 }
 
-                mAdapter = new UsuarioAdapter(mUsuario, mCallback);
+                mAdapter = new UsuarioAdapter(mUsuario, mCallbackUsers);
                 mRecyclerView.setAdapter(mAdapter);
+
+
+                membersRecyclerView.setAdapter(new UsuarioAdapter(members, mCallbackMembers));
             }
 
             @Override
@@ -77,9 +117,9 @@ public class ProjectActivity extends AppCompatActivity {
             }
         };
 
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference myRef = database.getReference("user");
-        myRef.addValueEventListener(tasksListener);
+
+        DatabaseReference userReference = database.getReference("user");
+        userReference.addValueEventListener(usersListener);
 
     }
 
@@ -89,6 +129,10 @@ public class ProjectActivity extends AppCompatActivity {
 
         setResult(1011, i);
         finish();
+
+    }
+
+    private void onRemoveMember(String Key) {
 
     }
 
