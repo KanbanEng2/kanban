@@ -713,30 +713,33 @@ public class MainActivity extends AppCompatActivity
                         mTarefasDONE.remove(currentTarefa);
                         break;
                 }
-                int category = data.getIntExtra("category", currentTarefa.getCategoriaTarefa());
-                currentTarefa.setCategoriaTarefa(category);
 
-                int assumed = data.getIntExtra("assumed", currentTarefa.getOwnedId() == this.user.getUid() ? 1 : 0);
-                if (assumed == 1) {
-                    currentTarefa.setOwnedId(this.user.getUid());
-                }
+                if (!data.getBooleanExtra("remove",false)) {
+                    int category = data.getIntExtra("category", currentTarefa.getCategoriaTarefa());
+                    currentTarefa.setCategoriaTarefa(category);
 
-                String description = data.getStringExtra("description");
-                currentTarefa.setDescricaoTarefa(description);
+                    int assumed = data.getIntExtra("assumed", currentTarefa.getOwnedId() == this.user.getUid() ? 1 : 0);
+                    if (assumed == 1) {
+                        currentTarefa.setOwnedId(this.user.getUid());
+                    }
 
-                switch(currentTarefaEstado) {
-                    case Tarefa.ESTADO_TODO:
-                        mTarefasTODO.add(id, currentTarefa);
-                        mAdapterTODO.notifyItemChanged(id);
-                        break;
-                    case Tarefa.ESTADO_DOING:
-                        mTarefasDOING.add(id, currentTarefa);
-                        mAdapterDOING.notifyItemChanged(id);
-                        break;
-                    case Tarefa.ESTADO_DONE:
-                        mTarefasDONE.add(id, currentTarefa);
-                        mAdapterDONE.notifyItemChanged(id);
-                        break;
+                    String description = data.getStringExtra("description");
+                    currentTarefa.setDescricaoTarefa(description);
+
+                    switch (currentTarefaEstado) {
+                        case Tarefa.ESTADO_TODO:
+                            mTarefasTODO.add(id, currentTarefa);
+                            mAdapterTODO.notifyItemChanged(id);
+                            break;
+                        case Tarefa.ESTADO_DOING:
+                            mTarefasDOING.add(id, currentTarefa);
+                            mAdapterDOING.notifyItemChanged(id);
+                            break;
+                        case Tarefa.ESTADO_DONE:
+                            mTarefasDONE.add(id, currentTarefa);
+                            mAdapterDONE.notifyItemChanged(id);
+                            break;
+                    }
                 }
 
                 updateCurrentProject();

@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.transition.Transition;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -162,6 +163,7 @@ public class TaskActivity extends AppCompatActivity implements Transition.Transi
         }
     }
 
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -170,8 +172,20 @@ public class TaskActivity extends AppCompatActivity implements Transition.Transi
                 setResultActivity();
                 supportFinishAfterTransition();
                 return true;
+            case R.id.action_delete:
+                removeTask();
+                supportFinishAfterTransition();
+                return true;
+
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void removeTask() {
+        Intent i = new Intent();
+        i.putExtra("remove", true);
+
+        setResult(1010, i);
     }
 
 
@@ -189,6 +203,7 @@ public class TaskActivity extends AppCompatActivity implements Transition.Transi
                 break;
         }
 
+        i.putExtra("remove", false);
         int assumed = assignSwitch.isChecked() ? 1 : 0;
         i.putExtra("assumed", assumed);
         i.putExtra("description", description.getText().toString());
