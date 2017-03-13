@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.transition.Transition;
 import android.view.KeyEvent;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewAnimationUtils;
 import android.view.animation.AnimationSet;
@@ -98,29 +99,46 @@ public class TaskActivity extends AppCompatActivity implements Transition.Transi
     }
 
     @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+                switch (item.getItemId()) {
+                        // Retornar a animação ao pressionar o "up"
+                            case android.R.id.home:
+                                setResultActivity();
+                               supportFinishAfterTransition();
+                               return true;
+                    }
+               return super.onOptionsItemSelected(item);
+            }
+
+            
+    private void setResultActivity() {
+        Intent i = new Intent();
+        switch(spinner.getSelectedItemPosition()) {
+            case 0:
+                i.putExtra("category", Tarefa.CATEGORIA_ANALISE);
+                break;
+            case 1:
+                i.putExtra("category", Tarefa.CATEGORIA_CORRECAO);
+                break;
+            case 2:
+                i.putExtra("category", Tarefa.CATEGORIA_DESENVOLVIMENTO);
+                break;
+        }
+
+        int assumed = assignSwitch.isChecked() ? 1 : 0;
+        i.putExtra("assumed", assumed);
+        i.putExtra("description", description.getText().toString());
+
+        setResult(1010, i);
+    }
+
+    @Override
     public boolean onKeyDown(int keyCode, KeyEvent event)
     {
         if ((keyCode == KeyEvent.KEYCODE_BACK))
         {
-            Intent i = new Intent();
-            switch(spinner.getSelectedItemPosition()) {
-                case 0:
-                    i.putExtra("category", Tarefa.CATEGORIA_ANALISE);
-                    break;
-                case 1:
-                    i.putExtra("category", Tarefa.CATEGORIA_CORRECAO);
-                    break;
-                case 2:
-                    i.putExtra("category", Tarefa.CATEGORIA_DESENVOLVIMENTO);
-                    break;
-            }
 
-            int assumed = assignSwitch.isChecked() ? 1 : 0;
-            i.putExtra("assumed", assumed);
-            i.putExtra("description", description.getText().toString());
-
-            setResult(1010, i);
-
+            setResultActivity();
         }
         return super.onKeyDown(keyCode, event);
     }
