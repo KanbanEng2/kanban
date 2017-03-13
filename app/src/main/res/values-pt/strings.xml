@@ -33,4 +33,5 @@
     <string name="title_signin_twitter">Login com Twitter</string>
     <string name="tasks_empty_text">Nenhuma tarefa.</string>
     <string name="action_manage_project">Gerenciar projeto…</string>
+    <string name="action_delete">Excluir</string>
 </resources>
