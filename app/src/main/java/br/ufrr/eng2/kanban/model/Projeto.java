@@ -1,21 +1,17 @@
 package br.ufrr.eng2.kanban.model;
 
+import java.util.List;
+
 /**
  * Modelo para Projeto
  */
 
 public class Projeto {
-    private int uuid;
-    private String nomeProjeto;
-    private int ownerUuid;
 
-    public int getUuid() {
-        return uuid;
+
+    public Projeto() {
     }
 
-    public void setUuid(int uuid) {
-        this.uuid = uuid;
-    }
 
     public String getNomeProjeto() {
         return nomeProjeto;
@@ -25,18 +21,39 @@ public class Projeto {
         this.nomeProjeto = nomeProjeto;
     }
 
-    public int getOwnerUuid() {
+    public List<String> getMembrosProjeto() {
+        return membrosProjeto;
+    }
+
+    public void setMembrosProjeto(List<String> membrosProjeto) {
+        this.membrosProjeto = membrosProjeto;
+    }
+
+    public List<Tarefa> getTarefasProjeto() {
+        return tarefasProjeto;
+    }
+
+    public void setTarefasProjeto(List<Tarefa> tarefasProjeto) {
+        this.tarefasProjeto = tarefasProjeto;
+    }
+
+    public String getOwnerUuid() {
         return ownerUuid;
     }
 
-    public void setOwnerUuid(int ownerUuid) {
+    public void setOwnerUuid(String ownerUuid) {
         this.ownerUuid = ownerUuid;
     }
 
-    public Projeto(int uuid, String nomeProjeto, int ownerUuid) {
+    private String nomeProjeto;
+    private List<String> membrosProjeto;
+    private List<Tarefa> tarefasProjeto;
+    private String ownerUuid;
 
-        this.uuid = uuid;
+    public Projeto(String nomeProjeto, List<String> membrosProjeto, List<Tarefa> tarefasProjeto, String ownerUuid) {
         this.nomeProjeto = nomeProjeto;
+        this.membrosProjeto = membrosProjeto;
+        this.tarefasProjeto = tarefasProjeto;
         this.ownerUuid = ownerUuid;
     }
 }

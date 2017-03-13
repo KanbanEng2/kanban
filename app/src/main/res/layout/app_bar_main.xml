@@ -15,6 +15,7 @@
         android:background="#efefef"
         android:id="@+id/coordinatorLayout"
         android:fitsSystemWindows="true"
+        android:overScrollMode="always"
         tools:context="br.ufrr.eng2.kanban.MainActivity">
 
         <android.support.design.widget.AppBarLayout
@@ -58,6 +59,7 @@
         app:bb_activeTabColor="#FFFFFF"
         app:bb_inActiveTabAlpha="0.6"
         app:bb_inActiveTabColor="#FFFFFF"
-        app:bb_tabXmlResource="@xml/tabs" />
+        app:bb_tabXmlResource="@xml/tabs"
+        android:layout_marginTop="-8dp"/>
 
 </LinearLayout>

@@ -32,7 +32,7 @@ public class GithubLogin extends OAuthLogin {
 
     public GithubLogin(Context context, FirebaseAuth auth){
         super(context, auth);
-        this.title = "Logar com o GitHub";
+        this.title = context.getString(R.string.title_signin_github);
 
         this.oAuthUrl = this.context.getString(R.string.github_oauth_url);
         this.redirectUrl = this.context.getString(R.string.github_redirect_url);

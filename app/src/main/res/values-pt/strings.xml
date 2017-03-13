@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="activity_task_description">Descrição</string>
+    <string name="activity_task_assign">Assumir</string>
+    <string name="activity_task_category_hint">Categoria</string>
+    <string name="action_settings">Configurações</string>
+    <string name="add">Adicionar</string>
+    <string name="alert_dialog_add_project_top_title">Adicionar Projeto</string>
+    <string name="alert_dialog_progress_title">Acessando Dados</string>
+    <string name="alert_dialog_add_card_description_field">Descrição</string>
+    <string name="alert_dialog_add_card_title_field">Título</string>
+    <string name="alert_dialog_add_card_top_title">Adicionar tarefa</string>
+    <string name="alert_dialog_string_empty_error">Campo obrigatório</string>
+    <string name="cancel">Cancelar</string>
+    <string name="navigation_drawer_close">Fechar painel de navegação</string>
+    <string name="navigation_drawer_open">Abrir painel de navegação</string>
+    <string name="action_search">Pesquisar</string>
+    <string name="snack_action_undo">Desfazer</string>
+    <string name="snack_task_moved">Tarefa movida para %s</string>
+    <string name="snack_task_added">Tarefa adicionada em %s</string>
+    <string name="action_sign_out">Desconectar</string>
+    <string name="action_add_project">Adicionar projeto</string>
+    <string name="action_filter">Filtrar</string>
+    <string name="action_rename">Renomear</string>
+    <string name="progress_signin">Fazendo login…</string>
+    <string name="action_signin_facebook">Fazer login com o Facebook</string>
+    <string name="action_signin_github">Fazer login com o Github</string>
+    <string name="action_signin_google">Fazer login com o Google</string>
+    <string name="action_signin_twitter">Fazer login com o Twitter</string>
+    <string name="title_signin_facebook">Login com Facebook</string>
+    <string name="title_signin_github">Login com Github</string>
+    <string name="title_signin_google">Login com Google</string>
+    <string name="title_signin_twitter">Login com Twitter</string>
+    <string name="tasks_empty_text">Nenhuma tarefa.</string>
+    <string name="action_manage_project">Gerenciar projeto…</string>
+</resources>

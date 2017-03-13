@@ -2,47 +2,37 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <group
+        android:orderInCategory="101"
         android:id="@+id/menu_group_projects"
         android:checkableBehavior="single">
         <item
-            android:checked="true"
-            android:icon="@drawable/ic_assignment"
-            android:title="Projeto de exemplo A" />
-        <item
-            android:icon="@drawable/ic_assignment"
-            android:title="Projeto de exemplo B" />
-        <item
+            android:id="@+id/add_project"
+            android:checkable="false"
             android:icon="@drawable/ic_action_add"
-            android:title="Add project" />
-        <!--<item-->
-        <!--android:id="@+id/nav_camera"-->
-        <!--android:icon="@drawable/ic_menu_camera"-->
-        <!--android:title="Import" />-->
-        <!--<item-->
-        <!--android:id="@+id/nav_gallery"-->
-        <!--android:icon="@drawable/ic_menu_gallery"-->
-        <!--android:title="Gallery" />-->
-        <!--<item-->
-        <!--android:id="@+id/nav_slideshow"-->
-        <!--android:icon="@drawable/ic_menu_slideshow"-->
-        <!--android:title="Slideshow" />-->
-        <!--<item-->
-        <!--android:id="@+id/nav_manage"-->
-        <!--android:icon="@drawable/ic_menu_manage"-->
-        <!--android:title="Tools" />-->
+            android:title="@string/action_add_project" />
     </group>
 
     <group
+        android:orderInCategory="101"
+        android:id="@+id/menu_group_external">
+        <item
+            android:id="@+id/nav_launch_communication"
+            android:title="Communication app"/>
+        <item
+            android:id="@+id/nav_launch_statistics"
+            android:title="Statistics app"/>
+    </group>
+
+    <group
+        android:orderInCategory="101"
         android:id="@+id/menu_group_settings">
         <item
             android:id="@+id/nav_settings"
             android:icon="@drawable/ic_settings"
-            android:title="Settings" />
+            android:title="@string/action_settings" />
+        <item
+            android:id="@+id/sign_out"
+            android:icon="@drawable/ic_exit"
+            android:title="@string/action_sign_out" />
     </group>
-
-    <!-- TODO: Coloar um separador aqui e mudar o icone -->
-    <item
-        android:id="@+id/sign_out"
-        android:icon="@drawable/ic_person"
-        android:title="Sign Out" />
 </menu>

@@ -2,12 +2,15 @@ package br.ufrr.eng2.kanban;
 
 import android.content.Intent;
 import android.support.annotation.NonNull;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ProgressBar;
 
+import com.google.android.gms.common.SignInButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -17,13 +20,14 @@ import br.ufrr.eng2.kanban.service.login.LoginInterface;
 import br.ufrr.eng2.kanban.service.login.LoginCallback;
 
 
-public class LoginActivity extends AppCompatActivity implements LoginCallback {
+public class LoginActivity extends AppCompatActivity implements LoginCallback, View.OnClickListener {
 
     /**
      * TODO: Colocar uma barra de progresso durante os logins
      */
 
     ProgressBar mProgressBar;
+    private AlertDialog mAlertProgressCard;
 
     protected FirebaseAuth auth;
     protected FirebaseAuth.AuthStateListener authListener;
@@ -36,6 +40,15 @@ public class LoginActivity extends AppCompatActivity implements LoginCallback {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_login);
+
+
+        CreateDialogProgressCard();
+
+        SignInButton signInButton = (SignInButton) findViewById(R.id.google_sign);
+        signInButton.setSize(SignInButton.SIZE_WIDE);
+        signInButton.setOnClickListener(this);
+//        signInButton.setColorScheme(SignInButton.COLOR_DARK);
+
         this.auth = FirebaseAuth.getInstance();
         this.authListener = new FirebaseAuth.AuthStateListener() {
             @Override
@@ -82,14 +95,26 @@ public class LoginActivity extends AppCompatActivity implements LoginCallback {
 
     public void gotoMain(View v) {
         startActivity(new Intent(this, MainActivity.class));
+        finish();
+    }
+
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.google_sign:
+                onClickGoogleSign(view);
+        }
     }
 
     public void onClickGoogleSign(View v) {
-        this.googleLogin.singIn();
+        this.googleLogin.signIn();
+        mAlertProgressCard.show();
     }
 
     public void onClickGithubSign(View v) {
-        this.githubLogin.singIn();
+
+        this.githubLogin.signIn();
+        mAlertProgressCard.show();
     }
 
     /**
@@ -97,6 +122,7 @@ public class LoginActivity extends AppCompatActivity implements LoginCallback {
      */
     @Override
     public void onLoginError(Object info, int errorCode, LoginInterface loginInterface) {
+        mAlertProgressCard.dismiss();
         switch (loginInterface.getProviderId()){
             case GoogleLogin.GOOGLE_SIGN_INTENT:
                 Log.d("Sign", "google fail; code: " + String.valueOf(errorCode));
@@ -110,6 +136,7 @@ public class LoginActivity extends AppCompatActivity implements LoginCallback {
 
     @Override
     public void onSuccess(Object info, LoginInterface loginInterface) {
+        mAlertProgressCard.dismiss();
         switch (loginInterface.getProviderId()){
             case GoogleLogin.GOOGLE_SIGN_INTENT:
                 Log.d("Sign", "google success");
@@ -128,5 +155,19 @@ public class LoginActivity extends AppCompatActivity implements LoginCallback {
 
     public void onSignedOut(){
         Log.d("Session", "Signed_out");
+    }
+
+
+    private void CreateDialogProgressCard() {
+        LayoutInflater li = getLayoutInflater();
+        View view = li.inflate(R.layout.alert_dialog_progress_card, null);
+        AlertDialog.Builder alert_builder = new AlertDialog.Builder(this);
+        alert_builder.setView(view);
+
+        alert_builder.setTitle(getString(R.string.alert_dialog_progress_title));
+
+
+        mAlertProgressCard = alert_builder.create();
+
     }
 }

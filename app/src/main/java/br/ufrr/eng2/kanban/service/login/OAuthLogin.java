@@ -51,7 +51,7 @@ public abstract class OAuthLogin implements LoginInterface {
     }
 
     @Override
-    public void singIn(){
+    public void signIn(){
         Intent signInIntent = new Intent(this.context, OAuthActivity.class);
 
         signInIntent.putExtra("windowTitle", this.title);
@@ -75,7 +75,6 @@ public abstract class OAuthLogin implements LoginInterface {
         else{
             ((LoginCallback) this.context).onLoginError(data, ERROR_RESULT_FAIL, this);
         }
-
     }
 
     protected abstract void onAfterActivityResult(int requestCode, int resultCode, Intent data);

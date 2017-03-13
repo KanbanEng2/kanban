@@ -1,5 +1,7 @@
 package br.ufrr.eng2.kanban.model;
 
+import java.util.Date;
+
 /**
  * Modelo para Tarefa
  */
@@ -15,17 +17,16 @@ public class Tarefa {
     static public final int CATEGORIA_DESENVOLVIMENTO = 2331;
     static public final int CATEGORIA_CORRECAO = 2332;
 
-    private int uuid;
-    private String nomeTarefa;
-    private String descricaoTarefa;
-    private int estadoTarefa;
-
-    public int getUuid() {
-        return uuid;
+    public Tarefa(String nomeTarefa, String descricaoTarefa, int estadoTarefa, String encerramentoTarefa, int categoriaTarefa) {
+        this.nomeTarefa = nomeTarefa;
+        this.descricaoTarefa = descricaoTarefa;
+        this.estadoTarefa = estadoTarefa;
+        this.encerramentoTarefa = encerramentoTarefa;
+        this.categoriaTarefa = categoriaTarefa;
     }
 
-    public void setUuid(int uuid) {
-        this.uuid = uuid;
+    public Tarefa() {
+
     }
 
     public String getNomeTarefa() {
@@ -52,6 +53,14 @@ public class Tarefa {
         this.estadoTarefa = estadoTarefa;
     }
 
+    public String getEncerramentoTarefa() {
+        return encerramentoTarefa;
+    }
+
+    public void setEncerramentoTarefa(String encerramentoTarefa) {
+        this.encerramentoTarefa = encerramentoTarefa;
+    }
+
     public int getCategoriaTarefa() {
         return categoriaTarefa;
     }
@@ -60,16 +69,21 @@ public class Tarefa {
         this.categoriaTarefa = categoriaTarefa;
     }
 
-    public Tarefa(int uuid, String nomeTarefa, String descricaoTarefa, int estadoTarefa, int categoriaTarefa) {
+    private String nomeTarefa;
+    private String descricaoTarefa;
+    private int estadoTarefa;
+    private String encerramentoTarefa;
+    private int categoriaTarefa;
 
-        this.uuid = uuid;
-        this.nomeTarefa = nomeTarefa;
-        this.descricaoTarefa = descricaoTarefa;
-        this.estadoTarefa = estadoTarefa;
-        this.categoriaTarefa = categoriaTarefa;
+    public String getOwnedId() {
+        return ownedId;
     }
 
-    private int categoriaTarefa;
+    public void setOwnedId(String ownedId) {
+        this.ownedId = ownedId;
+    }
+
+    private String ownedId;
 
 
 }

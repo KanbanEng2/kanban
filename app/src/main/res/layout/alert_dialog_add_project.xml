@@ -9,28 +9,15 @@
         android:layout_height="wrap_content">
 
     <EditText
-        android:id="@+id/alert_add_card_titulo"
+        android:id="@+id/alert_add_project_titulo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/alert_dialog_add_card_title_field"
         android:inputType="text"
         android:maxLines="1"
-        android:imeOptions="actionNext"
-        android:nextFocusForward="@+id/alert_add_card_descricao"/>
+        android:imeOptions="actionNext"/>
 
     </android.support.design.widget.TextInputLayout>
 
-    <android.support.design.widget.TextInputLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <EditText
-            android:id="@+id/alert_add_card_descricao"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/alert_dialog_add_card_description_field"
-            android:maxLines="3"/>
-
-    </android.support.design.widget.TextInputLayout>
 
 </LinearLayout>
