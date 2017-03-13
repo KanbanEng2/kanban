@@ -54,7 +54,6 @@ public class ProjectActivity extends AppCompatActivity {
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
         mRecyclerView.setEmptyView(findViewById(R.id.empty_add_members_text));
 
-        // TODO: Popular com os usuários deste projeto
         membersRecyclerView = (RecyclerViewEmpty) findViewById(R.id.current_members_list);
         membersRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         membersRecyclerView.setItemAnimator(new DefaultItemAnimator());
@@ -141,6 +140,4 @@ public class ProjectActivity extends AppCompatActivity {
         setResult(1011, i);
         finish();
     }
-
-
 }
