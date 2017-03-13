@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.transition.Transition;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewAnimationUtils;
 import android.widget.ArrayAdapter;
@@ -70,6 +71,17 @@ public class TaskActivity extends AppCompatActivity implements Transition.Transi
         getWindow().getSharedElementEnterTransition().addListener(this);
         getSupportActionBar().setTitle(tarefaTitle);
 
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            // Retornar a animação ao pressionar o "up"
+            case android.R.id.home:
+                supportFinishAfterTransition();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
