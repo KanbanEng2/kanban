@@ -59,7 +59,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:orientation="vertical"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content">
 
             <Switch
                 android:id="@+id/switchAssign"
@@ -93,14 +93,10 @@
                 android:layout_marginRight="15dp"
                 android:layout_marginBottom="15dp"
                 app:ms_multiline="false"
-                app:ms_hint="@string/activity_task_category_hint"
-                app:ms_enableFloatingLabel="false"
+                app:ms_enableFloatingLabel="true"
                 app:ms_enableErrorLabel="false"
-                app:ms_floatingLabelText="floating label"
-                app:ms_thickness="1dp"
-                app:ms_arrowSize="16dp"
-                app:ms_alignLabels="false"
-                />
+                app:ms_floatingLabelText="@string/activity_task_category_hint"
+                app:ms_alignLabels="true"/>
 
 
 
