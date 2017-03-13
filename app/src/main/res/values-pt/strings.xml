@@ -34,4 +34,8 @@
     <string name="tasks_empty_text">Nenhuma tarefa.</string>
     <string name="action_manage_project">Gerenciar projeto…</string>
     <string name="action_delete">Excluir</string>
+    <string name="project_current_members_empty">Não há usuários neste projeto.</string>
+    <string name="project_section_add_members">Adicionar membros</string>
+    <string name="project_section_members">Membros neste projeto</string>
+    <string name="project_add_members_empty">Não há membros para adicionar.</string>
 </resources>

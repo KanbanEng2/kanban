@@ -30,6 +30,11 @@
     <string name="alert_dialog_add_project_top_title">Add Project</string>
     <string name="action_manage_project">Manage project…</string>
 
+    <string name="project_current_members_empty">There are no users in this project.</string>
+    <string name="project_add_members_empty">There are no more users to add.</string>
+    <string name="project_section_members">Members in this project</string>
+    <string name="project_section_add_members">Add members</string>
+
     <string name="alert_dialog_add_card_top_title">Add Task</string>
     <string name="alert_dialog_add_card_title_field">Title</string>
     <string name="alert_dialog_add_card_description_field">Description</string>

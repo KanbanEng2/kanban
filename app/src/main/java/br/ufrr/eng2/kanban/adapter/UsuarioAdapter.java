@@ -13,24 +13,16 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.ValueEventListener;
-
 import java.io.InputStream;
 import java.net.HttpURLConnection;
-import java.util.ArrayList;
 import java.util.List;
 
 import br.ufrr.eng2.kanban.R;
 import br.ufrr.eng2.kanban.model.Usuario;
-
-/**
- * Created by rafaelsa on 12/03/17.
- */
 
 public class UsuarioAdapter extends RecyclerView.Adapter<UsuarioAdapter.ViewHolder>  {
     private List<Usuario> mUsuarios;
@@ -44,7 +36,7 @@ public class UsuarioAdapter extends RecyclerView.Adapter<UsuarioAdapter.ViewHold
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.project_card_view, parent, false);
+                .inflate(R.layout.list_item_member, parent, false);
 
         return new ViewHolder(view);
     }
@@ -81,13 +73,13 @@ public class UsuarioAdapter extends RecyclerView.Adapter<UsuarioAdapter.ViewHold
     class ViewHolder extends RecyclerView.ViewHolder {
         CardView cardView;
         TextView name;
-        Button button;
+        ImageButton button;
         ImageView photo;
         ViewHolder(View itemView) {
             super(itemView);
             name = (TextView) itemView.findViewById(R.id.card_title);
             cardView = (CardView) itemView.findViewById(R.id.card_view);
-            button = (Button) itemView.findViewById(R.id.card_button);
+            button = (ImageButton) itemView.findViewById(R.id.card_button);
             photo = (ImageView) itemView.findViewById(R.id.user);
         }
     }
