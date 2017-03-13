@@ -1,22 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:padding="15dp"
-    android:layout_height="match_parent">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="15dp">
 
     <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-    <EditText
-        android:id="@+id/alert_add_card_titulo"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="@string/alert_dialog_add_card_title_field"
-        android:inputType="text"
-        android:maxLines="1"
-        android:imeOptions="actionNext"
-        android:nextFocusForward="@+id/alert_add_card_descricao"/>
+        <EditText
+            android:id="@+id/alert_add_card_titulo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/alert_dialog_add_card_title_field"
+            android:imeOptions="actionNext"
+            android:inputType="text"
+            android:maxLines="1"
+            android:nextFocusForward="@+id/alert_add_card_descricao" />
 
     </android.support.design.widget.TextInputLayout>
 
@@ -29,7 +30,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/alert_dialog_add_card_description_field"
-            android:maxLines="3"/>
+            android:maxLines="3" />
 
     </android.support.design.widget.TextInputLayout>
 

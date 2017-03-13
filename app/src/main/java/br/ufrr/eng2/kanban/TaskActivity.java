@@ -4,17 +4,13 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.icu.util.Calendar;
-import android.icu.util.GregorianCalendar;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.RequiresApi;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.transition.Transition;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -50,8 +46,6 @@ public class TaskActivity extends AppCompatActivity implements Transition.Transi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_task);
 
-
-
         mToolbarBackground = (View) findViewById(R.id.toolbar_background);
         mDatePicker = (DatePicker) findViewById(R.id.datepicker);
         callendarSwitch = (Switch) findViewById(R.id.switchDatepicker);
@@ -59,7 +53,7 @@ public class TaskActivity extends AppCompatActivity implements Transition.Transi
         callendarSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(isChecked) {
+                if (isChecked) {
                     mDatePicker.setVisibility(View.VISIBLE);
                 } else {
                     mDatePicker.setVisibility(View.GONE);
@@ -99,7 +93,6 @@ public class TaskActivity extends AppCompatActivity implements Transition.Transi
 
         description = (EditText) findViewById(R.id.task_description_text);
         assignSwitch = (Switch) findViewById(R.id.switchAssign);
-
 
         Bundle b = getIntent().getExtras();
         if (b != null) {
@@ -141,8 +134,6 @@ public class TaskActivity extends AppCompatActivity implements Transition.Transi
         getSupportActionBar().setTitle(tarefaTitle);
 
         taskName = tarefaTitle;
-
-
 
 
         createEditTaskNameDialog();
@@ -211,19 +202,20 @@ public class TaskActivity extends AppCompatActivity implements Transition.Transi
         alert_builder.setView(view);
 
         alert_builder.setTitle(getString(R.string.alert_dialog_edit_task_top_title));
-        alert_builder.setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
+        alert_builder.setNegativeButton(getString(android.R.string.cancel), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
             }
         });
-        alert_builder.setPositiveButton(getString(R.string.add), null);
+        alert_builder.setPositiveButton(getString(android.R.string.ok), null);
 
         mAlertEditTaskName = alert_builder.create();
         mAlertTaskName = (EditText) view.findViewById(R.id.alert_edit_task_titulo);
 
 
-        if (mAlertEditTaskName.getWindow() != null)
+        if (mAlertEditTaskName.getWindow() != null) {
             mAlertEditTaskName.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
+        }
 
         mAlertEditTaskName.setOnShowListener(new DialogInterface.OnShowListener() {
             @Override
@@ -287,7 +279,6 @@ public class TaskActivity extends AppCompatActivity implements Transition.Transi
     }
 
 
-
     private void setResultActivity() {
         Intent i = new Intent();
         switch (spinner.getSelectedItemPosition()) {
@@ -310,7 +301,7 @@ public class TaskActivity extends AppCompatActivity implements Transition.Transi
 
         String estimate = null;
         if (callendarSwitch.isChecked()) {
-            Date date = new Date(mDatePicker.getYear(),mDatePicker.getMonth(),mDatePicker.getDayOfMonth());
+            Date date = new Date(mDatePicker.getYear(), mDatePicker.getMonth(), mDatePicker.getDayOfMonth());
             estimate = String.valueOf(date.getTime());
         }
         i.putExtra("estimate", estimate);
