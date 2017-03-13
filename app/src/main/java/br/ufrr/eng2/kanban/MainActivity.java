@@ -723,6 +723,9 @@ public class MainActivity extends AppCompatActivity
                         currentTarefa.setOwnedId(this.user.getUid());
                     }
 
+                    String title = data.getStringExtra("title");
+                    currentTarefa.setNomeTarefa(title);
+
                     String description = data.getStringExtra("description");
                     currentTarefa.setDescricaoTarefa(description);
 

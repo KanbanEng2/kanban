@@ -27,6 +27,9 @@
     <string name="snack_action_undo">Undo</string>
 
     <!--ALERT DIALOG ADD CARD-->
+    <string name="alert_dialog_edit_task_top_title">Edit Task Name</string>
+    <string name="alert_dialog_edit_task_hint">Task Name</string>
+
     <string name="alert_dialog_add_project_top_title">Add Project</string>
     <string name="action_manage_project">Manage project…</string>
 

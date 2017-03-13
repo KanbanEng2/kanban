@@ -6,6 +6,8 @@
     <string name="action_settings">Configurações</string>
     <string name="add">Adicionar</string>
     <string name="alert_dialog_add_project_top_title">Adicionar Projeto</string>
+    <string name="alert_dialog_edit_task_top_title">Editar nome da tarefa</string>
+    <string name="alert_dialog_edit_task_hint">Nome da tarefa</string>
     <string name="alert_dialog_progress_title">Acessando Dados</string>
     <string name="alert_dialog_add_card_description_field">Descrição</string>
     <string name="alert_dialog_add_card_title_field">Título</string>

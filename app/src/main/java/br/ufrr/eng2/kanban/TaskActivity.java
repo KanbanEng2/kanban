@@ -2,18 +2,23 @@ package br.ufrr.eng2.kanban;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.content.res.ResourcesCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.transition.Transition;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewAnimationUtils;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
@@ -109,6 +114,10 @@ public class TaskActivity extends AppCompatActivity implements Transition.Transi
 
         getWindow().getSharedElementEnterTransition().addListener(this);
         getSupportActionBar().setTitle(tarefaTitle);
+
+        taskName = tarefaTitle;
+
+        createEditTaskNameDialog();
     }
 
     private void changeToolbarColorAnimated(final int color) {
@@ -163,6 +172,63 @@ public class TaskActivity extends AppCompatActivity implements Transition.Transi
         }
     }
 
+    private AlertDialog mAlertEditTaskName;
+    private EditText mAlertTaskName;
+    private String taskName;
+
+    private void createEditTaskNameDialog() {
+        LayoutInflater li = getLayoutInflater();
+        View view = li.inflate(R.layout.alert_dialog_task_name, null);
+        AlertDialog.Builder alert_builder = new AlertDialog.Builder(this);
+        alert_builder.setView(view);
+
+        alert_builder.setTitle(getString(R.string.alert_dialog_edit_task_top_title));
+        alert_builder.setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+            }
+        });
+        alert_builder.setPositiveButton(getString(R.string.add), null);
+
+        mAlertEditTaskName = alert_builder.create();
+        mAlertTaskName = (EditText) view.findViewById(R.id.alert_edit_task_titulo);
+
+
+        if (mAlertEditTaskName.getWindow() != null)
+            mAlertEditTaskName.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
+
+        mAlertEditTaskName.setOnShowListener(new DialogInterface.OnShowListener() {
+            @Override
+            public void onShow(final DialogInterface dialog) {
+
+                int color = ResourcesCompat.getColor(getResources(), R.color.secondary_text, null);
+                mAlertEditTaskName.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(color);
+
+                mAlertEditTaskName.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        boolean title_ok = true;
+
+                        String title = mAlertTaskName.getText().toString();
+
+                        if (title.isEmpty()) {
+                            mAlertTaskName.setError(getString(R.string.alert_dialog_string_empty_error));
+                            title_ok = false;
+                        }
+
+                        if (title_ok /*&& desc_ok*/) {
+                            taskName = title;
+                            getSupportActionBar().setTitle(taskName);
+                            mAlertEditTaskName.dismiss();
+                        }
+                    }
+                });
+
+            }
+        });
+
+    }
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -176,6 +242,10 @@ public class TaskActivity extends AppCompatActivity implements Transition.Transi
                 removeTask();
                 supportFinishAfterTransition();
                 return true;
+            case R.id.action_rename:
+                mAlertTaskName.setText(taskName);
+                mAlertEditTaskName.show();
+                break;
 
         }
         return super.onOptionsItemSelected(item);
@@ -206,6 +276,7 @@ public class TaskActivity extends AppCompatActivity implements Transition.Transi
         i.putExtra("remove", false);
         int assumed = assignSwitch.isChecked() ? 1 : 0;
         i.putExtra("assumed", assumed);
+        i.putExtra("title", taskName);
         i.putExtra("description", description.getText().toString());
 
         setResult(1010, i);
