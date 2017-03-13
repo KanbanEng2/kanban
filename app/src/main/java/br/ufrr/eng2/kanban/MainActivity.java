@@ -637,13 +637,12 @@ public class MainActivity extends AppCompatActivity
                             title_ok = false;
                         }
 
-//                        if (desc.isEmpty()) {
-//                            mAlertDescCard.setError(getString(R.string.alert_dialog_string_empty_error));
-//                            desc_ok = false;
-//                        }
 
                         if (title_ok /*&& desc_ok*/) {
-                            mTarefasTODO.add(new Tarefa(title, desc, Tarefa.ESTADO_TODO, "" , Tarefa.CATEGORIA_CORRECAO));
+                            Tarefa tarefa = new Tarefa(title, desc, Tarefa.ESTADO_TODO, "" , Tarefa.CATEGORIA_CORRECAO);
+                            Long tsLong = System.currentTimeMillis()/1000;
+                            tarefa.setTimestampCreation(tsLong.toString());
+                            mTarefasTODO.add(tarefa);
                             mAdapterTODO.notifyItemInserted(mTarefasTODO.size() - 1);
 
                             Snackbar snackbar = Snackbar

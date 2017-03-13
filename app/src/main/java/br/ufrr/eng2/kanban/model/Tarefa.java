@@ -75,6 +75,34 @@ public class Tarefa {
     private String encerramentoTarefa;
     private int categoriaTarefa;
 
+    public String getTimestampCreation() {
+        return timestampCreation;
+    }
+
+    public void setTimestampCreation(String timestampCreation) {
+        this.timestampCreation = timestampCreation;
+    }
+
+    public String getTimestampDone() {
+        return timestampDone;
+    }
+
+    public void setTimestampDone(String timestampDone) {
+        this.timestampDone = timestampDone;
+    }
+
+    public String getTimestampEstimate() {
+        return timestampEstimate;
+    }
+
+    public void setTimestampEstimate(String timestampEstimate) {
+        this.timestampEstimate = timestampEstimate;
+    }
+
+    private String timestampCreation;
+    private String timestampDone;
+    private String timestampEstimate;
+
     public String getOwnedId() {
         return ownedId;
     }
