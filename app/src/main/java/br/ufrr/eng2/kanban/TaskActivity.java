@@ -70,8 +70,6 @@ public class TaskActivity extends AppCompatActivity implements Transition.Transi
         getWindow().getSharedElementEnterTransition().addListener(this);
         getSupportActionBar().setTitle(tarefaTitle);
 
-
-
     }
 
     @Override
