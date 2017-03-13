@@ -26,19 +26,47 @@ import br.ufrr.eng2.kanban.R;
 import br.ufrr.eng2.kanban.model.Usuario;
 
 public class UsuarioAdapter extends RecyclerView.Adapter<UsuarioAdapter.ViewHolder> {
-    private boolean mRemove = false;
+    public static final int ACTION_NONE = 0;
+    public static final int ACTION_ADD = 1;
+    public static final int ACTION_REMOVE = 2;
+
+    private int mAction = 0;
     private List<Usuario> mUsuarios;
     private UsuarioAdapter.ClickCallback mCallback;
 
-    public UsuarioAdapter(List<Usuario> usuarios, ClickCallback callback, boolean remove) {
+    /**
+     * Cria o adapter com o botão de ação escolhido
+     *
+     * @param usuarios   Lista de usuários
+     * @param callback   Função a ser chamada ao pressionar o botao de ação da lista
+     * @param actionType O tipo de ação. Deve ser um dos seguintes: {@link #ACTION_NONE},
+     *                   {@link #ACTION_ADD}, ou {@link #ACTION_REMOVE}.
+     */
+    public UsuarioAdapter(List<Usuario> usuarios, ClickCallback callback, int actionType) {
         mUsuarios = usuarios;
         mCallback = callback;
-        mRemove = remove;
+        mAction = actionType;
     }
 
+    /**
+     * @param usuarios Lista de usuários
+     * @param callback Função a ser chamada ao pressionar o botão de ação da lista
+     * @param remove   Se `true`, mostra um botao de remover em vez de adicionar
+     * @deprecated Use {@link UsuarioAdapter#UsuarioAdapter(List, ClickCallback, int)} com
+     * {@link #ACTION_REMOVE} como terceiro parâmetro
+     */
+    public UsuarioAdapter(List<Usuario> usuarios, ClickCallback callback, boolean remove) {
+        this(usuarios, callback, UsuarioAdapter.ACTION_REMOVE);
+    }
+
+    /**
+     * Cria o adapter com ação de adicionar usuário
+     *
+     * @param usuarios Lista de usuários
+     * @param callback Função a ser chamada ao pressionar o botao de adicionar usuário
+     */
     public UsuarioAdapter(List<Usuario> usuarios, ClickCallback callback) {
-        mUsuarios = usuarios;
-        mCallback = callback;
+        this(usuarios, callback, UsuarioAdapter.ACTION_ADD);
     }
 
     @Override
@@ -51,8 +79,16 @@ public class UsuarioAdapter extends RecyclerView.Adapter<UsuarioAdapter.ViewHold
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        if (mRemove) {
-            holder.button.setImageDrawable(holder.button.getContext().getDrawable(R.drawable.ic_remove_circle_black_24dp));
+        switch (mAction) {
+            case ACTION_REMOVE:
+                holder.button.setImageDrawable(holder.button.getContext().getDrawable(R.drawable.ic_remove_circle_black_24dp));
+            case ACTION_ADD:
+                holder.button.setVisibility(View.VISIBLE);
+                break;
+            default:
+            case ACTION_NONE:
+                holder.button.setVisibility(View.GONE);
+                break;
         }
 
         final Usuario currentUser = mUsuarios.get(position);
@@ -89,10 +125,10 @@ public class UsuarioAdapter extends RecyclerView.Adapter<UsuarioAdapter.ViewHold
 
         ViewHolder(View itemView) {
             super(itemView);
-            name = (TextView) itemView.findViewById(R.id.card_title);
+            name = (TextView) itemView.findViewById(R.id.user_name);
             cardView = (CardView) itemView.findViewById(R.id.card_view);
-            button = (ImageButton) itemView.findViewById(R.id.card_button);
-            photo = (ImageView) itemView.findViewById(R.id.user);
+            button = (ImageButton) itemView.findViewById(R.id.user_action);
+            photo = (ImageView) itemView.findViewById(R.id.user_picture);
         }
     }
 

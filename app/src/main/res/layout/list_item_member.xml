@@ -8,7 +8,7 @@
     android:paddingStart="@dimen/activity_horizontal_margin">
 
     <ImageView
-        android:id="@+id/user"
+        android:id="@+id/user_picture"
         android:layout_width="32dp"
         android:layout_height="match_parent"
         android:layout_gravity="end|center_vertical"
@@ -18,7 +18,7 @@
         android:src="@drawable/ic_person" />
 
     <TextView
-        android:id="@+id/card_title"
+        android:id="@+id/user_name"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_margin="6dp"
@@ -30,7 +30,7 @@
         tools:text="Nome da pessoa" />
 
     <ImageButton
-        android:id="@+id/card_button"
+        android:id="@+id/user_action"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="center"
@@ -38,6 +38,7 @@
         android:foreground="?attr/selectableItemBackgroundBorderless"
         android:paddingEnd="14dp"
         android:paddingStart="14dp"
-        android:src="@drawable/ic_person_add_black_24dp" />
+        android:src="@drawable/ic_person_add_black_24dp"
+        android:visibility="gone" />
 
 </LinearLayout>

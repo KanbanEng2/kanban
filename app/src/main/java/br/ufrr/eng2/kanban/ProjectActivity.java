@@ -27,15 +27,16 @@ import br.ufrr.eng2.kanban.widget.RecyclerViewEmpty;
 
 public class ProjectActivity extends AppCompatActivity {
 
-    private RecyclerViewEmpty mRecyclerView;
+    private RecyclerViewEmpty mUsersRecyclerView;
+    private RecyclerViewEmpty mMembersRecyclerView;
+    private RecyclerView mOwnerRecyclerView;
     private UsuarioAdapter.ClickCallback mCallbackUsers;
     private UsuarioAdapter.ClickCallback mCallbackMembers;
-    private UsuarioAdapter mAdapter;
-    private List<Usuario> mUsuario;
-    private List<String> mKeys;
-    private List<Usuario> members;
-    private List<String> membersKeys;
-    private RecyclerViewEmpty membersRecyclerView;
+    private UsuarioAdapter mUsersAdapter;
+    private List<Usuario> mUsuariosList;
+    private List<String> mUsuariosKeys;
+    private List<Usuario> mMembersList;
+    private List<String> mMembersKeys;
 
     String projectId = "";
     private Projeto mProject;
@@ -75,32 +76,37 @@ public class ProjectActivity extends AppCompatActivity {
         });
 
         // Usuários do sistema para serem adicionados
-        mRecyclerView = (RecyclerViewEmpty) findViewById(R.id.add_members_list);
+        mUsersRecyclerView = (RecyclerViewEmpty) findViewById(R.id.add_members_list);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this);
-        mRecyclerView.setLayoutManager(mLayoutManager);
-        mRecyclerView.setItemAnimator(new DefaultItemAnimator());
-        mRecyclerView.setEmptyView(findViewById(R.id.empty_add_members_text));
+        mUsersRecyclerView.setLayoutManager(mLayoutManager);
+        mUsersRecyclerView.setItemAnimator(new DefaultItemAnimator());
+        mUsersRecyclerView.setEmptyView(findViewById(R.id.empty_add_members_text));
 
         // Membros deste projeto
-        membersRecyclerView = (RecyclerViewEmpty) findViewById(R.id.current_members_list);
-        membersRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        membersRecyclerView.setItemAnimator(new DefaultItemAnimator());
-        membersRecyclerView.setEmptyView(findViewById(R.id.empty_members_list_text));
+        mMembersRecyclerView = (RecyclerViewEmpty) findViewById(R.id.current_members_list);
+        mMembersRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        mMembersRecyclerView.setItemAnimator(new DefaultItemAnimator());
+        mMembersRecyclerView.setEmptyView(findViewById(R.id.empty_members_list_text));
+
+        // Proprietário do projeto
+        mOwnerRecyclerView = (RecyclerView) findViewById(R.id.owners_list);
+        mOwnerRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        mOwnerRecyclerView.setItemAnimator(new DefaultItemAnimator());
 
 
         mCallbackUsers = new UsuarioAdapter.ClickCallback() {
             @Override
             public void onClick(View v, Usuario user) {
-                int index = mUsuario.indexOf(user);
-                onAddMember(mKeys.get(index));
+                int index = mUsuariosList.indexOf(user);
+                onAddMember(mUsuariosKeys.get(index));
             }
         };
 
         mCallbackMembers = new UsuarioAdapter.ClickCallback() {
             @Override
             public void onClick(View v, Usuario user) {
-                int index = members.indexOf(user);
-                onRemoveMember(membersKeys.get(index));
+                int index = mMembersList.indexOf(user);
+                onRemoveMember(mMembersKeys.get(index));
             }
         };
 
@@ -108,36 +114,41 @@ public class ProjectActivity extends AppCompatActivity {
         ValueEventListener usersListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                mUsuario = new ArrayList<>();
-                mKeys = new ArrayList<>();
+                mUsuariosList = new ArrayList<>();
+                mUsuariosKeys = new ArrayList<>();
 
-                members = new ArrayList<>();
-                membersKeys = new ArrayList<>();
+                mMembersList = new ArrayList<>();
+                mMembersKeys = new ArrayList<>();
+
+                ArrayList<Usuario> ownersList = new ArrayList<>();
                 for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
                     Usuario user = postSnapshot.getValue(Usuario.class);
 
                     if (user.getProjetos() != null) {
                         if (user.getProjetos().contains(projectId)) {
                             // Não adiciona na lista se o usuário for o proprietário
-                            if (!mProject.getOwnerUuid().equals(postSnapshot.getKey())) {
-                                members.add(user);
-                                membersKeys.add(postSnapshot.getKey());
+                            if (mProject.getOwnerUuid().equals(postSnapshot.getKey())) {
+                                ownersList.add(user);
+                            } else {
+                                mMembersList.add(user);
+                                mMembersKeys.add(postSnapshot.getKey());
                             }
                         } else {
-                            mKeys.add(postSnapshot.getKey());
-                            mUsuario.add(user);
+                            mUsuariosKeys.add(postSnapshot.getKey());
+                            mUsuariosList.add(user);
                         }
                     } else {
-                        mKeys.add(postSnapshot.getKey());
-                        mUsuario.add(user);
+                        mUsuariosKeys.add(postSnapshot.getKey());
+                        mUsuariosList.add(user);
                     }
                 }
 
-                mAdapter = new UsuarioAdapter(mUsuario, mCallbackUsers);
-                mRecyclerView.setAdapter(mAdapter);
+                mUsersAdapter = new UsuarioAdapter(mUsuariosList, mCallbackUsers);
+                mUsersRecyclerView.setAdapter(mUsersAdapter);
 
 
-                membersRecyclerView.setAdapter(new UsuarioAdapter(members, mCallbackMembers, /*remove*/ true));
+                mMembersRecyclerView.setAdapter(new UsuarioAdapter(mMembersList, mCallbackMembers, UsuarioAdapter.ACTION_REMOVE));
+                mOwnerRecyclerView.setAdapter(new UsuarioAdapter(ownersList, null, UsuarioAdapter.ACTION_NONE));
             }
 
             @Override
@@ -149,6 +160,10 @@ public class ProjectActivity extends AppCompatActivity {
 
         DatabaseReference userReference = database.getReference("user");
         userReference.addValueEventListener(usersListener);
+
+    }
+
+    private void showOwner(Usuario user) {
 
     }
 

@@ -36,6 +36,7 @@
     <string name="project_members_title">Members of %s</string>
     <string name="project_current_members_empty">There are no users in this project.</string>
     <string name="project_add_members_empty">There are no more users to add.</string>
+    <string name="project_section_owner">Owner</string>
     <string name="project_section_members">Members in this project</string>
     <string name="project_section_add_members">Add members</string>
 

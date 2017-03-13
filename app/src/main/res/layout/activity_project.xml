@@ -10,9 +10,31 @@
         tools:context="br.ufrr.eng2.kanban.ProjectActivity">
 
         <TextView
+            android:id="@+id/section_owner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingEnd="@dimen/activity_horizontal_margin"
+            android:paddingStart="@dimen/activity_horizontal_margin"
+            android:paddingTop="@dimen/activity_vertical_margin"
+            android:text="@string/project_section_owner"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Title" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/owners_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/section_owner"
+            android:paddingEnd="@dimen/activity_horizontal_margin"
+            android:paddingStart="@dimen/activity_horizontal_margin"
+            android:scrollbars="vertical"
+            android:visibility="visible"
+            tools:listitem="@layout/list_item_member"/>
+
+        <TextView
             android:id="@+id/section_current_members"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_below="@id/owners_list"
             android:paddingEnd="@dimen/activity_horizontal_margin"
             android:paddingStart="@dimen/activity_horizontal_margin"
             android:paddingTop="@dimen/activity_vertical_margin"
@@ -38,7 +60,7 @@
             android:padding="8dp"
             android:text="@string/project_current_members_empty"
             android:textAlignment="center"
-            android:visibility="gone"/>
+            android:visibility="gone" />
 
         <TextView
             android:id="@+id/section_add_members"
@@ -70,7 +92,7 @@
             android:padding="8dp"
             android:text="@string/project_add_members_empty"
             android:textAlignment="center"
-            android:visibility="gone"/>
+            android:visibility="gone" />
 
     </RelativeLayout>
 
