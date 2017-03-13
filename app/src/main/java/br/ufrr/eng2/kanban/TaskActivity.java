@@ -20,7 +20,9 @@ import android.view.animation.BounceInterpolator;
 import android.view.animation.ScaleAnimation;
 import android.view.animation.TranslateAnimation;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.RelativeLayout;
+import android.widget.Switch;
 import android.widget.Toast;
 
 import java.util.List;
@@ -31,6 +33,8 @@ import fr.ganfra.materialspinner.MaterialSpinner;
 public class TaskActivity extends AppCompatActivity implements Transition.TransitionListener {
 
     private MaterialSpinner spinner;
+    private EditText description;
+    private Switch assignSwitch;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,24 +50,36 @@ public class TaskActivity extends AppCompatActivity implements Transition.Transi
 
         String tarefaTitle = "Título da Tarefa";
 
+        description = (EditText) findViewById(R.id.task_description_text);
+        assignSwitch = (Switch) findViewById(R.id.switchAssign);
+
+
         Bundle b = getIntent().getExtras();
         if (b != null){
-          tarefaTitle = b.getString("title");
+            tarefaTitle = b.getString("title");
             int category = b.getInt("category");
             switch (category) {
                 case Tarefa.CATEGORIA_ANALISE:
                     colorView.setBackgroundColor(Color.parseColor("#9C27B0"));
-                    spinner.setSelection(1);
+                    spinner.setSelection(0);
                     break;
                 case Tarefa.CATEGORIA_CORRECAO:
                     colorView.setBackgroundColor(Color.parseColor("#FF5722"));
-                    spinner.setSelection(2);
+                    spinner.setSelection(1);
                     break;
                 case Tarefa.CATEGORIA_DESENVOLVIMENTO:
                     colorView.setBackgroundColor(Color.parseColor("#9E9E9E"));
-                    spinner.setSelection(3);
+                    spinner.setSelection(2);
                     break;
             }
+
+            description.setText(b.getString("description", ""));
+            int assumed = b.getInt("assumed", 0);
+            if (assumed != 0) {
+                assignSwitch.setChecked(true);
+            }
+
+
         }
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -88,16 +104,20 @@ public class TaskActivity extends AppCompatActivity implements Transition.Transi
         {
             Intent i = new Intent();
             switch(spinner.getSelectedItemPosition()) {
-                case 1:
+                case 0:
                     i.putExtra("category", Tarefa.CATEGORIA_ANALISE);
                     break;
-                case 2:
+                case 1:
                     i.putExtra("category", Tarefa.CATEGORIA_CORRECAO);
                     break;
-                case 3:
+                case 2:
                     i.putExtra("category", Tarefa.CATEGORIA_DESENVOLVIMENTO);
                     break;
             }
+
+            int assumed = assignSwitch.isChecked() ? 1 : 0;
+            i.putExtra("assumed", assumed);
+            i.putExtra("description", description.getText().toString());
 
             setResult(1010, i);
 
