@@ -18,7 +18,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import br.ufrr.eng2.kanban.adapter.UsuarioAdapter;
+import br.ufrr.eng2.kanban.controller.ProjetoController;
+import br.ufrr.eng2.kanban.controller.UsuarioController;
 import br.ufrr.eng2.kanban.model.Projeto;
+import br.ufrr.eng2.kanban.model.Tarefa;
 import br.ufrr.eng2.kanban.model.Usuario;
 import br.ufrr.eng2.kanban.widget.RecyclerViewEmpty;
 
@@ -154,9 +157,12 @@ public class ProjectActivity extends AppCompatActivity {
         i.putExtra("user", key);
         i.putExtra("remove", false);
 
-        setResult(1011, i);
-        finish();
+        UsuarioController.UpdateUserProjects(key, projectId);
+        mProject.getMembrosProjeto().add(key);
 
+        ProjetoController.UpdateProject(projectId, mProject);
+
+        setResult(1011, i);
     }
 
     private void onRemoveMember(String key) {
@@ -164,7 +170,17 @@ public class ProjectActivity extends AppCompatActivity {
         i.putExtra("user", key);
         i.putExtra("remove", true);
 
+        UsuarioController.RemoveUserFromProject(key, projectId);
+        mProject.getMembrosProjeto().remove(key);
+        for (Tarefa tarefa : mProject.getTarefasProjeto()) {
+            // Desatribui tarefas do membro removido
+            if (tarefa.getOwnedId() != null && tarefa.getOwnedId().equals(key)) {
+                tarefa.setOwnedId(null);
+            }
+        }
+
+        ProjetoController.UpdateProject(projectId, mProject);
+
         setResult(1011, i);
-        finish();
     }
 }
