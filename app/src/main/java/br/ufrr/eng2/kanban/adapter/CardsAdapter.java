@@ -50,17 +50,17 @@ public class CardsAdapter extends RecyclerView.Adapter<CardsAdapter.ViewHolder> 
         switch (currentTarefa.getCategoriaTarefa()) {
             case Tarefa.CATEGORIA_ANALISE:
                 holder.title.setText(currentTarefa.getNomeTarefa());
-                holder.tags.setText("#Design");
+                holder.tags.setText("#Análise");
                 holder.color.setBackgroundColor(Color.parseColor("#9C27B0"));
                 break;
             case Tarefa.CATEGORIA_CORRECAO:
                 holder.title.setText(currentTarefa.getNomeTarefa());
-                holder.tags.setText("#Categoria");
+                holder.tags.setText("#Correção");
                 holder.color.setBackgroundColor(Color.parseColor("#FF5722"));
                 break;
             default:
                 holder.title.setText(currentTarefa.getNomeTarefa());
-                holder.tags.setText("#Geral");
+                holder.tags.setText("#Desenvolvimento");
                 holder.color.setBackgroundColor(Color.parseColor("#9E9E9E"));
                 break;
         }

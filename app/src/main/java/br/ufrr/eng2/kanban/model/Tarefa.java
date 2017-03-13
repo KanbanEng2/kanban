@@ -75,5 +75,15 @@ public class Tarefa {
     private String encerramentoTarefa;
     private int categoriaTarefa;
 
+    public String getOwnedId() {
+        return ownedId;
+    }
+
+    public void setOwnedId(String ownedId) {
+        this.ownedId = ownedId;
+    }
+
+    private String ownedId;
+
 
 }

@@ -2,16 +2,26 @@ package br.ufrr.eng2.kanban;
 
 import android.animation.Animator;
 import android.graphics.Color;
+import android.graphics.Matrix;
+import android.graphics.RectF;
 import android.os.Build;
-import android.os.Bundle;
+import android.os.Parcelable;
+import android.support.v4.app.SharedElementCallback;
 import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.transition.Transition;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewAnimationUtils;
+import android.view.animation.AnimationSet;
+import android.view.animation.BounceInterpolator;
+import android.view.animation.ScaleAnimation;
+import android.view.animation.TranslateAnimation;
 import android.widget.ArrayAdapter;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
+
+import java.util.List;
 
 import br.ufrr.eng2.kanban.model.Tarefa;
 import fr.ganfra.materialspinner.MaterialSpinner;
@@ -71,17 +81,8 @@ public class TaskActivity extends AppCompatActivity implements Transition.Transi
         getWindow().getSharedElementEnterTransition().addListener(this);
         getSupportActionBar().setTitle(tarefaTitle);
 
-    }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            // Retornar a animação ao pressionar o "up"
-            case android.R.id.home:
-                supportFinishAfterTransition();
-                return true;
-        }
-        return super.onOptionsItemSelected(item);
+
     }
 
     @Override

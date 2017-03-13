@@ -95,6 +95,8 @@ public class MainActivity extends AppCompatActivity
 
     private CoordinatorLayout mCoordinatorLayout;
 
+    private int TaskActivityResult = 1010;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -668,6 +670,10 @@ public class MainActivity extends AppCompatActivity
 
     }
 
+
+    private Tarefa currentTarefa;
+    private int currentTarefaEstado;
+
     protected void gotoTaskAcitivity(View view, Tarefa t) {
         ActivityOptionsCompat options = ActivityOptionsCompat.
                 makeSceneTransitionAnimation(MainActivity.this,
@@ -679,7 +685,54 @@ public class MainActivity extends AppCompatActivity
         Intent i = new Intent(this, TaskActivity.class);
         i.putExtra("title", t.getNomeTarefa());
         i.putExtra("category", t.getCategoriaTarefa());
-        startActivity(i, options.toBundle());
+        currentTarefa = t;
+        currentTarefaEstado = t.getEstadoTarefa();
+        startActivityForResult(i, TaskActivityResult, options.toBundle());
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == TaskActivityResult) {
+            if (data != null){
+                int id = 0;
+                switch(currentTarefaEstado) {
+                    case Tarefa.ESTADO_TODO:
+                        id = mTarefasTODO.indexOf(currentTarefa);
+                        mTarefasTODO.remove(currentTarefa);
+                        break;
+                    case Tarefa.ESTADO_DOING:
+                        id = mTarefasDOING.indexOf(currentTarefa);
+                        mTarefasDOING.remove(currentTarefa);
+                        break;
+                    case Tarefa.ESTADO_DONE:
+                        id = mTarefasDONE.indexOf(currentTarefa);
+                        mTarefasDONE.remove(currentTarefa);
+                        break;
+                }
+                int category = data.getIntExtra("category", currentTarefa.getCategoriaTarefa());
+                Log.d("TASK", "cheguei aqui");
+                currentTarefa.setCategoriaTarefa(category);
+
+                switch(currentTarefaEstado) {
+                    case Tarefa.ESTADO_TODO:
+                        mTarefasTODO.add(id, currentTarefa);
+                        mAdapterTODO.notifyItemChanged(id);
+                        break;
+                    case Tarefa.ESTADO_DOING:
+                        mTarefasDOING.add(id, currentTarefa);
+                        mAdapterDOING.notifyItemChanged(id);
+                        break;
+                    case Tarefa.ESTADO_DONE:
+                        mTarefasDONE.add(id, currentTarefa);
+                        mAdapterDONE.notifyItemChanged(id);
+                        break;
+                }
+
+                updateCurrentProject();
+            }
+        }
     }
 
     @Override
