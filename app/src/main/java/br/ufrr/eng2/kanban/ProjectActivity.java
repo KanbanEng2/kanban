@@ -75,7 +75,7 @@ public class ProjectActivity extends AppCompatActivity {
         Intent i = new Intent();
         i.putExtra("user", key);
 
-        setResult(1010, i);
+        setResult(1011, i);
         finish();
 
     }
