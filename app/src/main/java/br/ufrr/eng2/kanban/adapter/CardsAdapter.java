@@ -1,10 +1,10 @@
 package br.ufrr.eng2.kanban.adapter;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.BitmapShader;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Shader;
 import android.os.AsyncTask;
@@ -27,7 +27,6 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.util.List;
 
-import br.ufrr.eng2.kanban.MainActivity;
 import br.ufrr.eng2.kanban.R;
 import br.ufrr.eng2.kanban.model.Tarefa;
 import br.ufrr.eng2.kanban.model.Usuario;
@@ -64,21 +63,23 @@ public class CardsAdapter extends RecyclerView.Adapter<CardsAdapter.ViewHolder> 
                 mCallback.onClick(v, currentTarefa);
             }
         });
+
+        Context context = holder.cardView.getContext();
         switch (currentTarefa.getCategoriaTarefa()) {
             case Tarefa.CATEGORIA_ANALISE:
                 holder.title.setText(currentTarefa.getNomeTarefa());
                 holder.tags.setText("#Análise");
-                holder.color.setBackgroundColor(Color.parseColor("#9C27B0"));
+                holder.color.setBackgroundColor(context.getResources().getColor(R.color.category_analysis));
                 break;
             case Tarefa.CATEGORIA_CORRECAO:
                 holder.title.setText(currentTarefa.getNomeTarefa());
                 holder.tags.setText("#Correção");
-                holder.color.setBackgroundColor(Color.parseColor("#FF5722"));
+                holder.color.setBackgroundColor(context.getResources().getColor(R.color.category_fix));
                 break;
             default:
                 holder.title.setText(currentTarefa.getNomeTarefa());
                 holder.tags.setText("#Desenvolvimento");
-                holder.color.setBackgroundColor(Color.parseColor("#9E9E9E"));
+                holder.color.setBackgroundColor(context.getResources().getColor(R.color.category_development));
                 break;
         }
 

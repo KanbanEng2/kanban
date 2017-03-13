@@ -7,4 +7,8 @@
     <color name="primary_text">#FFFFFF</color>
     <color name="primary_text_dark">#212121</color>
     <color name="secondary_text">#757575</color>
+
+    <color name="category_analysis">#9C27B0</color>
+    <color name="category_fix">#FF5722</color>
+    <color name="category_development">#9E9E9E</color>
 </resources>
