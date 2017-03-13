@@ -742,10 +742,12 @@ public class MainActivity extends AppCompatActivity
                 updateCurrentProject();
             }
         } else if (requestCode == 1011) {
-            String user = data.getStringExtra("user");
-            UsuarioController.UpdateUserProjects(user, currentProjectId);
-            projeto.getMembrosProjeto().add(user);
-            updateCurrentProject();
+            if (data != null) {
+                String user = data.getStringExtra("user");
+                UsuarioController.UpdateUserProjects(user, currentProjectId);
+                projeto.getMembrosProjeto().add(user);
+                updateCurrentProject();
+            }
         }
 
     }
