@@ -4,8 +4,11 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.icu.util.Calendar;
+import android.icu.util.GregorianCalendar;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.RequiresApi;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -21,9 +24,13 @@ import android.view.ViewAnimationUtils;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.CompoundButton;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.Switch;
+
+import java.util.Date;
 
 import br.ufrr.eng2.kanban.model.Tarefa;
 import fr.ganfra.materialspinner.MaterialSpinner;
@@ -33,7 +40,9 @@ public class TaskActivity extends AppCompatActivity implements Transition.Transi
     private MaterialSpinner spinner;
     private EditText description;
     private Switch assignSwitch;
+    private Switch callendarSwitch;
     private View mToolbarBackground;
+    private DatePicker mDatePicker;
     private boolean animationFinished = false;
 
     @Override
@@ -42,7 +51,23 @@ public class TaskActivity extends AppCompatActivity implements Transition.Transi
         setContentView(R.layout.activity_task);
 
 
+
         mToolbarBackground = (View) findViewById(R.id.toolbar_background);
+        mDatePicker = (DatePicker) findViewById(R.id.datepicker);
+        callendarSwitch = (Switch) findViewById(R.id.switchDatepicker);
+
+        callendarSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(isChecked) {
+                    mDatePicker.setVisibility(View.VISIBLE);
+                } else {
+                    mDatePicker.setVisibility(View.GONE);
+                }
+            }
+        });
+
+
         String[] ITEMS = {"Análise", "Correção", "Desenvolvimento"};
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, ITEMS);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -116,6 +141,9 @@ public class TaskActivity extends AppCompatActivity implements Transition.Transi
         getSupportActionBar().setTitle(tarefaTitle);
 
         taskName = tarefaTitle;
+
+
+
 
         createEditTaskNameDialog();
     }
@@ -259,6 +287,7 @@ public class TaskActivity extends AppCompatActivity implements Transition.Transi
     }
 
 
+
     private void setResultActivity() {
         Intent i = new Intent();
         switch (spinner.getSelectedItemPosition()) {
@@ -279,6 +308,12 @@ public class TaskActivity extends AppCompatActivity implements Transition.Transi
         i.putExtra("title", taskName);
         i.putExtra("description", description.getText().toString());
 
+        String estimate = null;
+        if (callendarSwitch.isChecked()) {
+            Date date = new Date(mDatePicker.getYear(),mDatePicker.getMonth(),mDatePicker.getDayOfMonth());
+            estimate = String.valueOf(date.getTime());
+        }
+        i.putExtra("estimate", estimate);
         setResult(1010, i);
     }
 

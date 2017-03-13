@@ -110,7 +110,29 @@
                 app:ms_floatingLabelText="@string/activity_task_category_hint"
                 app:ms_multiline="false" />
 
+            <Switch
+                android:id="@+id/switchDatepicker"
+                android:layout_width="match_parent"
+                android:layout_marginTop="15dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:layout_height="wrap_content"
+                android:text="@string/task_activity_calendar_label"
+                />
 
+            <DatePicker
+                android:id="@+id/datepicker"
+                android:visibility="gone"
+                android:layout_marginTop="-15dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:layout_marginBottom="15dp"
+                android:layout_width="match_parent"
+                android:calendarViewShown="false"
+                android:datePickerMode="spinner"
+                android:layout_height="wrap_content">
+
+            </DatePicker>
         </LinearLayout>
 
 

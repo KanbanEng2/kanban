@@ -738,6 +738,11 @@ public class MainActivity extends AppCompatActivity
                         currentTarefa.setOwnedId(this.user.getUid());
                     }
 
+                    String estimate = data.getStringExtra("estimate");
+                    if(estimate != null) {
+                        currentTarefa.settimestampEstimative(estimate);
+                    }
+
                     String title = data.getStringExtra("title");
                     currentTarefa.setNomeTarefa(title);
 
