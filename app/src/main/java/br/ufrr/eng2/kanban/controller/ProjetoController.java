@@ -8,13 +8,9 @@ import java.util.List;
 
 import br.ufrr.eng2.kanban.model.Projeto;
 
-/**
- * Created by rafaelsa on 12/03/17.
- */
-
 public class ProjetoController {
     public static String NewProject(Projeto projeto) {
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        FirebaseDatabase database = FirebaseController.getInstance();
         DatabaseReference myRef = database.getReference("projects");
         List<String> membros = new ArrayList<>();
         membros.add(projeto.getOwnerUuid());
@@ -27,7 +23,7 @@ public class ProjetoController {
     }
 
     public static void RemoveProjectMember(String pId, Projeto projeto, String userId) {
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        FirebaseDatabase database = FirebaseController.getInstance();
         DatabaseReference myRef = database.getReference("projects");
         if (projeto.getMembrosProjeto() != null) {
             projeto.getMembrosProjeto().remove(userId);
@@ -38,7 +34,7 @@ public class ProjetoController {
     }
 
     public static void UpdateProject(String pId, Projeto projeto) {
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        FirebaseDatabase database = FirebaseController.getInstance();
         DatabaseReference myRef = database.getReference("projects/" + pId);
         myRef.setValue(projeto);
     }

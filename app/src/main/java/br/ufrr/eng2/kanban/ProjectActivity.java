@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import br.ufrr.eng2.kanban.adapter.UsuarioAdapter;
+import br.ufrr.eng2.kanban.controller.FirebaseController;
 import br.ufrr.eng2.kanban.controller.ProjetoController;
 import br.ufrr.eng2.kanban.controller.UsuarioController;
 import br.ufrr.eng2.kanban.model.Projeto;
@@ -28,6 +29,7 @@ import br.ufrr.eng2.kanban.widget.RecyclerViewEmpty;
 
 public class ProjectActivity extends AppCompatActivity {
 
+    String projectId = "";
     private RecyclerViewEmpty mUsersRecyclerView;
     private RecyclerViewEmpty mMembersRecyclerView;
     private RecyclerView mOwnerRecyclerView;
@@ -38,8 +40,6 @@ public class ProjectActivity extends AppCompatActivity {
     private List<String> mUsuariosKeys;
     private List<Usuario> mMembersList;
     private List<String> mMembersKeys;
-
-    String projectId = "";
     private Projeto mProject;
 
     @Override
@@ -47,7 +47,7 @@ public class ProjectActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_project);
 
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        FirebaseDatabase database = FirebaseController.getInstance();
 
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);

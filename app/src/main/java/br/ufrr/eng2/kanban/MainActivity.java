@@ -3,14 +3,8 @@ package br.ufrr.eng2.kanban;
 import android.animation.ObjectAnimator;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.BitmapShader;
 import android.graphics.Canvas;
-import android.graphics.Paint;
-import android.graphics.Shader;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.design.widget.CoordinatorLayout;
@@ -50,14 +44,13 @@ import com.google.firebase.database.ValueEventListener;
 import com.roughike.bottombar.BottomBar;
 import com.roughike.bottombar.OnTabSelectListener;
 
-import java.io.InputStream;
-import java.net.HttpURLConnection;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import br.ufrr.eng2.kanban.adapter.CardsAdapter;
+import br.ufrr.eng2.kanban.controller.FirebaseController;
 import br.ufrr.eng2.kanban.controller.ProjetoController;
 import br.ufrr.eng2.kanban.controller.UsuarioController;
 import br.ufrr.eng2.kanban.model.Projeto;
@@ -96,6 +89,11 @@ public class MainActivity extends AppCompatActivity
     private CoordinatorLayout mCoordinatorLayout;
 
     private int TaskActivityResult = 1010;
+    private CardsAdapter.ClickCallback mCallback;
+    private String currentProjectId;
+    private Projeto projeto;
+    private Tarefa currentTarefa;
+    private int currentTarefaEstado;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -382,7 +380,6 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-
     private void onCreateNavigationView() {
         String name;
         String email;
@@ -424,7 +421,7 @@ public class MainActivity extends AppCompatActivity
 
                 if (user.getProjetos() != null)
                     for (String pId : user.getProjetos()) {
-                        FirebaseDatabase database = FirebaseDatabase.getInstance();
+                        FirebaseDatabase database = FirebaseController.getInstance();
                         DatabaseReference myRef = database.getReference("projects/" + pId );
                         final String projectId = pId;
                         myRef.addListenerForSingleValueEvent(
@@ -453,13 +450,12 @@ public class MainActivity extends AppCompatActivity
             }
         };
 
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        FirebaseDatabase database = FirebaseController.getInstance();
         DatabaseReference myRef = database.getReference("user");
         myRef.child(this.user.getUid()).addValueEventListener(projectsListener);
 
 
     }
-
 
     private void addProjectMenu(String titleProject, String idProject) {
 
@@ -492,11 +488,6 @@ public class MainActivity extends AppCompatActivity
     private CardsAdapter.ClickCallback getmCallback(){
         return mCallback;
     }
-
-    private CardsAdapter.ClickCallback mCallback;
-
-    private String currentProjectId;
-    private Projeto projeto;
 
     private void onProjectSelection(String projectId) {
         currentProjectId = projectId;
@@ -579,7 +570,7 @@ public class MainActivity extends AppCompatActivity
             }
         };
 
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        FirebaseDatabase database = FirebaseController.getInstance();
         DatabaseReference myRef = database.getReference("projects");
         myRef.child(projectId).addValueEventListener(tasksListener);
     }
@@ -684,10 +675,6 @@ public class MainActivity extends AppCompatActivity
         });
 
     }
-
-
-    private Tarefa currentTarefa;
-    private int currentTarefaEstado;
 
     protected void gotoTaskAcitivity(View view, Tarefa t) {
         ActivityOptionsCompat options = ActivityOptionsCompat.
