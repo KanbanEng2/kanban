@@ -1,7 +1,6 @@
 package br.ufrr.eng2.kanban;
 
 import android.animation.ObjectAnimator;
-import android.content.ClipData;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -14,7 +13,6 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
-import android.support.annotation.IntegerRes;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
@@ -54,8 +52,6 @@ import com.roughike.bottombar.OnTabSelectListener;
 
 import java.io.InputStream;
 import java.net.HttpURLConnection;
-import java.security.Principal;
-import java.security.acl.Group;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -78,6 +74,7 @@ public class MainActivity extends AppCompatActivity
     private int MenuIdStart = 15267;
     private Map<Integer,String> dictMenuProjects;
 
+    private Toolbar mToolbar;
     private RecyclerViewEmpty mRecyclerView;
     private CardsAdapter mAdapterTODO;
     private List<Tarefa> mTarefasTODO = new ArrayList<>();
@@ -119,14 +116,15 @@ public class MainActivity extends AppCompatActivity
             }
         }
         else {
-            Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-            setSupportActionBar(toolbar);
+            mToolbar = (Toolbar) findViewById(R.id.toolbar);
+            mToolbar.inflateMenu(R.menu.main);
+            setSupportActionBar(mToolbar);
 
             mFab = (FloatingActionButton) findViewById(R.id.fab);
 
             DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
             ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                    this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+                    this, drawer, mToolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
             drawer.addDrawerListener(toggle);
             toggle.syncState();
 
@@ -502,6 +500,8 @@ public class MainActivity extends AppCompatActivity
         ValueEventListener tasksListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+                mToolbar.getMenu().clear();
+                mToolbar.inflateMenu(R.menu.main);
                 projeto = dataSnapshot.getValue(Projeto.class);
                 if(projeto.getTarefasProjeto() == null ) {
                     projeto.setTarefasProjeto(new ArrayList<Tarefa>());
@@ -693,7 +693,6 @@ public class MainActivity extends AppCompatActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
 

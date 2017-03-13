@@ -15,4 +15,9 @@
             </group>
         </menu>
     </item>
+    <item
+        android:id="@+id/action_project_details"
+        android:title="@string/action_manage_project"
+        app:showAsAction="never"
+        />
 </menu>
