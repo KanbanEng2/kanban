@@ -24,9 +24,16 @@ import java.util.List;
 import br.ufrr.eng2.kanban.R;
 import br.ufrr.eng2.kanban.model.Usuario;
 
-public class UsuarioAdapter extends RecyclerView.Adapter<UsuarioAdapter.ViewHolder>  {
+public class UsuarioAdapter extends RecyclerView.Adapter<UsuarioAdapter.ViewHolder> {
+    private boolean mRemove = false;
     private List<Usuario> mUsuarios;
     private UsuarioAdapter.ClickCallback mCallback;
+
+    public UsuarioAdapter(List<Usuario> usuarios, ClickCallback callback, boolean remove) {
+        mUsuarios = usuarios;
+        mCallback = callback;
+        mRemove = remove;
+    }
 
     public UsuarioAdapter(List<Usuario> usuarios, ClickCallback callback) {
         mUsuarios = usuarios;
@@ -43,6 +50,10 @@ public class UsuarioAdapter extends RecyclerView.Adapter<UsuarioAdapter.ViewHold
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
+        if (mRemove) {
+            holder.button.setImageDrawable(holder.button.getContext().getDrawable(R.drawable.ic_remove_circle_black_24dp));
+        }
+
         final Usuario currentUser = mUsuarios.get(position);
 
         holder.button.setOnClickListener(new View.OnClickListener() {
@@ -64,10 +75,9 @@ public class UsuarioAdapter extends RecyclerView.Adapter<UsuarioAdapter.ViewHold
         return mUsuarios.size();
     }
 
-    public interface ClickCallback{
+    public interface ClickCallback {
         void onClick(View v, Usuario user);
     }
-
 
 
     class ViewHolder extends RecyclerView.ViewHolder {
@@ -75,6 +85,7 @@ public class UsuarioAdapter extends RecyclerView.Adapter<UsuarioAdapter.ViewHold
         TextView name;
         ImageButton button;
         ImageView photo;
+
         ViewHolder(View itemView) {
             super(itemView);
             name = (TextView) itemView.findViewById(R.id.card_title);
@@ -114,12 +125,12 @@ public class UsuarioAdapter extends RecyclerView.Adapter<UsuarioAdapter.ViewHold
 
             Bitmap circleBitmap = Bitmap.createBitmap(bitmap.getWidth(), bitmap.getHeight(), Bitmap.Config.ARGB_8888);
 
-            BitmapShader shader = new BitmapShader (bitmap,  Shader.TileMode.CLAMP, Shader.TileMode.CLAMP);
+            BitmapShader shader = new BitmapShader(bitmap, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP);
             Paint paint = new Paint();
             paint.setShader(shader);
             paint.setAntiAlias(true);
             Canvas c = new Canvas(circleBitmap);
-            c.drawCircle(bitmap.getWidth()/2, bitmap.getHeight()/2, bitmap.getWidth()/2, paint);
+            c.drawCircle(bitmap.getWidth() / 2, bitmap.getHeight() / 2, bitmap.getWidth() / 2, paint);
 
             bmImage.setImageBitmap(circleBitmap);
 

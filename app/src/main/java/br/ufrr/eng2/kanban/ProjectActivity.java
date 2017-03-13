@@ -35,6 +35,7 @@ public class ProjectActivity extends AppCompatActivity {
     private RecyclerViewEmpty membersRecyclerView;
 
     String projectId = "";
+    private Projeto mProject;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,17 +44,41 @@ public class ProjectActivity extends AppCompatActivity {
 
         FirebaseDatabase database = FirebaseDatabase.getInstance();
 
+        if (getSupportActionBar() != null)
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         Bundle b = getIntent().getExtras();
         if (b != null) {
             projectId = b.getString("projectId", "");
+        }
+
+        DatabaseReference projectReference = database.getReference("projects");
+
+        projectReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot snapshot) {
+                for (DataSnapshot child : snapshot.getChildren()) {
+                    if (child.getKey().equals(projectId)) {
+                        mProject = child.getValue(Projeto.class);
+                        if (getSupportActionBar() != null)
+                            getSupportActionBar().setTitle(String.format(getString(R.string.project_members_title), mProject.getNomeProjeto()));
+                    }
+                }
             }
 
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+            }
+        });
+
+        // Usuários do sistema para serem adicionados
         mRecyclerView = (RecyclerViewEmpty) findViewById(R.id.add_members_list);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
         mRecyclerView.setEmptyView(findViewById(R.id.empty_add_members_text));
 
+        // Membros deste projeto
         membersRecyclerView = (RecyclerViewEmpty) findViewById(R.id.current_members_list);
         membersRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         membersRecyclerView.setItemAnimator(new DefaultItemAnimator());
@@ -89,10 +114,12 @@ public class ProjectActivity extends AppCompatActivity {
                     Usuario user = postSnapshot.getValue(Usuario.class);
 
                     if (user.getProjetos() != null) {
-                        if (user.getProjetos().contains(projectId)){
-                            members.add(user);
-                            membersKeys.add(postSnapshot.getKey());
-
+                        if (user.getProjetos().contains(projectId)) {
+                            // Não adiciona na lista se o usuário for o proprietário
+                            if (!mProject.getOwnerUuid().equals(postSnapshot.getKey())) {
+                                members.add(user);
+                                membersKeys.add(postSnapshot.getKey());
+                            }
                         } else {
                             mKeys.add(postSnapshot.getKey());
                             mUsuario.add(user);
@@ -107,7 +134,7 @@ public class ProjectActivity extends AppCompatActivity {
                 mRecyclerView.setAdapter(mAdapter);
 
 
-                membersRecyclerView.setAdapter(new UsuarioAdapter(members, mCallbackMembers));
+                membersRecyclerView.setAdapter(new UsuarioAdapter(members, mCallbackMembers, /*remove*/ true));
             }
 
             @Override

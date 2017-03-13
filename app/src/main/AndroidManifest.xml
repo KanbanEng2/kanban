@@ -23,6 +23,11 @@
             </intent-filter>
         </activity>
         <activity
+            android:name=".ProjectActivity"
+            android:parentActivityName=".MainActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.Light"/>
+        <activity
             android:name=".TaskActivity"
             android:parentActivityName=".MainActivity"
             android:screenOrientation="portrait"
@@ -30,7 +35,7 @@
         <activity
             android:name=".LoginActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".OAuthActivity"
             android:parentActivityName=".LoginActivity"
@@ -45,7 +50,6 @@
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
 
-        <activity android:name=".ProjectActivity"></activity>
     </application>
 
 </manifest>
