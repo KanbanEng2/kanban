@@ -741,7 +741,13 @@ public class MainActivity extends AppCompatActivity
 
                 updateCurrentProject();
             }
+        } else if (requestCode == 1011) {
+            String user = data.getStringExtra("user");
+            UsuarioController.UpdateUserProjects(user, currentProjectId);
+            projeto.getMembrosProjeto().add(user);
+            updateCurrentProject();
         }
+
     }
 
     @Override
@@ -768,11 +774,18 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-//        if (id == R.id.action_settings) {
-//            return true;
-//        }
+        if (id == R.id.action_project_details) {
+            gotoProjectDetails();
+            return true;
+        }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void gotoProjectDetails() {
+        Intent i = new Intent(this, ProjectActivity.class);
+        i.putExtra("projectId", currentProjectId);
+        startActivityForResult(i, 1011);
     }
 
     @SuppressWarnings("StatementWithEmptyBody")

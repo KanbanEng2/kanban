@@ -1,6 +1,5 @@
 package br.ufrr.eng2.kanban.adapter;
 
-import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.BitmapShader;
@@ -14,122 +13,83 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.io.InputStream;
 import java.net.HttpURLConnection;
+import java.util.ArrayList;
 import java.util.List;
 
 import br.ufrr.eng2.kanban.R;
-import br.ufrr.eng2.kanban.model.Tarefa;
 import br.ufrr.eng2.kanban.model.Usuario;
 
-public class CardsAdapter extends RecyclerView.Adapter<CardsAdapter.ViewHolder> {
-    private List<Tarefa> mTarefas;
-    private ClickCallback mCallback;
+/**
+ * Created by rafaelsa on 12/03/17.
+ */
 
-    public CardsAdapter(List<Tarefa> tarefas, ClickCallback callback) {
-        mTarefas = tarefas;
+public class UsuarioAdapter extends RecyclerView.Adapter<UsuarioAdapter.ViewHolder>  {
+    private List<Usuario> mUsuarios;
+    private UsuarioAdapter.ClickCallback mCallback;
+
+    public UsuarioAdapter(List<Usuario> usuarios, ClickCallback callback) {
+        mUsuarios = usuarios;
         mCallback = callback;
-    }
-
-    public interface ClickCallback{
-        void onClick(View v, Tarefa t);
-        boolean onLongClick(View v);
     }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.task_card_view, parent, false);
+                .inflate(R.layout.project_card_view, parent, false);
 
         return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        final Tarefa currentTarefa = mTarefas.get(position);
+        final Usuario currentUser = mUsuarios.get(position);
 
-        holder.cardView.setOnClickListener(new View.OnClickListener() {
+        holder.button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mCallback.onClick(v, currentTarefa);
+                mCallback.onClick(v, currentUser);
             }
         });
 
-        Context context = holder.cardView.getContext();
-        switch (currentTarefa.getCategoriaTarefa()) {
-            case Tarefa.CATEGORIA_ANALISE:
-                holder.title.setText(currentTarefa.getNomeTarefa());
-                holder.tags.setText("#Análise");
-                holder.color.setBackgroundColor(context.getResources().getColor(R.color.category_analysis));
-                break;
-            case Tarefa.CATEGORIA_CORRECAO:
-                holder.title.setText(currentTarefa.getNomeTarefa());
-                holder.tags.setText("#Correção");
-                holder.color.setBackgroundColor(context.getResources().getColor(R.color.category_fix));
-                break;
-            default:
-                holder.title.setText(currentTarefa.getNomeTarefa());
-                holder.tags.setText("#Desenvolvimento");
-                holder.color.setBackgroundColor(context.getResources().getColor(R.color.category_development));
-                break;
-        }
+        final ImageView teste = holder.photo;
+        new DownloadImageTask(teste)
+                .execute(currentUser.getUrlFoto());
 
-        if(currentTarefa.getOwnedId() != null) {
-            final ImageView teste = holder.photo;
-
-            ValueEventListener tasksListener = new ValueEventListener() {
-                @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
-                    Usuario user= dataSnapshot.getValue(Usuario.class);
-                    new DownloadImageTask(teste)
-                            .execute(user.getUrlFoto());
-                }
-
-                @Override
-                public void onCancelled(DatabaseError databaseError) {
-
-                }
-            };
-
-            FirebaseDatabase database = FirebaseDatabase.getInstance();
-            DatabaseReference myRef = database.getReference("user");
-            myRef.child(currentTarefa.getOwnedId()).addListenerForSingleValueEvent(tasksListener);
-        }
-
-
+        holder.name.setText(currentUser.getNomeUsuario());
     }
 
     @Override
     public int getItemCount() {
-        return mTarefas.size();
+        return mUsuarios.size();
     }
+
+    public interface ClickCallback{
+        void onClick(View v, Usuario user);
+    }
+
+
 
     class ViewHolder extends RecyclerView.ViewHolder {
         CardView cardView;
-        TextView title, tags;
-        View color;
+        TextView name;
+        Button button;
         ImageView photo;
         ViewHolder(View itemView) {
             super(itemView);
-            title = (TextView) itemView.findViewById(R.id.card_title);
-            tags = (TextView) itemView.findViewById(R.id.card_tags);
-            color = itemView.findViewById(R.id.card_tag_color);
+            name = (TextView) itemView.findViewById(R.id.card_title);
             cardView = (CardView) itemView.findViewById(R.id.card_view);
+            button = (Button) itemView.findViewById(R.id.card_button);
             photo = (ImageView) itemView.findViewById(R.id.user);
         }
-    }
-
-    public interface OnItemClickListener {
-        public void onItemClick(View view , long position);
     }
 
     private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
@@ -157,7 +117,6 @@ public class CardsAdapter extends RecyclerView.Adapter<CardsAdapter.ViewHolder> 
             }
             return mIcon11;
         }
-
 
         protected void onPostExecute(Bitmap bitmap) {
 
