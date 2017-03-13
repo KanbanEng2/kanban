@@ -500,9 +500,11 @@ public class MainActivity extends AppCompatActivity
         ValueEventListener tasksListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+                projeto = dataSnapshot.getValue(Projeto.class);
+
                 mToolbar.getMenu().clear();
                 mToolbar.inflateMenu(R.menu.main);
-                projeto = dataSnapshot.getValue(Projeto.class);
+                mToolbar.setTitle(projeto.getNomeProjeto());
                 if(projeto.getTarefasProjeto() == null ) {
                     projeto.setTarefasProjeto(new ArrayList<Tarefa>());
                 }
