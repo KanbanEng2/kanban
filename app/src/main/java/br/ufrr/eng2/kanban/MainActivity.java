@@ -63,12 +63,11 @@ import br.ufrr.eng2.kanban.widget.RecyclerViewEmpty;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
+    private static final String PREF_KEY_LAST_SELECTED_PROJECT = "lastSelectedProject";
     private FirebaseAuth auth;
     private FirebaseUser user;
-
     private int MenuIdStart = 15267;
     private Map<Integer, String> dictMenuProjects;
-
     private Toolbar mToolbar;
     private RecyclerViewEmpty mRecyclerView;
     private CardsAdapter mAdapterTODO;
@@ -79,7 +78,6 @@ public class MainActivity extends AppCompatActivity
     private List<Tarefa> mTarefasDONE = new ArrayList<>();
     private LinearLayoutManager mLayoutManager;
     private NavigationView navigationView;
-
     private FloatingActionButton mFab;
     private AlertDialog mAlertAddProject;
     private EditText mAlertTitleProject;
@@ -87,20 +85,22 @@ public class MainActivity extends AppCompatActivity
     private EditText mAlertTitleCard;
     private EditText mAlertDescCard;
     private BottomBar mBottomBar;
-
     private CoordinatorLayout mCoordinatorLayout;
-
     private int TaskActivityResult = 1010;
     private CardsAdapter.ClickCallback mCallback;
     private String currentProjectId;
     private Projeto projeto;
     private Tarefa currentTarefa;
     private int currentTarefaEstado;
+    private boolean autoSelectProject = true;
+    private String lastSelectedProject;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        // Pega o projeto que estava selecionado da última vez
+        lastSelectedProject = getPreferences(MODE_PRIVATE).getString(PREF_KEY_LAST_SELECTED_PROJECT, "");
 
         this.auth = FirebaseAuth.getInstance();
         this.user = this.auth.getCurrentUser();
@@ -457,6 +457,12 @@ public class MainActivity extends AppCompatActivity
 
     }
 
+    /**
+     * Adiciona um projeto na navigation drawer
+     *
+     * @param titleProject O título do projeto a ser adicionado
+     * @param idProject    O id do projeto
+     */
     private void addProjectMenu(String titleProject, String idProject) {
 
         if (!dictMenuProjects.containsValue(idProject)) {
@@ -466,6 +472,12 @@ public class MainActivity extends AppCompatActivity
             menu.findItem(id).setIcon(R.drawable.ic_assignment);
             menu.setGroupCheckable(R.id.menu_group_projects, true, true);
             dictMenuProjects.put(id, idProject);
+
+            // Seleciona o projeto que estava selecionado da última vez
+            if (autoSelectProject && lastSelectedProject.equals(idProject)) {
+                menu.findItem(id).setChecked(true);
+                onNavigationItemSelected(menu.findItem(id));
+            }
         }
 
     }
@@ -491,6 +503,7 @@ public class MainActivity extends AppCompatActivity
 
     private void onProjectSelection(String projectId) {
         currentProjectId = projectId;
+        getPreferences(MODE_PRIVATE).edit().putString(PREF_KEY_LAST_SELECTED_PROJECT, projectId).apply();
         mFab.setVisibility(View.VISIBLE);
         mBottomBar.setVisibility(View.VISIBLE);
         mRecyclerView.setEmptyView(findViewById(R.id.empty_task_recycler_view));
@@ -798,9 +811,9 @@ public class MainActivity extends AppCompatActivity
         startActivityForResult(i, 1011);
     }
 
-    @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
+        autoSelectProject = false;
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
