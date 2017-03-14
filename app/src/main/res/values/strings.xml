@@ -47,6 +47,7 @@
     <string name="alert_dialog_add_card_description_field">Description</string>
     <string name="alert_dialog_string_empty_error">Mandatory field</string>
     <string name="tasks_empty_text">No tasks here.</string>
+    <string name="project_empty_text">Select a project in the navigation drawer</string>
 
     <string name="title_signin_github">Sign in with GitHub</string>
     <string name="title_signin_facebook">Sign in with Facebook</string>

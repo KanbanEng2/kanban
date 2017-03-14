@@ -67,7 +67,7 @@ public class MainActivity extends AppCompatActivity
     private FirebaseUser user;
 
     private int MenuIdStart = 15267;
-    private Map<Integer,String> dictMenuProjects;
+    private Map<Integer, String> dictMenuProjects;
 
     private Toolbar mToolbar;
     private RecyclerViewEmpty mRecyclerView;
@@ -105,19 +105,16 @@ public class MainActivity extends AppCompatActivity
         this.auth = FirebaseAuth.getInstance();
         this.user = this.auth.getCurrentUser();
 
-        dictMenuProjects= new HashMap<>();
+        dictMenuProjects = new HashMap<>();
 
         if (this.user == null) {
             if (BuildConfig.FLAVOR.contentEquals("noFireBase")) {
                 Log.d("NoFireBase", "Setting default alias");
                 this.user = null;
-            }
-
-            else {
+            } else {
                 gotoLoginActivity();
             }
-        }
-        else {
+        } else {
             mToolbar = (Toolbar) findViewById(R.id.toolbar);
             mToolbar.inflateMenu(R.menu.main);
             setSupportActionBar(mToolbar);
@@ -137,7 +134,8 @@ public class MainActivity extends AppCompatActivity
             mRecyclerView = (RecyclerViewEmpty) findViewById(R.id.recycler_view);
             mLayoutManager = new LinearLayoutManager(this);
             mRecyclerView.setLayoutManager(mLayoutManager);
-            mRecyclerView.setEmptyView(findViewById(R.id.empty_recycler_view));
+            findViewById(R.id.empty_task_recycler_view).setVisibility(View.GONE);
+            mRecyclerView.setEmptyView(findViewById(R.id.empty_project_recycler_view));
             mRecyclerView.setItemAnimator(new DefaultItemAnimator());
 
             mCoordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordinatorLayout);
@@ -210,7 +208,7 @@ public class MainActivity extends AppCompatActivity
                         public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
                             // remove from adapter
                             final int fromPos = viewHolder.getAdapterPosition();
-                            Long tsLong = System.currentTimeMillis()/1000;
+                            Long tsLong = System.currentTimeMillis() / 1000;
                             String ts = tsLong.toString();
 
                             switch (mBottomBar.getCurrentTabId()) {
@@ -220,7 +218,7 @@ public class MainActivity extends AppCompatActivity
                                     if (direction == ItemTouchHelper.LEFT) {
                                         Snackbar snackbar = Snackbar
                                                 .make(mCoordinatorLayout, String.format(getString(R.string.snack_task_moved), getString(R.string.column_done)), Snackbar.LENGTH_LONG);
-                                         snackbar.setAction(R.string.snack_action_undo, new View.OnClickListener() {
+                                        snackbar.setAction(R.string.snack_action_undo, new View.OnClickListener() {
                                             @Override
                                             public void onClick(View v) {
                                                 fromTarefa.setEstadoTarefa(Tarefa.ESTADO_TODO);
@@ -391,8 +389,7 @@ public class MainActivity extends AppCompatActivity
             name = "NoFireBaseMode";
             email = "";
             photoUrl = null;
-        }
-        else{
+        } else {
             name = this.user.getDisplayName();
             email = this.user.getEmail();
             photoUrl = user.getPhotoUrl();
@@ -425,7 +422,7 @@ public class MainActivity extends AppCompatActivity
                 if (user.getProjetos() != null)
                     for (String pId : user.getProjetos()) {
                         FirebaseDatabase database = FirebaseController.getInstance();
-                        DatabaseReference myRef = database.getReference("projects/" + pId );
+                        DatabaseReference myRef = database.getReference("projects/" + pId);
                         final String projectId = pId;
                         myRef.addListenerForSingleValueEvent(
                                 new ValueEventListener() {
@@ -462,7 +459,7 @@ public class MainActivity extends AppCompatActivity
 
     private void addProjectMenu(String titleProject, String idProject) {
 
-        if(!dictMenuProjects.containsValue(idProject)) {
+        if (!dictMenuProjects.containsValue(idProject)) {
             int id = MenuIdStart + dictMenuProjects.size();
             Menu menu = navigationView.getMenu();
             menu.add(R.id.menu_group_projects, id, Menu.FIRST, titleProject);
@@ -488,7 +485,7 @@ public class MainActivity extends AppCompatActivity
         this.mTarefasDONE = list;
     }
 
-    private CardsAdapter.ClickCallback getmCallback(){
+    private CardsAdapter.ClickCallback getmCallback() {
         return mCallback;
     }
 
@@ -496,11 +493,13 @@ public class MainActivity extends AppCompatActivity
         currentProjectId = projectId;
         mFab.setVisibility(View.VISIBLE);
         mBottomBar.setVisibility(View.VISIBLE);
+        mRecyclerView.setEmptyView(findViewById(R.id.empty_task_recycler_view));
+        findViewById(R.id.empty_project_recycler_view).setVisibility(View.GONE);
 
         mCallback = new CardsAdapter.ClickCallback() {
             @Override
             public void onClick(View v, Tarefa t) {
-                gotoTaskAcitivity(v,t);
+                gotoTaskAcitivity(v, t);
             }
 
             @Override
@@ -517,7 +516,7 @@ public class MainActivity extends AppCompatActivity
                 mToolbar.getMenu().clear();
                 mToolbar.inflateMenu(R.menu.main);
                 mToolbar.setTitle(projeto.getNomeProjeto());
-                if(projeto.getTarefasProjeto() == null ) {
+                if (projeto.getTarefasProjeto() == null) {
                     projeto.setTarefasProjeto(new ArrayList<Tarefa>());
                 }
 
@@ -649,8 +648,8 @@ public class MainActivity extends AppCompatActivity
 
 
                         if (title_ok /*&& desc_ok*/) {
-                            Tarefa tarefa = new Tarefa(title, desc, Tarefa.ESTADO_TODO, "" , Tarefa.CATEGORIA_CORRECAO);
-                            Long tsLong = System.currentTimeMillis()/1000;
+                            Tarefa tarefa = new Tarefa(title, desc, Tarefa.ESTADO_TODO, "", Tarefa.CATEGORIA_CORRECAO);
+                            Long tsLong = System.currentTimeMillis() / 1000;
                             tarefa.setTimestampCreation(tsLong.toString());
                             mTarefasTODO.add(tarefa);
                             mAdapterTODO.notifyItemInserted(mTarefasTODO.size() - 1);
@@ -702,9 +701,9 @@ public class MainActivity extends AppCompatActivity
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == TaskActivityResult) {
-            if (data != null){
+            if (data != null) {
                 int id = 0;
-                switch(currentTarefaEstado) {
+                switch (currentTarefaEstado) {
                     case Tarefa.ESTADO_TODO:
                         id = mTarefasTODO.indexOf(currentTarefa);
                         mTarefasTODO.remove(currentTarefa);
@@ -719,7 +718,7 @@ public class MainActivity extends AppCompatActivity
                         break;
                 }
 
-                if (!data.getBooleanExtra("remove",false)) {
+                if (!data.getBooleanExtra("remove", false)) {
                     int category = data.getIntExtra("category", currentTarefa.getCategoriaTarefa());
                     currentTarefa.setCategoriaTarefa(category);
 
@@ -729,7 +728,7 @@ public class MainActivity extends AppCompatActivity
                     }
 
                     String estimate = data.getStringExtra("estimate");
-                    if(estimate != null) {
+                    if (estimate != null) {
                         currentTarefa.settimestampEstimative(estimate);
                     }
 

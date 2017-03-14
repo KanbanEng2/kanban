@@ -44,4 +44,5 @@
     <string name="project_add_members_empty">Não há membros para adicionar.</string>
     <string name="project_members_title">Membros de %s</string>
     <string name="project_section_owner">Proprietário</string>
+    <string name="project_empty_text">Selecione um projeto no painel de navegação</string>
 </resources>
