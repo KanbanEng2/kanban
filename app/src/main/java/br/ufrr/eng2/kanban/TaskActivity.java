@@ -26,7 +26,8 @@ import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.Switch;
 
-import java.util.Date;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 
 import br.ufrr.eng2.kanban.model.Tarefa;
 import fr.ganfra.materialspinner.MaterialSpinner;
@@ -36,21 +37,23 @@ public class TaskActivity extends AppCompatActivity implements Transition.Transi
     private MaterialSpinner spinner;
     private EditText description;
     private Switch assignSwitch;
-    private Switch callendarSwitch;
+    private Switch calendarSwitch;
     private View mToolbarBackground;
     private DatePicker mDatePicker;
-    private boolean animationFinished = false;
+    private AlertDialog mAlertEditTaskName;
+    private EditText mAlertTaskName;
+    private String taskName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_task);
 
-        mToolbarBackground = (View) findViewById(R.id.toolbar_background);
+        mToolbarBackground = findViewById(R.id.toolbar_background);
         mDatePicker = (DatePicker) findViewById(R.id.datepicker);
-        callendarSwitch = (Switch) findViewById(R.id.switchDatepicker);
+        calendarSwitch = (Switch) findViewById(R.id.switchDatepicker);
 
-        callendarSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        calendarSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
@@ -117,6 +120,14 @@ public class TaskActivity extends AppCompatActivity implements Transition.Transi
                 assignSwitch.setChecked(true);
             }
 
+            String estimate = b.getString("estimate", "");
+            if (estimate != null && !estimate.equals("")) {
+                calendarSwitch.setChecked(true);
+                Calendar calendar = new GregorianCalendar();
+                calendar.setTimeInMillis(Long.parseLong(estimate));
+                mDatePicker.updateDate(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
+            }
+
         }
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -140,9 +151,6 @@ public class TaskActivity extends AppCompatActivity implements Transition.Transi
     }
 
     private void changeToolbarColorAnimated(final int color) {
-        if (!animationFinished)
-            return;
-
         final View backgroundReveal = findViewById(R.id.toolbar_background_reveal);
 
         int cx = (backgroundReveal.getLeft() + backgroundReveal.getRight()) / 2;
@@ -190,10 +198,6 @@ public class TaskActivity extends AppCompatActivity implements Transition.Transi
                 return -1;
         }
     }
-
-    private AlertDialog mAlertEditTaskName;
-    private EditText mAlertTaskName;
-    private String taskName;
 
     private void createEditTaskNameDialog() {
         LayoutInflater li = getLayoutInflater();
@@ -300,9 +304,12 @@ public class TaskActivity extends AppCompatActivity implements Transition.Transi
         i.putExtra("description", description.getText().toString());
 
         String estimate = null;
-        if (callendarSwitch.isChecked()) {
-            Date date = new Date(mDatePicker.getYear(), mDatePicker.getMonth(), mDatePicker.getDayOfMonth());
-            estimate = String.valueOf(date.getTime());
+        if (calendarSwitch.isChecked()) {
+            Calendar calendar = new GregorianCalendar();
+            calendar.set(mDatePicker.getYear(), mDatePicker.getMonth(), mDatePicker.getDayOfMonth());
+            estimate = String.valueOf(calendar.getTimeInMillis());
+        } else {
+            estimate = "";
         }
         i.putExtra("estimate", estimate);
         setResult(1010, i);
@@ -347,7 +354,6 @@ public class TaskActivity extends AppCompatActivity implements Transition.Transi
         circularReveal.addListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationEnd(Animator animation) {
-                animationFinished = true;
                 super.onAnimationEnd(animation);
             }
         });

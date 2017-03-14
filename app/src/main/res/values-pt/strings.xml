@@ -10,7 +10,7 @@
     <string name="alert_dialog_edit_task_hint">Nome da tarefa</string>
     <string name="alert_dialog_progress_title">Acessando Dados</string>
 
-    <string name="task_activity_calendar_label">Mudar data estimada para finalização</string>
+    <string name="task_activity_calendar_label">Definir data estimada de entrega</string>
     <string name="alert_dialog_add_card_description_field">Descrição</string>
     <string name="alert_dialog_add_card_title_field">Título</string>
     <string name="alert_dialog_add_card_top_title">Adicionar tarefa</string>

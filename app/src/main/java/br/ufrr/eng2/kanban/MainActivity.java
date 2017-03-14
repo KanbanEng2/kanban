@@ -691,7 +691,7 @@ public class MainActivity extends AppCompatActivity
 
     }
 
-    protected void gotoTaskAcitivity(View view, Tarefa t) {
+    protected void gotoTaskAcitivity(View view, Tarefa tarefa) {
         ActivityOptionsCompat options = ActivityOptionsCompat.
                 makeSceneTransitionAnimation(MainActivity.this,
                         android.support.v4.util.Pair.create(view.findViewById(R.id.card_view), "task_background"),
@@ -700,12 +700,13 @@ public class MainActivity extends AppCompatActivity
 
 
         Intent i = new Intent(this, TaskActivity.class);
-        i.putExtra("title", t.getNomeTarefa());
-        i.putExtra("category", t.getCategoriaTarefa());
-        i.putExtra("description", t.getDescricaoTarefa());
-        i.putExtra("assumed", t.getOwnedId() == this.user.getUid() ? 1 : 0);
-        currentTarefa = t;
-        currentTarefaEstado = t.getEstadoTarefa();
+        i.putExtra("title", tarefa.getNomeTarefa());
+        i.putExtra("category", tarefa.getCategoriaTarefa());
+        i.putExtra("description", tarefa.getDescricaoTarefa());
+        i.putExtra("assumed", tarefa.getOwnedId() != null && tarefa.getOwnedId().equals(this.user.getUid()) ? 1 : 0);
+        i.putExtra("estimate", tarefa.gettimestampEstimative());
+        currentTarefa = tarefa;
+        currentTarefaEstado = tarefa.getEstadoTarefa();
         startActivityForResult(i, TaskActivityResult, options.toBundle());
     }
 
@@ -735,15 +736,15 @@ public class MainActivity extends AppCompatActivity
                     int category = data.getIntExtra("category", currentTarefa.getCategoriaTarefa());
                     currentTarefa.setCategoriaTarefa(category);
 
-                    int assumed = data.getIntExtra("assumed", currentTarefa.getOwnedId() == this.user.getUid() ? 1 : 0);
+                    int assumed = data.getIntExtra("assumed", 0);
                     if (assumed == 1) {
                         currentTarefa.setOwnedId(this.user.getUid());
+                    } else if (currentTarefa.getOwnedId() != null && currentTarefa.getOwnedId().equals(this.user.getUid())) {
+                        currentTarefa.setOwnedId(null);
                     }
 
                     String estimate = data.getStringExtra("estimate");
-                    if (estimate != null) {
-                        currentTarefa.settimestampEstimative(estimate);
-                    }
+                    currentTarefa.settimestampEstimative(estimate);
 
                     String title = data.getStringExtra("title");
                     currentTarefa.setNomeTarefa(title);
