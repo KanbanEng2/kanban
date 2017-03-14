@@ -14,14 +14,15 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
-import br.ufrr.eng2.kanban.DownloadImageTask;
 import br.ufrr.eng2.kanban.R;
 import br.ufrr.eng2.kanban.controller.FirebaseController;
 import br.ufrr.eng2.kanban.model.Tarefa;
 import br.ufrr.eng2.kanban.model.Usuario;
+import br.ufrr.eng2.kanban.util.CircleTransform;
 
 public class CardsAdapter extends RecyclerView.Adapter<CardsAdapter.ViewHolder> {
     private List<Tarefa> mTarefas;
@@ -71,14 +72,17 @@ public class CardsAdapter extends RecyclerView.Adapter<CardsAdapter.ViewHolder> 
         }
 
         if(currentTarefa.getOwnedId() != null) {
-            final ImageView teste = holder.photo;
+            final ImageView userPhoto = holder.photo;
 
             ValueEventListener tasksListener = new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     Usuario user= dataSnapshot.getValue(Usuario.class);
-                    new DownloadImageTask(teste)
-                            .execute(user.getUrlFoto());
+                    Picasso.with(userPhoto.getContext())
+                            .load(user.getUrlFoto())
+                            .placeholder(R.drawable.ic_person)
+                            .transform(new CircleTransform())
+                            .into(userPhoto);
                 }
 
                 @Override

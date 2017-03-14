@@ -1,4 +1,4 @@
-package br.ufrr.eng2.kanban;
+package br.ufrr.eng2.kanban.util;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -14,9 +14,8 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 
 /**
- * Created by rafaelsa on 13/03/17.
+ * @deprecated Use {@link com.squareup.picasso.Picasso} no lugar desta classe
  */
-
 public class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
     ImageView bmImage;
 
@@ -35,7 +34,7 @@ public class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
             connection.connect();
             InputStream input = connection.getInputStream();
             mIcon11 = BitmapFactory.decodeStream(input);
-            return mIcon11;
+
         } catch (Exception e) {
             Log.e("Error", e.getMessage());
             e.printStackTrace();
@@ -48,12 +47,12 @@ public class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
 
         Bitmap circleBitmap = Bitmap.createBitmap(bitmap.getWidth(), bitmap.getHeight(), Bitmap.Config.ARGB_8888);
 
-        BitmapShader shader = new BitmapShader (bitmap,  Shader.TileMode.CLAMP, Shader.TileMode.CLAMP);
+        BitmapShader shader = new BitmapShader(bitmap, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP);
         Paint paint = new Paint();
         paint.setShader(shader);
         paint.setAntiAlias(true);
         Canvas c = new Canvas(circleBitmap);
-        c.drawCircle(bitmap.getWidth()/2, bitmap.getHeight()/2, bitmap.getWidth()/2, paint);
+        c.drawCircle(bitmap.getWidth() / 2, bitmap.getHeight() / 2, bitmap.getWidth() / 2, paint);
 
         bmImage.setImageBitmap(circleBitmap);
 

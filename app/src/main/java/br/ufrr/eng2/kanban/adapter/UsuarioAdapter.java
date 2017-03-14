@@ -1,15 +1,7 @@
 package br.ufrr.eng2.kanban.adapter;
 
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.BitmapShader;
-import android.graphics.Canvas;
-import android.graphics.Paint;
-import android.graphics.Shader;
-import android.os.AsyncTask;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,13 +9,13 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import java.io.InputStream;
-import java.net.HttpURLConnection;
+import com.squareup.picasso.Picasso;
+
 import java.util.List;
 
-import br.ufrr.eng2.kanban.DownloadImageTask;
 import br.ufrr.eng2.kanban.R;
 import br.ufrr.eng2.kanban.model.Usuario;
+import br.ufrr.eng2.kanban.util.CircleTransform;
 
 public class UsuarioAdapter extends RecyclerView.Adapter<UsuarioAdapter.ViewHolder> {
     public static final int ACTION_NONE = 0;
@@ -100,9 +92,13 @@ public class UsuarioAdapter extends RecyclerView.Adapter<UsuarioAdapter.ViewHold
             }
         });
 
-        final ImageView teste = holder.photo;
-        new DownloadImageTask(teste)
-                .execute(currentUser.getUrlFoto());
+        final ImageView userPhoto = holder.photo;
+
+        Picasso.with(holder.photo.getContext())
+                .load(currentUser.getUrlFoto())
+                .placeholder(R.drawable.ic_person)
+                .transform(new CircleTransform())
+                .into(userPhoto);
 
         holder.name.setText(currentUser.getNomeUsuario());
     }

@@ -43,6 +43,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.roughike.bottombar.BottomBar;
 import com.roughike.bottombar.OnTabSelectListener;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -56,6 +57,7 @@ import br.ufrr.eng2.kanban.controller.UsuarioController;
 import br.ufrr.eng2.kanban.model.Projeto;
 import br.ufrr.eng2.kanban.model.Tarefa;
 import br.ufrr.eng2.kanban.model.Usuario;
+import br.ufrr.eng2.kanban.util.CircleTransform;
 import br.ufrr.eng2.kanban.widget.RecyclerViewEmpty;
 
 public class MainActivity extends AppCompatActivity
@@ -409,10 +411,11 @@ public class MainActivity extends AppCompatActivity
         userEmail.setText(email);
 
         ImageView userPhoto = (ImageView) header.findViewById(R.id.user_photo);
-        if(photoUrl != null) {
-            new DownloadImageTask(userPhoto)
-                    .execute(photoUrl.toString());
-        }
+        Picasso.with(this)
+                .load(photoUrl)
+                .placeholder(R.drawable.ic_person)
+                .transform(new CircleTransform())
+                .into(userPhoto);
 
         ValueEventListener projectsListener = new ValueEventListener() {
             @Override
