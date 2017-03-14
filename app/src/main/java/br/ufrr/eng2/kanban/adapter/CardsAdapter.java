@@ -71,8 +71,9 @@ public class CardsAdapter extends RecyclerView.Adapter<CardsAdapter.ViewHolder> 
                 break;
         }
 
-        if(currentTarefa.getOwnedId() != null) {
+        if (currentTarefa.getOwnedId() != null && !currentTarefa.getOwnedId().equals("")) {
             final ImageView userPhoto = holder.photo;
+            holder.photo.setVisibility(View.VISIBLE);
 
             ValueEventListener tasksListener = new ValueEventListener() {
                 @Override
@@ -94,6 +95,8 @@ public class CardsAdapter extends RecyclerView.Adapter<CardsAdapter.ViewHolder> 
             FirebaseDatabase database = FirebaseController.getInstance();
             DatabaseReference myRef = database.getReference("user");
             myRef.child(currentTarefa.getOwnedId()).addListenerForSingleValueEvent(tasksListener);
+        } else {
+            holder.photo.setVisibility(View.GONE);
         }
 
 
