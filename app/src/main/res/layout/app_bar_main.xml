@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -9,11 +8,11 @@
     android:orientation="vertical">
 
     <android.support.design.widget.CoordinatorLayout
+        android:id="@+id/coordinatorLayout"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
         android:background="#efefef"
-        android:id="@+id/coordinatorLayout"
         android:fitsSystemWindows="true"
         android:overScrollMode="always"
         tools:context="br.ufrr.eng2.kanban.MainActivity">
@@ -28,18 +27,25 @@
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
+                app:layout_scrollFlags="scroll|enterAlways|snap"
                 app:popupTheme="@style/AppTheme.PopupOverlay"
-                app:title=" "
-                app:layout_scrollFlags="scroll|enterAlways"/>
+                app:title=" " />
 
         </android.support.design.widget.AppBarLayout>
 
-        <include
-            android:id="@+id/central_layout"
-            layout="@layout/content_main"
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+        <!-- Se for tirar o scroll da toolbar, colocar marginBottom=bb_height e height=match_parent: -->
+        <br.ufrr.eng2.kanban.widget.RecyclerViewEmpty
+            android:id="@+id/recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clipToPadding="false"
+            android:overScrollMode="always"
+            android:paddingBottom="@dimen/bb_height"
+            android:scrollbars="vertical"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+            tools:listitem="@layout/task_card_view" />
+
+        <include layout="@layout/tasks_empty_view" />
 
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/fab"
@@ -56,10 +62,12 @@
         android:id="@+id/bottom_bar"
         android:layout_width="match_parent"
         android:layout_height="@dimen/bb_height"
+        android:layout_gravity="bottom"
+        android:layout_marginTop="-8dp"
         app:bb_activeTabColor="#FFFFFF"
         app:bb_inActiveTabAlpha="0.6"
         app:bb_inActiveTabColor="#FFFFFF"
         app:bb_tabXmlResource="@xml/tabs"
-        android:layout_marginTop="-8dp"/>
+        app:layout_insetEdge="bottom" />
 
 </LinearLayout>
