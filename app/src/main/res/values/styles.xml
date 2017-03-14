@@ -16,7 +16,7 @@
         <item name="windowNoTitle">true</item>
     </style>
 
-    <style name="AppTheme.ProjectActivity" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="AppTheme.Colorful" parent="Theme.AppCompat.Light.DarkActionBar">
         <item name="colorPrimary">@color/colorAccent</item>
         <item name="colorPrimaryDark">@color/colorAccentDark</item>
         <item name="colorAccent">@color/colorAccent</item>
