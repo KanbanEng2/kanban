@@ -9,6 +9,7 @@
     android:clickable="true"
     android:foreground="?attr/selectableItemBackground"
     android:gravity="center"
+    android:onClick="showProjects"
     android:orientation="vertical">
 
     <ImageView

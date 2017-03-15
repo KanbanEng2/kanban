@@ -650,7 +650,6 @@ public class MainActivity extends AppCompatActivity
                     @Override
                     public void onClick(View v) {
                         boolean title_ok = true;
-                        boolean desc_ok = true;
 
                         String title = mAlertTitleCard.getText().toString();
                         String desc = mAlertDescCard.getText().toString();
@@ -661,7 +660,7 @@ public class MainActivity extends AppCompatActivity
                         }
 
 
-                        if (title_ok /*&& desc_ok*/) {
+                        if (title_ok) {
                             Tarefa tarefa = new Tarefa(title, desc, Tarefa.ESTADO_TODO, "", Tarefa.CATEGORIA_CORRECAO);
                             Long tsLong = System.currentTimeMillis() / 1000;
                             tarefa.setTimestampCreation(tsLong.toString());
@@ -673,6 +672,7 @@ public class MainActivity extends AppCompatActivity
 
                             snackbar.show();
                             updateCurrentProject();
+                            mBottomBar.selectTabAtPosition(mBottomBar.findPositionForTabWithId(R.id.bottombar_todo), true);
 
                             dialog.dismiss();
                         }
@@ -918,6 +918,22 @@ public class MainActivity extends AppCompatActivity
         });
 
 
+    }
+
+    public void showProjects(View view) {
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        if (!drawer.isDrawerOpen(GravityCompat.START)) {
+            drawer.openDrawer(GravityCompat.START);
+        }
+    }
+
+    public void handleEmptyTasks(View view) {
+        if (mBottomBar.getCurrentTabId() == R.id.bottombar_todo) {
+            mAlertTitleCard.requestFocus();
+            mAlertAddCard.show();
+        } else {
+            mBottomBar.selectTabAtPosition(mBottomBar.findPositionForTabWithId(R.id.bottombar_todo), true);
+        }
     }
 
     protected void signOut() {
