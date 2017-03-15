@@ -49,6 +49,9 @@
     <string name="tasks_empty_text">No tasks here.</string>
     <string name="project_empty_text">Select a project in the navigation drawer</string>
 
+    <string name="nav_hint_external">Opens a new app</string>
+    <string name="error_app_not_installed">The app is not installed.</string>
+
     <string name="title_signin_github">Sign in with GitHub</string>
     <string name="title_signin_facebook">Sign in with Facebook</string>
     <string name="title_signin_google">Sign in with Google</string>
@@ -68,5 +71,8 @@
     <string name="github_token_url" translatable="false">https://github.com/login/oauth/access_token</string>
     <string name="github_client_id" translatable="false">7314ffb17a43cadec69d</string>
     <string name="github_client_secret" translatable="false">7f7fea342246051edfa2b7bf56d580bd70732e90</string>
+    <string name="app_package_comms" translatable="false">br.ufrr.dcc.engenhariadesoftware.comunicacao</string>
+    <string name="app_package_burndown" translatable="false">software.de.engenharia.com.burndown</string>
+    <string name="app_package_gantt" translatable="false">com.example.kevin.gbproject</string>
 
 </resources>

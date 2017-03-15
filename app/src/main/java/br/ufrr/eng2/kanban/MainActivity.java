@@ -33,6 +33,7 @@ import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -64,9 +65,10 @@ public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     private static final String PREF_KEY_LAST_SELECTED_PROJECT = "lastSelectedProject";
+    private static final int MENU_ID_START = 15267;
+    private static final int TASK_ACTIVITY_RESULT = 1010;
     private FirebaseAuth auth;
     private FirebaseUser user;
-    private int MenuIdStart = 15267;
     private Map<Integer, String> dictMenuProjects;
     private Toolbar mToolbar;
     private RecyclerViewEmpty mRecyclerView;
@@ -86,7 +88,6 @@ public class MainActivity extends AppCompatActivity
     private EditText mAlertDescCard;
     private BottomBar mBottomBar;
     private CoordinatorLayout mCoordinatorLayout;
-    private int TaskActivityResult = 1010;
     private CardsAdapter.ClickCallback mCallback;
     private String currentProjectId;
     private Projeto projeto;
@@ -466,7 +467,7 @@ public class MainActivity extends AppCompatActivity
     private void addProjectMenu(String titleProject, String idProject) {
 
         if (!dictMenuProjects.containsValue(idProject)) {
-            int id = MenuIdStart + dictMenuProjects.size();
+            int id = MENU_ID_START + dictMenuProjects.size();
             Menu menu = navigationView.getMenu();
             menu.add(R.id.menu_group_projects, id, Menu.FIRST, titleProject);
             menu.findItem(id).setIcon(R.drawable.ic_assignment);
@@ -707,14 +708,14 @@ public class MainActivity extends AppCompatActivity
         i.putExtra("estimate", tarefa.gettimestampEstimative());
         currentTarefa = tarefa;
         currentTarefaEstado = tarefa.getEstadoTarefa();
-        startActivityForResult(i, TaskActivityResult, options.toBundle());
+        startActivityForResult(i, TASK_ACTIVITY_RESULT, options.toBundle());
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == TaskActivityResult) {
+        if (requestCode == TASK_ACTIVITY_RESULT) {
             if (data != null) {
                 int id = 0;
                 switch (currentTarefaEstado) {
@@ -823,9 +824,35 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.add_project) {
             mAlertTitleProject.requestFocus();
             mAlertAddProject.show();
-        } else if (id >= MenuIdStart && id <= (MenuIdStart + dictMenuProjects.size())) {
+        } else if (id >= MENU_ID_START && id <= (MENU_ID_START + dictMenuProjects.size())) {
             String projeto = dictMenuProjects.get(id);
             onProjectSelection(projeto);
+
+        } else if (id == R.id.nav_launch_communication) {
+            Intent launchIntent = getPackageManager().getLaunchIntentForPackage(getString(R.string.app_package_comms));
+            if (launchIntent != null) {
+                startActivity(launchIntent);
+            } else {
+                Toast.makeText(this, R.string.error_app_not_installed, Toast.LENGTH_SHORT).show();
+                return false;
+            }
+
+        } else if (id == R.id.nav_launch_burndown) {
+            Intent launchIntent = getPackageManager().getLaunchIntentForPackage(getString(R.string.app_package_burndown));
+            if (launchIntent != null) {
+                startActivity(launchIntent);
+            } else {
+                Toast.makeText(this, R.string.error_app_not_installed, Toast.LENGTH_SHORT).show();
+                return false;
+            }
+        } else if (id == R.id.nav_launch_gantt) {
+            Intent launchIntent = getPackageManager().getLaunchIntentForPackage(getString(R.string.app_package_gantt));
+            if (launchIntent != null) {
+                startActivity(launchIntent);
+            } else {
+                Toast.makeText(this, R.string.error_app_not_installed, Toast.LENGTH_SHORT).show();
+                return false;
+            }
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

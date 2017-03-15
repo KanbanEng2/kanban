@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <group
-        android:orderInCategory="101"
         android:id="@+id/menu_group_projects"
-        android:checkableBehavior="single">
+        android:checkableBehavior="single"
+        android:orderInCategory="101">
         <item
             android:id="@+id/add_project"
             android:checkable="false"
@@ -13,19 +14,25 @@
     </group>
 
     <group
-        android:orderInCategory="101"
-        android:id="@+id/menu_group_external">
+        android:id="@+id/menu_group_external"
+        android:orderInCategory="102">
         <item
             android:id="@+id/nav_launch_communication"
-            android:title="Communication app"/>
+            android:title="Communication"
+            app:actionLayout="@layout/icon_external"/>
         <item
-            android:id="@+id/nav_launch_statistics"
-            android:title="Statistics app"/>
+            android:id="@+id/nav_launch_burndown"
+            android:title="Burndown"
+            app:actionLayout="@layout/icon_external"/>
+        <item
+            android:id="@+id/nav_launch_gantt"
+            android:title="Gantt"
+            app:actionLayout="@layout/icon_external"/>
     </group>
 
     <group
-        android:orderInCategory="101"
-        android:id="@+id/menu_group_settings">
+        android:id="@+id/menu_group_settings"
+        android:orderInCategory="103">
         <item
             android:id="@+id/nav_settings"
             android:icon="@drawable/ic_settings"

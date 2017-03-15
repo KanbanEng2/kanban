@@ -45,4 +45,6 @@
     <string name="project_members_title">Membros de %s</string>
     <string name="project_section_owner">Proprietário</string>
     <string name="project_empty_text">Selecione um projeto no painel de navegação</string>
+    <string name="error_app_not_installed">O aplicativo não está instalado.</string>
+    <string name="nav_hint_external">Abre outro aplicativo</string>
 </resources>
